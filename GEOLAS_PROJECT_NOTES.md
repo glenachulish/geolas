@@ -56,6 +56,31 @@ on site delete; photo files are removed from disk too.
 - **Container here is Python 3.12; the Pi is 3.13.5.** Code avoids version-
   specific syntax. `sqlite3.unlink(missing_ok=True)` etc. are fine on both.
 
+## Offline / PWA architecture (session 3)
+
+- **Service worker** (`static/sw.js`): registered at the app's own scope (works
+  at `/` or `/geolas/`). App shell = cache-first (launches offline); OSM tiles =
+  cache-first into a capped cache (~600 tiles, FIFO trim); `/api/` GETs =
+  network-first with cache fallback (read sites offline); mutations never cached.
+  Bump `CACHE_VERSION` in sw.js on each deploy to invalidate the shell cache —
+  otherwise users get a stale build (the classic SW trap).
+- **Offline queue** (`static/offline-queue.js`, `window.GeolasQueue`): IndexedDB
+  store `pending_sites`, keyed by a client-generated UUID. Sites logged with no
+  signal are written here (Blobs for any photos) and shown immediately with a
+  "Not synced" badge / dashed slate pin.
+- **Sync**: manual "Sync now" button in the masthead bar, appears only when
+  online with pending items, shows count + MB. Each item is POSTed; on success
+  it's removed from the queue; a mid-sync failure leaves the rest queued.
+- **De-dupe**: the backend `sites` table has a nullable unique `client_uuid`.
+  `POST /api/sites` with a known client_uuid returns the existing row
+  (`deduplicated: true`) instead of inserting — so a retried sync can't double.
+- **DB migration**: `init_db()` ALTERs an existing sites table to add
+  client_uuid, and creates the unique index AFTER the column exists (doing it in
+  the inline SCHEMA crashed startup on the live DB — fixed, tested).
+- **Deliberate v1 limits**: geology fills in at sync time (server-side BGS, phone
+  can't reach BGS offline); photos attach only after sync; no whole-region tile
+  pre-cache.
+
 ## The drift habit applies here
 
 `drift-report.sh` is customised for this layout (backend/*.py, static/* incl.

@@ -157,6 +157,31 @@ body {
   width: 16px; height: 16px;
   background: var(--ochre); border-color: #fff;
 }
+/* pending (offline, not yet synced) sites: hollow slate, dashed */
+.geolas-pin-pending {
+  background: var(--slate);
+  border-style: dashed; opacity: .85;
+}
+
+/* sync bar under the masthead */
+.sync-bar {
+  background: var(--slate); color: var(--paper);
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 8px clamp(16px, 4vw, 32px); font-size: 13.5px;
+}
+.sync-bar .btn { background: var(--paper); color: var(--ink); border-color: var(--paper); }
+.sync-bar .btn:hover { background: var(--ochre); border-color: var(--ochre); color: var(--ink); }
+
+.pending-badge {
+  display: inline-block; margin-left: 8px; vertical-align: middle;
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--slate);
+  border: 1px solid var(--slate); border-radius: 999px; padding: 1px 7px;
+}
+.site-card-pending { opacity: .92; }
+.site-card-pending .site-card-spine {
+  background: repeating-linear-gradient(135deg, var(--slate) 0 6px, #8a93999c 6px 12px);
+}
 .ref-popup { max-width: 230px; }
 .ref-popup strong { font-family: var(--font-display); font-size: 15px; }
 .ref-popup p { margin: 6px 0 10px; font-size: 13px; line-height: 1.45; color: var(--ink-soft); }

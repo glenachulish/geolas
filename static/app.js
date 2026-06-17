@@ -89,14 +89,28 @@ async function showList() {
   document.getElementById("locate-btn").addEventListener("click", locateOnMap);
   document.getElementById("ref-toggle").addEventListener("change", (e) =>
     toggleReferenceSites(e.target.checked));
+
+  const pending = (await window.GeolasQueue.list()).map((p) => ({
+    id: `pending:${p.client_uuid}`,
+    name: p.name, lat: p.lat, lon: p.lon, notes: p.notes,
+    geology: { bedrock: {}, superficial: {}, fetched_at: null },
+    _pending: true,
+  }));
+
+  let sites = [];
   try {
-    const sites = await api("/sites");
-    renderSiteCards(sites);
-    renderMarkers(sites);
+    sites = await api("/sites");
   } catch (e) {
-    document.getElementById("list-body").innerHTML =
-      `<div class="banner banner-error">Couldn’t load sites: ${esc(e.message)}</div>`;
+    // Offline (or server unreachable): show what we have queued, with a note.
+    renderSiteCards(pending, true);
+    renderMarkers(pending);
+    await refreshSyncBar();
+    return;
   }
+  const all = [...pending, ...sites];
+  renderSiteCards(all, false);
+  renderMarkers(all);
+  await refreshSyncBar();
 }
 
 function initMap() {
@@ -191,20 +205,32 @@ document.addEventListener("click", (e) => {
   });
 });
 
+function pendingPinIcon() {
+  return L.divIcon({
+    className: "",
+    html: `<div class="geolas-pin geolas-pin-pending"></div>`,
+    iconSize: [18, 18],
+    iconAnchor: [9, 18],
+  });
+}
+
 function renderMarkers(sites) {
   if (!markerLayer) return;
   markerLayer.clearLayers();
   sites.forEach((s) => {
-    const m = L.marker([s.lat, s.lon], { icon: pinIcon() });
-    m.bindTooltip(s.name, { direction: "top", offset: [0, -16] });
-    m.on("click", () => showDetail(s.id));
+    const m = L.marker([s.lat, s.lon], { icon: s._pending ? pendingPinIcon() : pinIcon() });
+    m.bindTooltip(s._pending ? `${s.name} (not synced)` : s.name,
+      { direction: "top", offset: [0, -16] });
+    if (!s._pending) m.on("click", () => showDetail(s.id));
     markerLayer.addLayer(m);
   });
 }
 
-function renderSiteCards(sites) {
+function renderSiteCards(sites, offline) {
+  const synced = sites.filter((s) => !s._pending).length;
+  const pending = sites.length - synced;
   document.getElementById("count").textContent =
-    `${sites.length} site${sites.length === 1 ? "" : "s"}`;
+    `${synced} site${synced === 1 ? "" : "s"}` + (pending ? ` · ${pending} unsynced` : "");
   const body = document.getElementById("list-body");
   if (!sites.length) {
     body.innerHTML = `
@@ -217,22 +243,33 @@ function renderSiteCards(sites) {
     return;
   }
   const grid = el(`<div class="site-grid"></div>`);
+  if (offline) {
+    grid.appendChild(el(`<div class="banner banner-info" style="grid-column:1/-1">You're offline — showing sites saved on this device. Synced sites will reappear when you're back online.</div>`));
+  }
   sites.forEach((s) => {
     const bed = s.geology?.bedrock?.name;
     const sup = s.geology?.superficial?.name;
-    const rock = bed
-      ? `<strong>Bedrock:</strong> ${esc(bed)}` + (sup ? `<br><strong>Surface:</strong> ${esc(sup)}` : "")
-      : `<em>No geology snapshot yet</em>`;
+    const rock = s._pending
+      ? `<em>Geology fills in when you sync</em>`
+      : bed
+        ? `<strong>Bedrock:</strong> ${esc(bed)}` + (sup ? `<br><strong>Surface:</strong> ${esc(sup)}` : "")
+        : `<em>No geology snapshot yet</em>`;
+    const badge = s._pending ? `<span class="pending-badge">Not synced</span>` : "";
     const card = el(`
-      <button class="site-card" type="button">
+      <button class="site-card${s._pending ? " site-card-pending" : ""}" type="button">
         <span class="site-card-spine" aria-hidden="true"></span>
         <span class="site-card-body">
-          <h3>${esc(s.name)}</h3>
+          <h3>${esc(s.name)}${badge}</h3>
           <span class="coords">${s.lat.toFixed(4)}, ${s.lon.toFixed(4)}</span>
           <p class="rock">${rock}</p>
         </span>
       </button>`);
-    card.addEventListener("click", () => showDetail(s.id));
+    if (s._pending) {
+      card.addEventListener("click", () =>
+        toast(navigator.onLine ? "Tap “Sync now” to upload this site" : "This site syncs when you’re back online"));
+    } else {
+      card.addEventListener("click", () => showDetail(s.id));
+    }
     grid.appendChild(card);
   });
   body.innerHTML = "";
@@ -325,23 +362,46 @@ function openSiteForm(prefill = {}) {
     const lon = parseFloat(m.querySelector("#f-lon").value);
     if (!name) { toast("Give the site a name"); return; }
     if (Number.isNaN(lat) || Number.isNaN(lon)) { toast("Set a location (tap the map or search)"); return; }
+    const notes = m.querySelector("#f-notes").value;
+    const fetch_geology = m.querySelector("#f-fetch").checked;
     const saveBtn = m.querySelector("#f-save");
-    saveBtn.disabled = true; saveBtn.textContent = "Reading geology…";
+    saveBtn.disabled = true;
+
+    // If the browser knows it's offline, don't even attempt the network —
+    // queue immediately. (navigator.onLine is a hint, not a guarantee, so we
+    // also catch a failed fetch below.)
+    if (!navigator.onLine) {
+      await queueSiteOffline({ name, lat, lon, notes, fetch_geology });
+      close();
+      toast("Saved offline — tap “Sync now” when you have signal");
+      showList();
+      return;
+    }
+
+    saveBtn.textContent = "Reading geology…";
     try {
-      const site = await api("/sites", j({
-        name, lat, lon,
-        notes: m.querySelector("#f-notes").value,
-        fetch_geology: m.querySelector("#f-fetch").checked,
-      }));
+      const site = await api("/sites", j({ name, lat, lon, notes, fetch_geology }));
       close();
       if (site.geology_error) toast("Saved — but BGS lookup failed; re-fetch later");
       else toast("Site saved");
       showDetail(site.id);
     } catch (e) {
-      saveBtn.disabled = false; saveBtn.textContent = "Save site";
-      toast(`Save failed: ${e.message}`);
+      // Network failed despite onLine — treat as offline and queue rather than
+      // lose the field note.
+      await queueSiteOffline({ name, lat, lon, notes, fetch_geology });
+      close();
+      toast("Couldn’t reach the server — saved offline to sync later");
+      showList();
     }
   });
+}
+
+async function queueSiteOffline(data) {
+  try {
+    await window.GeolasQueue.enqueueSite(data);
+  } catch (e) {
+    toast(`Couldn’t save offline: ${e.message}`);
+  }
 }
 
 // =========================================================================
@@ -578,10 +638,55 @@ function confirmDialog(title, body, onYes) {
   });
 }
 
+// ---- offline sync bar ----
+async function refreshSyncBar() {
+  const bar = document.getElementById("sync-bar");
+  const status = document.getElementById("sync-status");
+  if (!bar || !window.GeolasQueue) return;
+  const n = await window.GeolasQueue.count();
+  if (n === 0 && navigator.onLine) { bar.hidden = true; return; }
+  bar.hidden = false;
+  const btn = document.getElementById("sync-now-btn");
+  if (n === 0) {
+    status.textContent = navigator.onLine ? "" : "Offline — new sites will be saved on this device";
+    btn.hidden = true;
+    if (navigator.onLine) bar.hidden = true;
+    return;
+  }
+  const bytes = await window.GeolasQueue.pendingBytes();
+  const mb = bytes > 0 ? ` · ${(bytes / 1048576).toFixed(1)} MB` : "";
+  status.textContent = `${n} site${n === 1 ? "" : "s"} waiting to sync${mb}`
+    + (navigator.onLine ? "" : " · offline");
+  btn.hidden = !navigator.onLine; // can only sync when there's signal
+}
+
+async function doSync() {
+  const btn = document.getElementById("sync-now-btn");
+  const status = document.getElementById("sync-status");
+  btn.disabled = true;
+  const result = await window.GeolasQueue.syncAll(API, (done, total) => {
+    status.textContent = `Syncing ${done}/${total}…`;
+  });
+  btn.disabled = false;
+  if (result.failed === 0) {
+    toast(`Synced ${result.done} site${result.done === 1 ? "" : "s"}`);
+  } else {
+    toast(`Synced ${result.done}, ${result.failed} failed — will retry`);
+    console.warn("sync errors:", result.errors);
+  }
+  await refreshSyncBar();
+  showList();
+}
+
+document.getElementById("sync-now-btn").addEventListener("click", doSync);
+window.addEventListener("online", refreshSyncBar);
+window.addEventListener("offline", refreshSyncBar);
+
 // ---- boot ----
 document.getElementById("new-site-btn").addEventListener("click", () => {
   if (!map) { showList().then(() => { armAddMode(); openSiteForm(); }); }
   else { armAddMode(); openSiteForm(); }
 });
 
+refreshSyncBar();
 showList();

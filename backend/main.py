@@ -115,6 +115,7 @@ CREATE TABLE IF NOT EXISTS sites (
     superficial_age     TEXT,
     superficial_lithology TEXT,
     geology_fetched_at  INTEGER,   -- unix seconds, NULL if never fetched
+    client_uuid  TEXT,             -- set by offline-created sites for de-dupe on sync
     created_at   INTEGER NOT NULL,
     updated_at   INTEGER NOT NULL
 );
@@ -154,6 +155,19 @@ CREATE INDEX IF NOT EXISTS idx_photos_site     ON photos(site_id);
 def init_db() -> None:
     with _db() as conn:
         conn.executescript(SCHEMA)
+        # Migration: older databases (deployed before offline support) have a
+        # sites table without client_uuid. Add it if missing. CREATE TABLE IF
+        # NOT EXISTS won't alter an existing table, so do it explicitly.
+        cols = {r["name"] for r in conn.execute("PRAGMA table_info(sites)").fetchall()}
+        if "client_uuid" not in cols:
+            conn.execute("ALTER TABLE sites ADD COLUMN client_uuid TEXT")
+        # Create the unique index AFTER the column is guaranteed to exist (on
+        # both fresh and migrated DBs). Doing it inside SCHEMA would run before
+        # the ALTER on an old DB and crash startup.
+        conn.execute(
+            "CREATE UNIQUE INDEX IF NOT EXISTS idx_sites_client_uuid "
+            "ON sites(client_uuid) WHERE client_uuid IS NOT NULL"
+        )
 
 
 # --- BGS query ------------------------------------------------------------
@@ -340,6 +354,7 @@ class SiteIn(BaseModel):
     lon: float
     notes: str = ""
     fetch_geology: bool = True
+    client_uuid: Optional[str] = None  # set by offline-created sites; de-dupes retries
 
 
 class SiteUpdate(BaseModel):
@@ -411,6 +426,20 @@ def get_site(site_id: int) -> dict[str, Any]:
 @app.post("/api/sites")
 async def create_site(site: SiteIn) -> dict[str, Any]:
     now = int(time.time())
+
+    # Idempotency: if this client_uuid already exists, the offline queue is
+    # retrying a create that already landed. Return the existing row instead of
+    # making a duplicate. (Single-user app, but retries are the real risk.)
+    if site.client_uuid:
+        with _db() as conn:
+            existing = conn.execute(
+                "SELECT * FROM sites WHERE client_uuid = ?", (site.client_uuid,)
+            ).fetchone()
+        if existing:
+            result = _site_row(existing)
+            result["deduplicated"] = True
+            return result
+
     geology: dict[str, Any] = {
         "bedrock_name": None, "bedrock_age": None, "bedrock_lithology": None,
         "superficial_name": None, "superficial_age": None,
@@ -429,12 +458,12 @@ async def create_site(site: SiteIn) -> dict[str, Any]:
                (name, lat, lon, notes,
                 bedrock_name, bedrock_age, bedrock_lithology,
                 superficial_name, superficial_age, superficial_lithology,
-                geology_fetched_at, created_at, updated_at)
-               VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+                geology_fetched_at, client_uuid, created_at, updated_at)
+               VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
             (site.name, site.lat, site.lon, site.notes,
              geology["bedrock_name"], geology["bedrock_age"], geology["bedrock_lithology"],
              geology["superficial_name"], geology["superficial_age"], geology["superficial_lithology"],
-             geology["geology_fetched_at"], now, now),
+             geology["geology_fetched_at"], site.client_uuid, now, now),
         )
         new_id = cur.lastrowid
         row = conn.execute("SELECT * FROM sites WHERE id = ?", (new_id,)).fetchone()
