@@ -1,0 +1,341 @@
+/* ==========================================================================
+   Geòlas — field notebook
+   Identity: a geologist's working journal, not a coffee-table book.
+   - Palette drawn from a field map + rock: ink, slate, OS-map green, an
+     ochre/rust accent for the "you are here" moment, parchment for surfaces.
+   - Display face: Fraunces (a characterful old-style with optical sizing) used
+     with restraint for headings only. Body: system humanist sans for clarity
+     in the field. Utility: monospace for coordinates/data — surveyor's register.
+   - Signature: the STRATA BAND — a stacked-layer motif that recurs as the brand
+     mark, the loading state, and the rule between sections. Earned, because the
+     subject IS layers.
+   These fonts are loaded from the system stack; no webfont fetch keeps the app
+   self-contained on the Pi. Fraunces falls back to a serif gracefully.
+   ========================================================================== */
+
+:root {
+  --ink:        #2b2520;   /* near-black, warm */
+  --ink-soft:   #4a4138;
+  --slate:      #3f4a52;
+  --map-green:  #4f6b4a;   /* OS-map vegetation green */
+  --map-green2: #65855d;
+  --rust:       #b5572b;   /* the accent — "you are here" */
+  --rust-deep:  #963f1c;
+  --ochre:      #c89c4a;
+  --parchment:  #f4efe6;
+  --parchment2: #e9e0d0;
+  --paper:      #fbf8f1;
+  --line:       #d8cdb8;
+  --muted:      #7a7060;
+
+  --bedrock:    #7a5230;   /* strata band colours */
+  --bedrock2:   #966a3e;
+  --sand:       #c0a062;
+  --till:       #8c9a7d;
+  --surface:    #5f7a54;
+
+  --r: 3px;
+  --shadow: 0 1px 2px rgba(43,37,32,.08), 0 8px 24px rgba(43,37,32,.06);
+  --font-display: 'Fraunces', 'Iowan Old Style', Palatino, Georgia, serif;
+  --font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+}
+
+* { box-sizing: border-box; }
+
+html, body { height: 100%; }
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--ink);
+  background:
+    repeating-linear-gradient(0deg,
+      transparent 0, transparent 31px,
+      rgba(120,90,60,.05) 31px, rgba(120,90,60,.05) 32px),
+    var(--parchment);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.5;
+}
+
+#app { min-height: 100%; display: flex; flex-direction: column; }
+
+/* ---- masthead ---- */
+.masthead {
+  position: sticky; top: 0; z-index: 500;
+  background: var(--ink);
+  color: var(--paper);
+  border-bottom: 3px solid var(--rust);
+}
+.masthead-inner {
+  max-width: 1100px; margin: 0 auto;
+  padding: 14px clamp(16px, 4vw, 32px);
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+}
+.brand { display: flex; align-items: center; gap: 14px; }
+
+/* SIGNATURE: the strata band, here as the brand mark */
+.brand-mark {
+  width: 30px; height: 36px; border-radius: 2px; flex: none;
+  background: linear-gradient(
+    to bottom,
+    var(--surface) 0 22%,
+    var(--till) 22% 40%,
+    var(--sand) 40% 58%,
+    var(--bedrock2) 58% 78%,
+    var(--bedrock) 78% 100%);
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,.25);
+}
+.brand-text h1 {
+  font-family: var(--font-display);
+  font-weight: 600; font-size: 26px; line-height: 1; margin: 0;
+  letter-spacing: .01em;
+}
+.brand-sub {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: .22em;
+  text-transform: uppercase; margin: 3px 0 0; color: var(--ochre);
+}
+
+#view {
+  flex: 1;
+  max-width: 1100px; width: 100%; margin: 0 auto;
+  padding: clamp(16px, 4vw, 32px);
+}
+
+/* ---- buttons ---- */
+.btn {
+  font: inherit; font-size: 15px; cursor: pointer;
+  padding: 10px 16px; border-radius: var(--r);
+  border: 1.5px solid var(--ink); background: var(--paper); color: var(--ink);
+  transition: transform .08s ease, background .15s ease, color .15s ease;
+}
+.btn:hover { background: var(--ink); color: var(--paper); }
+.btn:active { transform: translateY(1px); }
+.btn-primary { background: var(--rust); border-color: var(--rust); color: #fff; }
+.btn-primary:hover { background: var(--rust-deep); border-color: var(--rust-deep); }
+.btn-ghost { border-color: var(--line); background: transparent; }
+.btn-ghost:hover { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.btn-danger { border-color: var(--rust); color: var(--rust-deep); background: transparent; }
+.btn-danger:hover { background: var(--rust-deep); color: #fff; border-color: var(--rust-deep); }
+.btn-sm { padding: 6px 11px; font-size: 13px; }
+.btn:focus-visible { outline: 2px solid var(--ochre); outline-offset: 2px; }
+
+/* ---- map ---- */
+#map {
+  height: 380px; width: 100%;
+  border: 1.5px solid var(--line); border-radius: var(--r);
+  box-shadow: var(--shadow); background: var(--parchment2);
+}
+.leaflet-container { font-family: var(--font-body); }
+.map-hint {
+  margin: 8px 2px 22px; font-family: var(--font-mono); font-size: 12px;
+  color: var(--muted); letter-spacing: .04em;
+}
+.map-hint.armed { color: var(--rust-deep); font-weight: 600; }
+
+/* the rust drop-pin marker */
+.geolas-pin {
+  width: 18px; height: 18px; border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg); border: 2px solid #fff;
+  background: var(--rust); box-shadow: 0 2px 4px rgba(0,0,0,.4);
+}
+
+/* ---- section rule (strata motif) ---- */
+.strata-rule {
+  height: 5px; border: none; margin: 28px 0; border-radius: 2px;
+  background: linear-gradient(to right,
+    var(--surface) 0 20%, var(--till) 20% 40%, var(--sand) 40% 60%,
+    var(--bedrock2) 60% 80%, var(--bedrock) 80% 100%);
+  opacity: .5;
+}
+
+/* ---- site list ---- */
+.list-head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 12px; margin: 26px 0 14px;
+}
+.list-head h2 {
+  font-family: var(--font-display); font-weight: 600;
+  font-size: 22px; margin: 0;
+}
+.count-badge {
+  font-family: var(--font-mono); font-size: 12px; color: var(--muted);
+}
+.site-grid { display: grid; gap: 14px; grid-template-columns: 1fr; }
+@media (min-width: 640px) { .site-grid { grid-template-columns: 1fr 1fr; } }
+
+.site-card {
+  position: relative; text-align: left; cursor: pointer;
+  background: var(--paper); border: 1.5px solid var(--line);
+  border-radius: var(--r); padding: 0; overflow: hidden;
+  box-shadow: var(--shadow); transition: border-color .15s, transform .08s;
+  font: inherit; color: inherit; width: 100%;
+  display: flex; align-items: stretch; gap: 0;
+}
+.site-card:hover { border-color: var(--rust); }
+.site-card:active { transform: translateY(1px); }
+.site-card:focus-visible { outline: 2px solid var(--ochre); outline-offset: 2px; }
+/* strata spine down the left edge of each card */
+.site-card-spine {
+  width: 8px; flex: none;
+  background: linear-gradient(to bottom,
+    var(--surface) 0 30%, var(--sand) 30% 55%, var(--bedrock2) 55% 100%);
+}
+.site-card-body { padding: 16px 18px; flex: 1; min-width: 0; }
+.site-card h3 {
+  font-family: var(--font-display); font-weight: 600;
+  font-size: 18px; margin: 0 0 4px; line-height: 1.2;
+}
+.site-card .coords {
+  font-family: var(--font-mono); font-size: 12px; color: var(--muted);
+}
+.site-card .rock {
+  margin: 10px 0 0; font-size: 14px; color: var(--ink-soft);
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.site-card .rock strong { color: var(--ink); font-weight: 600; }
+
+/* ---- empty state ---- */
+.empty {
+  text-align: center; padding: 48px 20px; color: var(--muted);
+}
+.empty .strata-rule { max-width: 200px; margin: 0 auto 22px; opacity: .6; }
+.empty h2 { font-family: var(--font-display); color: var(--ink); margin: 0 0 6px; }
+
+/* ---- detail view ---- */
+.detail-top { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+.back-link {
+  font-family: var(--font-mono); font-size: 13px; color: var(--rust-deep);
+  background: none; border: none; cursor: pointer; padding: 6px 0;
+  letter-spacing: .04em;
+}
+.back-link:hover { text-decoration: underline; }
+.detail-title {
+  font-family: var(--font-display); font-weight: 600;
+  font-size: clamp(26px, 5vw, 38px); line-height: 1.05; margin: 4px 0 2px;
+}
+.detail-coords { font-family: var(--font-mono); font-size: 13px; color: var(--muted); }
+
+/* geology snapshot cards */
+.geo-cards { display: grid; gap: 12px; margin: 18px 0 0; }
+@media (min-width: 620px) { .geo-cards { grid-template-columns: 1fr 1fr; } }
+.geo-card { color: #fdfaf3; border-radius: var(--r); padding: 18px 20px; position: relative; }
+.geo-card-surface { background: linear-gradient(155deg, var(--map-green2), var(--map-green)); }
+.geo-card-bedrock { background: linear-gradient(155deg, var(--bedrock2), var(--bedrock)); }
+.geo-kind {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: .18em;
+  text-transform: uppercase; opacity: .85;
+}
+.geo-name { font-family: var(--font-display); font-size: 21px; margin: 8px 0 0; line-height: 1.15; }
+.geo-meta { margin: 12px 0 0; display: grid; gap: 7px; }
+.geo-meta div { border-top: 1px solid rgba(255,255,255,.22); padding-top: 7px; display: flex; gap: 10px; }
+.geo-meta dt { font-family: var(--font-mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; opacity: .75; min-width: 70px; }
+.geo-meta dd { margin: 0; font-size: 14px; }
+.geo-empty { opacity: .9; font-size: 14px; margin: 10px 0 0; }
+.geo-fetched {
+  margin: 12px 0 0; display: flex; align-items: center; justify-content: space-between;
+  gap: 10px; font-family: var(--font-mono); font-size: 12px; color: var(--muted);
+}
+
+/* sub-sections (samples / formations / photos / notes) */
+.section { margin-top: 28px; }
+.section-head {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  border-bottom: 1.5px solid var(--line); padding-bottom: 8px; margin-bottom: 12px;
+}
+.section-head h3 {
+  font-family: var(--font-mono); font-size: 13px; letter-spacing: .16em;
+  text-transform: uppercase; color: var(--rust-deep); margin: 0;
+}
+.notes-body { white-space: pre-wrap; font-size: 15px; line-height: 1.6; color: var(--ink-soft); }
+.notes-empty, .row-empty { color: var(--muted); font-style: italic; font-size: 14px; }
+
+.rows { display: grid; gap: 8px; }
+.row {
+  display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+  background: var(--paper); border: 1px solid var(--line); border-radius: var(--r);
+  padding: 12px 14px;
+}
+.row-main { min-width: 0; }
+.row-main .row-title { font-weight: 600; }
+.row-main .row-sub { font-size: 13px; color: var(--muted); margin-top: 2px; }
+.row-main .row-note { font-size: 14px; color: var(--ink-soft); margin-top: 5px; white-space: pre-wrap; }
+
+/* photos */
+.photo-grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+.photo {
+  position: relative; border: 1px solid var(--line); border-radius: var(--r);
+  overflow: hidden; background: var(--parchment2);
+}
+.photo img { display: block; width: 100%; height: 140px; object-fit: cover; }
+.photo .cap { padding: 7px 9px; font-size: 12.5px; color: var(--ink-soft); }
+.photo .photo-del {
+  position: absolute; top: 6px; right: 6px;
+  background: rgba(43,37,32,.78); color: #fff; border: none; cursor: pointer;
+  width: 26px; height: 26px; border-radius: 50%; font-size: 15px; line-height: 1;
+}
+.photo .photo-del:hover { background: var(--rust-deep); }
+
+/* ---- forms / modal ---- */
+.modal-backdrop {
+  position: fixed; inset: 0; z-index: 1000;
+  background: rgba(43,37,32,.55); backdrop-filter: blur(2px);
+  display: flex; align-items: flex-start; justify-content: center;
+  padding: clamp(16px, 6vh, 60px) 16px; overflow-y: auto;
+}
+.modal {
+  background: var(--paper); border-radius: var(--r); width: 100%; max-width: 480px;
+  box-shadow: 0 12px 48px rgba(0,0,0,.3); border-top: 4px solid var(--rust);
+}
+.modal-head { padding: 18px 22px 0; }
+.modal-head h2 { font-family: var(--font-display); font-size: 22px; margin: 0; }
+.modal-head p { color: var(--muted); font-size: 14px; margin: 4px 0 0; }
+.modal-body { padding: 16px 22px 22px; display: grid; gap: 14px; }
+.field { display: grid; gap: 5px; }
+.field label {
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--ink-soft);
+}
+.field input, .field textarea, .field select {
+  font: inherit; font-size: 15px; padding: 10px 12px;
+  border: 1.5px solid var(--line); border-radius: var(--r);
+  background: #fff; color: var(--ink); width: 100%;
+}
+.field textarea { resize: vertical; min-height: 80px; }
+.field input:focus, .field textarea:focus, .field select:focus {
+  outline: 2px solid var(--ochre); outline-offset: 1px; border-color: var(--ochre);
+}
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.field-hint { font-size: 12.5px; color: var(--muted); }
+.modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 4px; }
+.checkbox-row { display: flex; align-items: center; gap: 9px; }
+.checkbox-row input { width: auto; }
+.checkbox-row label { text-transform: none; letter-spacing: 0; font-family: var(--font-body); font-size: 14px; color: var(--ink-soft); }
+
+/* ---- loading / toast / error ---- */
+.loading { display: flex; align-items: center; gap: 14px; color: var(--muted); padding: 30px 4px; font-size: 15px; }
+.strata-spin { display: flex; flex-direction: column; gap: 3px; }
+.strata-spin span { display: block; width: 30px; height: 5px; border-radius: 1px; animation: strata 1.1s ease-in-out infinite; }
+.strata-spin span:nth-child(1){ background: var(--surface); animation-delay: 0s; }
+.strata-spin span:nth-child(2){ background: var(--sand); animation-delay: .15s; }
+.strata-spin span:nth-child(3){ background: var(--bedrock2); animation-delay: .3s; }
+.strata-spin span:nth-child(4){ background: var(--bedrock); animation-delay: .45s; }
+@keyframes strata { 0%,100%{ opacity:.3; transform: scaleX(.7);} 50%{ opacity:1; transform: scaleX(1);} }
+
+.banner { padding: 13px 16px; border-radius: var(--r); font-size: 14px; margin: 14px 0; }
+.banner-error { background: #f7e7df; border-left: 4px solid var(--rust); color: var(--rust-deep); }
+.banner-info  { background: #eef0e8; border-left: 4px solid var(--map-green); color: var(--slate); }
+
+#toast {
+  position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%) translateY(20px);
+  background: var(--ink); color: var(--paper); padding: 12px 20px; border-radius: var(--r);
+  font-size: 14px; box-shadow: 0 8px 28px rgba(0,0,0,.3); opacity: 0; pointer-events: none;
+  transition: opacity .2s, transform .2s; z-index: 2000; max-width: 90vw;
+}
+#toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+@media (prefers-reduced-motion: reduce) {
+  .strata-spin span { animation: none; opacity: .8; }
+  .btn, .site-card { transition: none; }
+}

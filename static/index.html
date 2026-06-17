@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#2b2520" />
+  <title>Geòlas — field notebook</title>
+
+  <!--
+    PREFIX-AWARENESS: <base href> is set by app.js at runtime from the current
+    URL, NOT hardcoded. Every other URL in this app (assets, fetch, map tiles)
+    is relative, so the app works served at "/" locally or "/geolas/" on the Pi
+    behind the Tailscale Funnel that strips the prefix. See PI-INFRASTRUCTURE.md.
+  -->
+  <link rel="stylesheet" href="vendor/leaflet.css" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml" />
+</head>
+<body>
+  <div id="app">
+    <header class="masthead">
+      <div class="masthead-inner">
+        <div class="brand">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <div class="brand-text">
+            <h1>Geòlas</h1>
+            <p class="brand-sub">field notebook</p>
+          </div>
+        </div>
+        <button id="new-site-btn" class="btn btn-primary">Log a site</button>
+      </div>
+    </header>
+
+    <main id="view"><!-- views render here --></main>
+  </div>
+
+  <!-- Local vendored Leaflet — no runtime third-party script fetch. -->
+  <script src="vendor/leaflet.js"></script>
+  <script src="app.js" type="module"></script>
+</body>
+</html>

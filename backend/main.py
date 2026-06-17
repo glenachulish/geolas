@@ -1,0 +1,585 @@
+"""
+Geòlas — personal geology notebook backend.
+
+Design decisions recorded here on purpose (see GEOLAS_CLAUDE.md "don't inherit
+by accident"):
+
+  * PREFIX-NAIVE backend. Tailscale Funnel STRIPS the /geolas path prefix before
+    proxying (proven via Òrain — see PI-INFRASTRUCTURE.md), so from this app's
+    own point of view it lives at "/". We therefore do NOT set root_path and do
+    NOT pass --root-path. Routes are plain: /api/sites, /api/health, etc.
+    The FRONTEND is the layer that must be prefix-aware (relative URLs), not this.
+
+  * SQLite with EXPLICIT auto-commit. _db() returns a connection used via a
+    context manager that commits on clean exit and rolls back on error. This is
+    Òrain's pattern, chosen deliberately rather than Ceòl's no-auto-commit auth
+    pattern.
+
+  * Own data directory via GEOLAS_DATA_DIR so the DB + photo uploads never
+    collide with Ceòl/Òrain on the shared Pi. Defaults to ./data for local dev.
+
+  * Single-user to start. No auth, so none of the passlib/bcrypt trap from the
+    infra doc applies yet.
+"""
+from __future__ import annotations
+
+import io
+import os
+import sqlite3
+import time
+import uuid
+from contextlib import contextmanager
+from pathlib import Path
+from typing import Any, Iterator, Optional
+
+import httpx
+from fastapi import FastAPI, File, Form, HTTPException, Request, UploadFile
+from fastapi.responses import FileResponse, JSONResponse
+from fastapi.staticfiles import StaticFiles
+from pydantic import BaseModel
+
+# --- HEIC support ---------------------------------------------------------
+# pillow-heif registers a HEIF/HEIC opener into Pillow. If it isn't installed
+# we degrade gracefully: HEIC uploads are stored as-is rather than crashing.
+from PIL import Image  # noqa: E402
+
+try:
+    import pillow_heif  # type: ignore
+
+    pillow_heif.register_heif_opener()
+    HEIC_SUPPORTED = True
+except Exception:  # pragma: no cover - depends on Pi having the wheel
+    HEIC_SUPPORTED = False
+
+
+# --- paths ----------------------------------------------------------------
+DATA_DIR = Path(os.environ.get("GEOLAS_DATA_DIR", "data")).resolve()
+UPLOAD_DIR = DATA_DIR / "uploads"
+DB_PATH = DATA_DIR / "geolas.db"
+STATIC_DIR = (Path(__file__).resolve().parent.parent / "static").resolve()
+
+DATA_DIR.mkdir(parents=True, exist_ok=True)
+UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+
+
+# --- BGS WMS --------------------------------------------------------------
+# Same endpoint + layers proven in the GroundTruth prototype (GeologyExplorer.jsx).
+BGS_OWS = (
+    "https://ogc.bgs.ac.uk/cgi-bin/"
+    "BGS_Bedrock_and_Superficial_Geology/ows"
+)
+BGS_LAYERS = {
+    "bedrock": "GBR_BGS_625k_BLT",       # bedrock lithostratigraphy
+    "superficial": "GBR_BGS_625k_SLT",   # superficial lithostratigraphy
+}
+
+
+# --- database -------------------------------------------------------------
+def _connect() -> sqlite3.Connection:
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    conn.execute("PRAGMA foreign_keys = ON;")
+    return conn
+
+
+@contextmanager
+def _db() -> Iterator[sqlite3.Connection]:
+    """Connection that AUTO-COMMITS on clean exit, rolls back on error.
+
+    Deliberate (Òrain's pattern). Don't 'fix' this to manual commit without
+    updating GEOLAS_CLAUDE.md — code is the source of truth.
+    """
+    conn = _connect()
+    try:
+        yield conn
+        conn.commit()
+    except Exception:
+        conn.rollback()
+        raise
+    finally:
+        conn.close()
+
+
+SCHEMA = """
+CREATE TABLE IF NOT EXISTS sites (
+    id           INTEGER PRIMARY KEY AUTOINCREMENT,
+    name         TEXT    NOT NULL,
+    lat          REAL    NOT NULL,
+    lon          REAL    NOT NULL,
+    notes        TEXT    NOT NULL DEFAULT '',
+    -- BGS snapshot, taken at save, refreshable on demand:
+    bedrock_name        TEXT,
+    bedrock_age         TEXT,
+    bedrock_lithology   TEXT,
+    superficial_name    TEXT,
+    superficial_age     TEXT,
+    superficial_lithology TEXT,
+    geology_fetched_at  INTEGER,   -- unix seconds, NULL if never fetched
+    created_at   INTEGER NOT NULL,
+    updated_at   INTEGER NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS samples (
+    id         INTEGER PRIMARY KEY AUTOINCREMENT,
+    site_id    INTEGER NOT NULL REFERENCES sites(id) ON DELETE CASCADE,
+    label      TEXT    NOT NULL,
+    rock_type  TEXT    NOT NULL DEFAULT '',
+    notes      TEXT    NOT NULL DEFAULT '',
+    created_at INTEGER NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS formations (
+    id         INTEGER PRIMARY KEY AUTOINCREMENT,
+    site_id    INTEGER NOT NULL REFERENCES sites(id) ON DELETE CASCADE,
+    name       TEXT    NOT NULL,
+    description TEXT   NOT NULL DEFAULT '',
+    created_at INTEGER NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS photos (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    site_id     INTEGER NOT NULL REFERENCES sites(id) ON DELETE CASCADE,
+    filename    TEXT    NOT NULL,   -- stored name on disk, under UPLOAD_DIR
+    original    TEXT    NOT NULL,   -- original filename as uploaded
+    caption     TEXT    NOT NULL DEFAULT '',
+    created_at  INTEGER NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_samples_site    ON samples(site_id);
+CREATE INDEX IF NOT EXISTS idx_formations_site ON formations(site_id);
+CREATE INDEX IF NOT EXISTS idx_photos_site     ON photos(site_id);
+"""
+
+
+def init_db() -> None:
+    with _db() as conn:
+        conn.executescript(SCHEMA)
+
+
+# --- BGS query ------------------------------------------------------------
+def _bbox_around(lat: float, lon: float, d: float = 0.01) -> tuple[float, float, float, float]:
+    return (lon - d, lat - d, lon + d, lat + d)
+
+
+def _describe(props: dict[str, Any]) -> dict[str, Optional[str]]:
+    """Pull human-readable fields out of a BGS properties object.
+
+    Mirrors the defensive logic in the GroundTruth prototype: field names vary
+    between layers, so we try a list of candidate keys (case-insensitive).
+    """
+    if not props:
+        return {"name": None, "age": None, "lithology": None}
+    lower = {k.lower(): v for k, v in props.items()}
+
+    def pick(cands: list[str]) -> Optional[str]:
+        for c in cands:
+            v = lower.get(c)
+            if v:
+                return str(v)
+        return None
+
+    name = (
+        pick(["rcs_d", "lex_d", "lex_rcs_d", "description", "name", "rcs"])
+        or pick(["lex_rcs", "lex", "rcs_x"])
+        or next(
+            (str(v) for v in props.values() if isinstance(v, str) and len(v) > 3),
+            "Unnamed unit",
+        )
+    )
+    return {
+        "name": name,
+        "age": pick(["age", "max_time_d", "min_time_d", "rank"]),
+        "lithology": pick(["rock_d", "lithology", "rcs"]),
+    }
+
+
+async def _query_bgs_layer(client: httpx.AsyncClient, layer: str, lat: float, lon: float) -> dict[str, Optional[str]]:
+    minx, miny, maxx, maxy = _bbox_around(lat, lon)
+    params = {
+        "service": "WMS",
+        "version": "1.3.0",
+        "request": "GetFeatureInfo",
+        "layers": layer,
+        "query_layers": layer,
+        "crs": "CRS:84",  # lon/lat order
+        "bbox": f"{minx},{miny},{maxx},{maxy}",
+        "width": "101",
+        "height": "101",
+        "i": "50",
+        "j": "50",
+        "info_format": "application/json",
+        "feature_count": "5",
+    }
+    resp = await client.get(BGS_OWS, params=params, timeout=20.0)
+    resp.raise_for_status()
+    text = resp.text
+    try:
+        data = resp.json()
+    except Exception:
+        # BGS sometimes returns XML/plain text for "no features".
+        return {"name": None, "age": None, "lithology": None}
+    feats = data.get("features") or []
+    if not feats:
+        return {"name": None, "age": None, "lithology": None}
+    return _describe(feats[0].get("properties") or {})
+
+
+async def fetch_geology(lat: float, lon: float) -> dict[str, Any]:
+    """Query both BGS layers for a point. Raises on network/HTTP failure so the
+    caller can decide whether to save without geology."""
+    async with httpx.AsyncClient() as client:
+        bedrock = await _query_bgs_layer(client, BGS_LAYERS["bedrock"], lat, lon)
+        superficial = await _query_bgs_layer(client, BGS_LAYERS["superficial"], lat, lon)
+    return {
+        "bedrock_name": bedrock["name"],
+        "bedrock_age": bedrock["age"],
+        "bedrock_lithology": bedrock["lithology"],
+        "superficial_name": superficial["name"],
+        "superficial_age": superficial["age"],
+        "superficial_lithology": superficial["lithology"],
+        "geology_fetched_at": int(time.time()),
+    }
+
+
+# --- photo handling -------------------------------------------------------
+HEIC_EXTS = {".heic", ".heif"}
+ALLOWED_IMAGE_EXTS = {".jpg", ".jpeg", ".png", ".webp", ".gif"} | HEIC_EXTS
+
+
+def _save_upload(raw: bytes, original_name: str) -> str:
+    """Store an uploaded image. HEIC/HEIF is converted to JPEG when support is
+    available; everything else is stored as-is. Returns the on-disk filename."""
+    ext = Path(original_name).suffix.lower()
+    stem = uuid.uuid4().hex
+
+    if ext in HEIC_EXTS and HEIC_SUPPORTED:
+        try:
+            img = Image.open(io.BytesIO(raw))
+            out_name = f"{stem}.jpg"
+            img.convert("RGB").save(UPLOAD_DIR / out_name, format="JPEG", quality=88)
+            return out_name
+        except Exception:
+            # Conversion failed — fall back to storing the raw bytes.
+            out_name = f"{stem}{ext or '.heic'}"
+            (UPLOAD_DIR / out_name).write_bytes(raw)
+            return out_name
+
+    out_name = f"{stem}{ext or '.bin'}"
+    (UPLOAD_DIR / out_name).write_bytes(raw)
+    return out_name
+
+
+# --- serialisation --------------------------------------------------------
+def _site_row(row: sqlite3.Row) -> dict[str, Any]:
+    d = dict(row)
+    d["geology"] = {
+        "bedrock": {
+            "name": d.pop("bedrock_name"),
+            "age": d.pop("bedrock_age"),
+            "lithology": d.pop("bedrock_lithology"),
+        },
+        "superficial": {
+            "name": d.pop("superficial_name"),
+            "age": d.pop("superficial_age"),
+            "lithology": d.pop("superficial_lithology"),
+        },
+        "fetched_at": d.pop("geology_fetched_at"),
+    }
+    return d
+
+
+# --- request models -------------------------------------------------------
+class SiteIn(BaseModel):
+    name: str
+    lat: float
+    lon: float
+    notes: str = ""
+    fetch_geology: bool = True
+
+
+class SiteUpdate(BaseModel):
+    name: Optional[str] = None
+    lat: Optional[float] = None
+    lon: Optional[float] = None
+    notes: Optional[str] = None
+
+
+class SampleIn(BaseModel):
+    label: str
+    rock_type: str = ""
+    notes: str = ""
+
+
+class FormationIn(BaseModel):
+    name: str
+    description: str = ""
+
+
+# --- app ------------------------------------------------------------------
+# NOTE: no root_path here, by design (see module docstring).
+app = FastAPI(title="Geòlas")
+
+# Initialise the schema at import time so the DB is ready no matter how the app
+# is launched (uvicorn, gunicorn, TestClient). Idempotent: CREATE IF NOT EXISTS.
+init_db()
+
+
+@app.get("/api/health")
+def health() -> dict[str, Any]:
+    return {
+        "ok": True,
+        "app": "geolas",
+        "heic_supported": HEIC_SUPPORTED,
+        "data_dir": str(DATA_DIR),
+    }
+
+
+# ---- sites ----
+@app.get("/api/sites")
+def list_sites() -> list[dict[str, Any]]:
+    with _db() as conn:
+        rows = conn.execute(
+            "SELECT * FROM sites ORDER BY created_at DESC"
+        ).fetchall()
+    return [_site_row(r) for r in rows]
+
+
+@app.get("/api/sites/{site_id}")
+def get_site(site_id: int) -> dict[str, Any]:
+    with _db() as conn:
+        row = conn.execute("SELECT * FROM sites WHERE id = ?", (site_id,)).fetchone()
+        if not row:
+            raise HTTPException(404, "Site not found")
+        site = _site_row(row)
+        site["samples"] = [dict(r) for r in conn.execute(
+            "SELECT * FROM samples WHERE site_id = ? ORDER BY created_at", (site_id,)
+        ).fetchall()]
+        site["formations"] = [dict(r) for r in conn.execute(
+            "SELECT * FROM formations WHERE site_id = ? ORDER BY created_at", (site_id,)
+        ).fetchall()]
+        site["photos"] = [dict(r) for r in conn.execute(
+            "SELECT * FROM photos WHERE site_id = ? ORDER BY created_at", (site_id,)
+        ).fetchall()]
+    return site
+
+
+@app.post("/api/sites")
+async def create_site(site: SiteIn) -> dict[str, Any]:
+    now = int(time.time())
+    geology: dict[str, Any] = {
+        "bedrock_name": None, "bedrock_age": None, "bedrock_lithology": None,
+        "superficial_name": None, "superficial_age": None,
+        "superficial_lithology": None, "geology_fetched_at": None,
+    }
+    geology_error = None
+    if site.fetch_geology:
+        try:
+            geology = await fetch_geology(site.lat, site.lon)
+        except Exception as e:
+            geology_error = str(e)  # save anyway; user can re-fetch later
+
+    with _db() as conn:
+        cur = conn.execute(
+            """INSERT INTO sites
+               (name, lat, lon, notes,
+                bedrock_name, bedrock_age, bedrock_lithology,
+                superficial_name, superficial_age, superficial_lithology,
+                geology_fetched_at, created_at, updated_at)
+               VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)""",
+            (site.name, site.lat, site.lon, site.notes,
+             geology["bedrock_name"], geology["bedrock_age"], geology["bedrock_lithology"],
+             geology["superficial_name"], geology["superficial_age"], geology["superficial_lithology"],
+             geology["geology_fetched_at"], now, now),
+        )
+        new_id = cur.lastrowid
+        row = conn.execute("SELECT * FROM sites WHERE id = ?", (new_id,)).fetchone()
+    result = _site_row(row)
+    if geology_error:
+        result["geology_error"] = geology_error
+    return result
+
+
+@app.patch("/api/sites/{site_id}")
+def update_site(site_id: int, patch: SiteUpdate) -> dict[str, Any]:
+    fields = {k: v for k, v in patch.model_dump(exclude_unset=True).items()}
+    if not fields:
+        raise HTTPException(400, "No fields to update")
+    fields["updated_at"] = int(time.time())
+    sets = ", ".join(f"{k} = ?" for k in fields)
+    with _db() as conn:
+        exists = conn.execute("SELECT 1 FROM sites WHERE id = ?", (site_id,)).fetchone()
+        if not exists:
+            raise HTTPException(404, "Site not found")
+        conn.execute(f"UPDATE sites SET {sets} WHERE id = ?", (*fields.values(), site_id))
+        row = conn.execute("SELECT * FROM sites WHERE id = ?", (site_id,)).fetchone()
+    return _site_row(row)
+
+
+@app.post("/api/sites/{site_id}/refetch-geology")
+async def refetch_geology(site_id: int) -> dict[str, Any]:
+    with _db() as conn:
+        row = conn.execute("SELECT * FROM sites WHERE id = ?", (site_id,)).fetchone()
+        if not row:
+            raise HTTPException(404, "Site not found")
+    try:
+        geology = await fetch_geology(row["lat"], row["lon"])
+    except Exception as e:
+        raise HTTPException(502, f"BGS lookup failed: {e}")
+    with _db() as conn:
+        conn.execute(
+            """UPDATE sites SET
+               bedrock_name=?, bedrock_age=?, bedrock_lithology=?,
+               superficial_name=?, superficial_age=?, superficial_lithology=?,
+               geology_fetched_at=?, updated_at=?
+               WHERE id=?""",
+            (geology["bedrock_name"], geology["bedrock_age"], geology["bedrock_lithology"],
+             geology["superficial_name"], geology["superficial_age"], geology["superficial_lithology"],
+             geology["geology_fetched_at"], int(time.time()), site_id),
+        )
+        row = conn.execute("SELECT * FROM sites WHERE id = ?", (site_id,)).fetchone()
+    return _site_row(row)
+
+
+@app.delete("/api/sites/{site_id}")
+def delete_site(site_id: int) -> dict[str, Any]:
+    with _db() as conn:
+        # gather photo files first so we can remove them from disk
+        photos = conn.execute(
+            "SELECT filename FROM photos WHERE site_id = ?", (site_id,)
+        ).fetchall()
+        deleted = conn.execute("DELETE FROM sites WHERE id = ?", (site_id,)).rowcount
+    if not deleted:
+        raise HTTPException(404, "Site not found")
+    for p in photos:
+        try:
+            (UPLOAD_DIR / p["filename"]).unlink(missing_ok=True)
+        except Exception:
+            pass
+    return {"ok": True, "deleted": site_id}
+
+
+# ---- standalone geology lookup (no save) ----
+@app.get("/api/geology")
+async def geology_lookup(lat: float, lon: float) -> dict[str, Any]:
+    try:
+        return await fetch_geology(lat, lon)
+    except Exception as e:
+        raise HTTPException(502, f"BGS lookup failed: {e}")
+
+
+# ---- place search (proxy Nominatim so the browser stays prefix-clean) ----
+@app.get("/api/geocode")
+async def geocode(q: str) -> list[dict[str, Any]]:
+    url = "https://nominatim.openstreetmap.org/search"
+    params = {"format": "json", "limit": "5", "countrycodes": "gb", "q": q}
+    headers = {"User-Agent": "Geolas/1.0 (personal geology notebook)"}
+    async with httpx.AsyncClient() as client:
+        resp = await client.get(url, params=params, headers=headers, timeout=15.0)
+    resp.raise_for_status()
+    return [
+        {"lat": float(d["lat"]), "lon": float(d["lon"]), "label": d["display_name"]}
+        for d in resp.json()
+    ]
+
+
+# ---- samples ----
+@app.post("/api/sites/{site_id}/samples")
+def add_sample(site_id: int, sample: SampleIn) -> dict[str, Any]:
+    with _db() as conn:
+        if not conn.execute("SELECT 1 FROM sites WHERE id=?", (site_id,)).fetchone():
+            raise HTTPException(404, "Site not found")
+        cur = conn.execute(
+            "INSERT INTO samples (site_id, label, rock_type, notes, created_at) VALUES (?,?,?,?,?)",
+            (site_id, sample.label, sample.rock_type, sample.notes, int(time.time())),
+        )
+        row = conn.execute("SELECT * FROM samples WHERE id=?", (cur.lastrowid,)).fetchone()
+    return dict(row)
+
+
+@app.delete("/api/samples/{sample_id}")
+def delete_sample(sample_id: int) -> dict[str, Any]:
+    with _db() as conn:
+        n = conn.execute("DELETE FROM samples WHERE id=?", (sample_id,)).rowcount
+    if not n:
+        raise HTTPException(404, "Sample not found")
+    return {"ok": True}
+
+
+# ---- formations ----
+@app.post("/api/sites/{site_id}/formations")
+def add_formation(site_id: int, formation: FormationIn) -> dict[str, Any]:
+    with _db() as conn:
+        if not conn.execute("SELECT 1 FROM sites WHERE id=?", (site_id,)).fetchone():
+            raise HTTPException(404, "Site not found")
+        cur = conn.execute(
+            "INSERT INTO formations (site_id, name, description, created_at) VALUES (?,?,?,?)",
+            (site_id, formation.name, formation.description, int(time.time())),
+        )
+        row = conn.execute("SELECT * FROM formations WHERE id=?", (cur.lastrowid,)).fetchone()
+    return dict(row)
+
+
+@app.delete("/api/formations/{formation_id}")
+def delete_formation(formation_id: int) -> dict[str, Any]:
+    with _db() as conn:
+        n = conn.execute("DELETE FROM formations WHERE id=?", (formation_id,)).rowcount
+    if not n:
+        raise HTTPException(404, "Formation not found")
+    return {"ok": True}
+
+
+# ---- photos ----
+@app.post("/api/sites/{site_id}/photos")
+async def add_photo(
+    site_id: int,
+    file: UploadFile = File(...),
+    caption: str = Form(""),
+) -> dict[str, Any]:
+    ext = Path(file.filename or "").suffix.lower()
+    if ext and ext not in ALLOWED_IMAGE_EXTS:
+        raise HTTPException(400, f"Unsupported image type: {ext}")
+    with _db() as conn:
+        if not conn.execute("SELECT 1 FROM sites WHERE id=?", (site_id,)).fetchone():
+            raise HTTPException(404, "Site not found")
+    raw = await file.read()
+    stored = _save_upload(raw, file.filename or "upload")
+    with _db() as conn:
+        cur = conn.execute(
+            "INSERT INTO photos (site_id, filename, original, caption, created_at) VALUES (?,?,?,?,?)",
+            (site_id, stored, file.filename or "upload", caption, int(time.time())),
+        )
+        row = conn.execute("SELECT * FROM photos WHERE id=?", (cur.lastrowid,)).fetchone()
+    return dict(row)
+
+
+@app.delete("/api/photos/{photo_id}")
+def delete_photo(photo_id: int) -> dict[str, Any]:
+    with _db() as conn:
+        row = conn.execute("SELECT filename FROM photos WHERE id=?", (photo_id,)).fetchone()
+        if not row:
+            raise HTTPException(404, "Photo not found")
+        conn.execute("DELETE FROM photos WHERE id=?", (photo_id,))
+    try:
+        (UPLOAD_DIR / row["filename"]).unlink(missing_ok=True)
+    except Exception:
+        pass
+    return {"ok": True}
+
+
+@app.get("/api/photos/{photo_id}/file")
+def photo_file(photo_id: int) -> FileResponse:
+    with _db() as conn:
+        row = conn.execute("SELECT filename FROM photos WHERE id=?", (photo_id,)).fetchone()
+    if not row:
+        raise HTTPException(404, "Photo not found")
+    path = UPLOAD_DIR / row["filename"]
+    if not path.exists():
+        raise HTTPException(404, "File missing on disk")
+    return FileResponse(path)
+
+
+# --- static frontend ------------------------------------------------------
+# Mounted LAST so it doesn't shadow /api routes. html=True serves index.html
+# at the mount root. Because Tailscale strips /geolas, this app sees "/" and
+# the frontend's own URLs are all relative, so it works at / or /geolas/.
+app.mount("/", StaticFiles(directory=str(STATIC_DIR), html=True), name="static")

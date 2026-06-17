@@ -1,0 +1,26 @@
+# Geòlas service — copy to /etc/systemd/system/geolas.service on the Pi.
+#
+# Deliberately mirrors the Ceòl/Òrain pattern but with UNIQUE name + port.
+# Runs uvicorn bound to localhost only; the public face is the Tailscale Funnel
+# path handler /geolas (added separately — see DEPLOY.md). No --root-path,
+# because Tailscale STRIPS the /geolas prefix before proxying (PI-INFRASTRUCTURE.md).
+#
+# Adjust User and the ~/Geolas path if your Pi layout differs.
+
+[Unit]
+Description=Geolas — geology field notebook (FastAPI/uvicorn)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=pi
+WorkingDirectory=/home/pi/Geolas
+Environment=GEOLAS_DATA_DIR=/home/pi/Geolas/data
+# Use the same uvicorn the other apps use; ~/.local/bin if pip --user installed.
+ExecStart=/home/pi/.local/bin/uvicorn backend.main:app --host 127.0.0.1 --port 8006
+Restart=on-failure
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

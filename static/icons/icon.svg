@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Geòlas">
+  <rect width="512" height="512" rx="96" fill="#2b2520"/>
+  <g transform="translate(146 96)">
+    <rect width="220" height="320" rx="14" fill="#fbf8f1"/>
+    <rect x="22" y="22" width="176" height="276" rx="6" fill="none" stroke="#d8cdb8" stroke-width="3"/>
+    <g>
+      <rect x="22" y="22"  width="176" height="60" fill="#5f7a54"/>
+      <rect x="22" y="82"  width="176" height="52" fill="#8c9a7d"/>
+      <rect x="22" y="134" width="176" height="56" fill="#c0a062"/>
+      <rect x="22" y="190" width="176" height="60" fill="#966a3e"/>
+      <rect x="22" y="250" width="176" height="48" fill="#7a5230"/>
+    </g>
+    <circle cx="110" cy="250" r="15" fill="#b5572b" stroke="#fff" stroke-width="4"/>
+  </g>
+</svg>

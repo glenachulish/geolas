@@ -1,0 +1,514 @@
+/* =========================================================================
+   Geòlas — front-end controller (vanilla JS, no build step).
+
+   PREFIX-AWARENESS (the rule from PI-INFRASTRUCTURE.md):
+   The browser address bar carries /geolas/ on the Pi but / locally, because
+   Tailscale strips the prefix before the backend sees it. So we must NEVER emit
+   a leading-slash absolute URL. We derive a base path from the current location
+   ONCE, set <base href> from it, and build every API/asset URL relative to that.
+   Served at / or /geolas/, this same file works unchanged.
+   ========================================================================= */
+
+// Derive the directory the app is served from, e.g. "/" or "/geolas/".
+const BASE = location.pathname.replace(/[^/]*$/, ""); // strip trailing filename
+// Set <base> so relative URLs in dynamically-inserted HTML resolve correctly.
+const baseEl = document.createElement("base");
+baseEl.href = BASE;
+document.head.prepend(baseEl);
+
+// All API calls go through here. Note: no leading slash — relative to BASE.
+const API = `${BASE}api`;
+
+async function api(path, opts = {}) {
+  const res = await fetch(`${API}${path}`, opts);
+  if (!res.ok) {
+    let detail = `${res.status}`;
+    try { const j = await res.json(); detail = j.detail || detail; } catch {}
+    throw new Error(detail);
+  }
+  if (res.status === 204) return null;
+  return res.json();
+}
+
+const j = (obj) => ({
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(obj),
+});
+
+// ---- tiny DOM helpers ----
+const el = (html) => {
+  const t = document.createElement("template");
+  t.innerHTML = html.trim();
+  return t.content.firstElementChild;
+};
+const esc = (s) =>
+  String(s ?? "").replace(/[&<>"']/g, (c) =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const view = document.getElementById("view");
+
+let toastTimer;
+function toast(msg) {
+  let t = document.getElementById("toast");
+  if (!t) { t = el(`<div id="toast"></div>`); document.body.appendChild(t); }
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove("show"), 2600);
+}
+
+function fmtDate(unix) {
+  if (!unix) return "never";
+  return new Date(unix * 1000).toLocaleDateString(undefined, {
+    year: "numeric", month: "short", day: "numeric",
+  });
+}
+
+// =========================================================================
+//  LIST VIEW  (map + cards)
+// =========================================================================
+let map, markerLayer, addMode = false, addMarker = null;
+
+async function showList() {
+  addMode = false; addMarker = null;
+  view.innerHTML = `
+    <div id="map"></div>
+    <p class="map-hint" id="map-hint">Tap “Log a site”, then tap the map to drop a pin — or search a place in the form.</p>
+    <div class="list-head">
+      <h2>Your sites</h2>
+      <span class="count-badge" id="count"></span>
+    </div>
+    <div id="list-body"><div class="loading"><div class="strata-spin"><span></span><span></span><span></span><span></span></div>Reading the notebook…</div></div>
+  `;
+  initMap();
+  try {
+    const sites = await api("/sites");
+    renderSiteCards(sites);
+    renderMarkers(sites);
+  } catch (e) {
+    document.getElementById("list-body").innerHTML =
+      `<div class="banner banner-error">Couldn’t load sites: ${esc(e.message)}</div>`;
+  }
+}
+
+function initMap() {
+  // Centre on Great Britain.
+  map = L.map("map", { zoomControl: true }).setView([54.5, -3.2], 5);
+  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    maxZoom: 19,
+    attribution: "&copy; OpenStreetMap contributors",
+  }).addTo(map);
+  markerLayer = L.layerGroup().addTo(map);
+
+  map.on("click", (e) => {
+    if (!addMode) return;
+    const { lat, lng } = e.latlng;
+    if (addMarker) addMarker.setLatLng(e.latlng);
+    else addMarker = L.marker(e.latlng, { icon: pinIcon() }).addTo(map);
+    openSiteForm({ lat: +lat.toFixed(5), lon: +lng.toFixed(5) });
+  });
+}
+
+function pinIcon() {
+  return L.divIcon({
+    className: "",
+    html: `<div class="geolas-pin"></div>`,
+    iconSize: [18, 18],
+    iconAnchor: [9, 18],
+  });
+}
+
+function renderMarkers(sites) {
+  if (!markerLayer) return;
+  markerLayer.clearLayers();
+  sites.forEach((s) => {
+    const m = L.marker([s.lat, s.lon], { icon: pinIcon() });
+    m.bindTooltip(s.name, { direction: "top", offset: [0, -16] });
+    m.on("click", () => showDetail(s.id));
+    markerLayer.addLayer(m);
+  });
+}
+
+function renderSiteCards(sites) {
+  document.getElementById("count").textContent =
+    `${sites.length} site${sites.length === 1 ? "" : "s"}`;
+  const body = document.getElementById("list-body");
+  if (!sites.length) {
+    body.innerHTML = `
+      <div class="empty">
+        <hr class="strata-rule" />
+        <h2>No sites logged yet</h2>
+        <p>Drop a pin on the map or use “Log a site” to record your first field stop.<br>
+        Geòlas reads the bedrock and superficial geology from the British Geological Survey when you save.</p>
+      </div>`;
+    return;
+  }
+  const grid = el(`<div class="site-grid"></div>`);
+  sites.forEach((s) => {
+    const bed = s.geology?.bedrock?.name;
+    const sup = s.geology?.superficial?.name;
+    const rock = bed
+      ? `<strong>Bedrock:</strong> ${esc(bed)}` + (sup ? `<br><strong>Surface:</strong> ${esc(sup)}` : "")
+      : `<em>No geology snapshot yet</em>`;
+    const card = el(`
+      <button class="site-card" type="button">
+        <span class="site-card-spine" aria-hidden="true"></span>
+        <span class="site-card-body">
+          <h3>${esc(s.name)}</h3>
+          <span class="coords">${s.lat.toFixed(4)}, ${s.lon.toFixed(4)}</span>
+          <p class="rock">${rock}</p>
+        </span>
+      </button>`);
+    card.addEventListener("click", () => showDetail(s.id));
+    grid.appendChild(card);
+  });
+  body.innerHTML = "";
+  body.appendChild(grid);
+}
+
+function armAddMode() {
+  addMode = true;
+  const hint = document.getElementById("map-hint");
+  if (hint) {
+    hint.textContent = "Pin armed — tap anywhere on the map to set the location.";
+    hint.classList.add("armed");
+  }
+}
+
+// =========================================================================
+//  SITE FORM (modal)
+// =========================================================================
+function openSiteForm(prefill = {}) {
+  const m = el(`
+    <div class="modal-backdrop">
+      <div class="modal" role="dialog" aria-modal="true" aria-label="Log a site">
+        <div class="modal-head">
+          <h2>Log a site</h2>
+          <p>Set the location, then save. Geology is read from the BGS at save.</p>
+        </div>
+        <div class="modal-body">
+          <div class="field">
+            <label for="f-name">Site name</label>
+            <input id="f-name" autocomplete="off" placeholder="e.g. Siccar Point" />
+          </div>
+          <div class="field">
+            <label for="f-search">Find a place (optional)</label>
+            <input id="f-search" autocomplete="off" placeholder="Postcode, town or landmark…" />
+            <span class="field-hint" id="search-hint">Searching sets the coordinates below.</span>
+          </div>
+          <div class="field-row">
+            <div class="field"><label for="f-lat">Latitude</label><input id="f-lat" inputmode="decimal" value="${prefill.lat ?? ""}" /></div>
+            <div class="field"><label for="f-lon">Longitude</label><input id="f-lon" inputmode="decimal" value="${prefill.lon ?? ""}" /></div>
+          </div>
+          <div class="field">
+            <label for="f-notes">Notes</label>
+            <textarea id="f-notes" placeholder="What you saw, weather, access…"></textarea>
+          </div>
+          <div class="checkbox-row">
+            <input type="checkbox" id="f-fetch" checked />
+            <label for="f-fetch">Read BGS geology for this point when I save</label>
+          </div>
+          <div class="modal-actions">
+            <button class="btn btn-ghost" id="f-cancel" type="button">Cancel</button>
+            <button class="btn btn-primary" id="f-save" type="button">Save site</button>
+          </div>
+        </div>
+      </div>
+    </div>`);
+  document.body.appendChild(m);
+  const close = () => m.remove();
+  m.addEventListener("click", (e) => { if (e.target === m) close(); });
+  m.querySelector("#f-cancel").addEventListener("click", close);
+  m.querySelector("#f-name").focus();
+
+  // place search → fills lat/lon
+  let searchTimer;
+  const searchInput = m.querySelector("#f-search");
+  searchInput.addEventListener("keydown", (e) => {
+    if (e.key !== "Enter") return;
+    e.preventDefault();
+    clearTimeout(searchTimer);
+    runGeocode();
+  });
+  async function runGeocode() {
+    const q = searchInput.value.trim();
+    if (!q) return;
+    const hint = m.querySelector("#search-hint");
+    hint.textContent = "Searching…";
+    try {
+      const results = await api(`/geocode?q=${encodeURIComponent(q)}`);
+      if (!results.length) { hint.textContent = "No match — try a postcode or nearby town."; return; }
+      const r = results[0];
+      m.querySelector("#f-lat").value = r.lat.toFixed(5);
+      m.querySelector("#f-lon").value = r.lon.toFixed(5);
+      if (!m.querySelector("#f-name").value) m.querySelector("#f-name").value = r.label.split(",")[0];
+      hint.textContent = r.label;
+    } catch (e) { hint.textContent = `Lookup failed: ${e.message}`; }
+  }
+
+  m.querySelector("#f-save").addEventListener("click", async () => {
+    const name = m.querySelector("#f-name").value.trim();
+    const lat = parseFloat(m.querySelector("#f-lat").value);
+    const lon = parseFloat(m.querySelector("#f-lon").value);
+    if (!name) { toast("Give the site a name"); return; }
+    if (Number.isNaN(lat) || Number.isNaN(lon)) { toast("Set a location (tap the map or search)"); return; }
+    const saveBtn = m.querySelector("#f-save");
+    saveBtn.disabled = true; saveBtn.textContent = "Reading geology…";
+    try {
+      const site = await api("/sites", j({
+        name, lat, lon,
+        notes: m.querySelector("#f-notes").value,
+        fetch_geology: m.querySelector("#f-fetch").checked,
+      }));
+      close();
+      if (site.geology_error) toast("Saved — but BGS lookup failed; re-fetch later");
+      else toast("Site saved");
+      showDetail(site.id);
+    } catch (e) {
+      saveBtn.disabled = false; saveBtn.textContent = "Save site";
+      toast(`Save failed: ${e.message}`);
+    }
+  });
+}
+
+// =========================================================================
+//  DETAIL VIEW
+// =========================================================================
+async function showDetail(id) {
+  view.innerHTML = `<div class="loading"><div class="strata-spin"><span></span><span></span><span></span><span></span></div>Opening site…</div>`;
+  let site;
+  try { site = await api(`/sites/${id}`); }
+  catch (e) { view.innerHTML = `<div class="banner banner-error">Couldn’t open site: ${esc(e.message)}</div>`; return; }
+
+  const g = site.geology || {};
+  const bed = g.bedrock || {}, sup = g.superficial || {};
+
+  view.innerHTML = `
+    <div class="detail-top"><button class="back-link" id="back">← All sites</button></div>
+    <h1 class="detail-title">${esc(site.name)}</h1>
+    <div class="detail-coords">${site.lat.toFixed(5)}, ${site.lon.toFixed(5)}</div>
+
+    <div class="geo-cards">
+      ${geoCard("Surface", "Superficial deposits", sup, "No superficial deposits mapped — bedrock at or near surface.")}
+      ${geoCard("Below", "Bedrock", bed, "No bedrock unit returned for this point.")}
+    </div>
+    <div class="geo-fetched">
+      <span>BGS snapshot: ${g.fetched_at ? "read " + fmtDate(g.fetched_at) : "not fetched yet"}</span>
+      <button class="btn btn-sm btn-ghost" id="refetch">Re-fetch geology</button>
+    </div>
+
+    <hr class="strata-rule" />
+
+    <section class="section">
+      <div class="section-head"><h3>Notes</h3><button class="btn btn-sm btn-ghost" id="edit-notes">Edit</button></div>
+      <div class="notes-body" id="notes-body">${site.notes ? esc(site.notes) : `<span class="notes-empty">No notes yet.</span>`}</div>
+    </section>
+
+    <section class="section">
+      <div class="section-head"><h3>Samples</h3><button class="btn btn-sm btn-ghost" id="add-sample">Add sample</button></div>
+      <div class="rows" id="samples"></div>
+    </section>
+
+    <section class="section">
+      <div class="section-head"><h3>Formations</h3><button class="btn btn-sm btn-ghost" id="add-formation">Add formation</button></div>
+      <div class="rows" id="formations"></div>
+    </section>
+
+    <section class="section">
+      <div class="section-head"><h3>Photos</h3><button class="btn btn-sm btn-ghost" id="add-photo">Add photo</button></div>
+      <div class="photo-grid" id="photos"></div>
+      <input type="file" id="photo-input" accept="image/*,.heic,.heif" hidden />
+    </section>
+
+    <hr class="strata-rule" />
+    <div class="modal-actions" style="justify-content:flex-start">
+      <button class="btn btn-danger" id="delete-site">Delete this site</button>
+    </div>
+  `;
+
+  document.getElementById("back").addEventListener("click", showList);
+  renderSamples(site);
+  renderFormations(site);
+  renderPhotos(site);
+
+  document.getElementById("refetch").addEventListener("click", async (ev) => {
+    ev.target.disabled = true; ev.target.textContent = "Reading…";
+    try { await api(`/sites/${id}/refetch-geology`, { method: "POST" }); toast("Geology refreshed"); showDetail(id); }
+    catch (e) { ev.target.disabled = false; ev.target.textContent = "Re-fetch geology"; toast(`Failed: ${e.message}`); }
+  });
+
+  document.getElementById("edit-notes").addEventListener("click", () => editNotes(site));
+
+  document.getElementById("add-sample").addEventListener("click", () =>
+    simpleForm("Add sample", [
+      { id: "label", label: "Label", placeholder: "e.g. GS-001" },
+      { id: "rock_type", label: "Rock type", placeholder: "e.g. greywacke" },
+      { id: "notes", label: "Notes", type: "textarea" },
+    ], async (vals) => {
+      if (!vals.label) { toast("Sample needs a label"); return false; }
+      await api(`/sites/${id}/samples`, j(vals)); toast("Sample added"); showDetail(id); return true;
+    }));
+
+  document.getElementById("add-formation").addEventListener("click", () =>
+    simpleForm("Add formation", [
+      { id: "name", label: "Name", placeholder: "e.g. Aberlady Formation" },
+      { id: "description", label: "Description", type: "textarea" },
+    ], async (vals) => {
+      if (!vals.name) { toast("Formation needs a name"); return false; }
+      await api(`/sites/${id}/formations`, j(vals)); toast("Formation added"); showDetail(id); return true;
+    }));
+
+  const photoInput = document.getElementById("photo-input");
+  document.getElementById("add-photo").addEventListener("click", () => photoInput.click());
+  photoInput.addEventListener("change", async () => {
+    const file = photoInput.files[0];
+    if (!file) return;
+    const fd = new FormData();
+    fd.append("file", file);
+    toast("Uploading photo…");
+    try { await api(`/sites/${id}/photos`, { method: "POST", body: fd }); toast("Photo added"); showDetail(id); }
+    catch (e) { toast(`Upload failed: ${e.message}`); }
+  });
+
+  document.getElementById("delete-site").addEventListener("click", () => {
+    confirmDialog(`Delete “${site.name}”?`, "This removes the site, its samples, formations and photos. This can’t be undone.", async () => {
+      await api(`/sites/${id}`, { method: "DELETE" }); toast("Site deleted"); showList();
+    });
+  });
+}
+
+function geoCard(kind, tag, unit, empty) {
+  const cls = kind === "Surface" ? "geo-card-surface" : "geo-card-bedrock";
+  if (!unit || !unit.name) {
+    return `<div class="geo-card ${cls}"><div class="geo-kind">${kind}</div><div class="geo-name" style="font-size:15px;font-family:var(--font-body);font-weight:600">${esc(tag)}</div><p class="geo-empty">${empty}</p></div>`;
+  }
+  const meta = [];
+  if (unit.age) meta.push(`<div><dt>Age</dt><dd>${esc(unit.age)}</dd></div>`);
+  if (unit.lithology && unit.lithology !== unit.name) meta.push(`<div><dt>Lithology</dt><dd>${esc(unit.lithology)}</dd></div>`);
+  return `<div class="geo-card ${cls}">
+      <div class="geo-kind">${kind} · ${esc(tag)}</div>
+      <div class="geo-name">${esc(unit.name)}</div>
+      ${meta.length ? `<dl class="geo-meta">${meta.join("")}</dl>` : ""}
+    </div>`;
+}
+
+function renderSamples(site) {
+  const box = document.getElementById("samples");
+  if (!site.samples.length) { box.innerHTML = `<p class="row-empty">No samples recorded.</p>`; return; }
+  box.innerHTML = "";
+  site.samples.forEach((s) => {
+    const row = el(`<div class="row">
+      <div class="row-main">
+        <div class="row-title">${esc(s.label)}</div>
+        ${s.rock_type ? `<div class="row-sub">${esc(s.rock_type)}</div>` : ""}
+        ${s.notes ? `<div class="row-note">${esc(s.notes)}</div>` : ""}
+      </div>
+      <button class="btn btn-sm btn-danger">Delete</button>
+    </div>`);
+    row.querySelector("button").addEventListener("click", async () => {
+      await api(`/samples/${s.id}`, { method: "DELETE" }); toast("Sample removed"); showDetail(site.id);
+    });
+    box.appendChild(row);
+  });
+}
+
+function renderFormations(site) {
+  const box = document.getElementById("formations");
+  if (!site.formations.length) { box.innerHTML = `<p class="row-empty">No formations recorded.</p>`; return; }
+  box.innerHTML = "";
+  site.formations.forEach((f) => {
+    const row = el(`<div class="row">
+      <div class="row-main">
+        <div class="row-title">${esc(f.name)}</div>
+        ${f.description ? `<div class="row-note">${esc(f.description)}</div>` : ""}
+      </div>
+      <button class="btn btn-sm btn-danger">Delete</button>
+    </div>`);
+    row.querySelector("button").addEventListener("click", async () => {
+      await api(`/formations/${f.id}`, { method: "DELETE" }); toast("Formation removed"); showDetail(site.id);
+    });
+    box.appendChild(row);
+  });
+}
+
+function renderPhotos(site) {
+  const box = document.getElementById("photos");
+  if (!site.photos.length) { box.innerHTML = `<p class="row-empty">No photos yet.</p>`; return; }
+  box.innerHTML = "";
+  site.photos.forEach((p) => {
+    // relative URL — prefix-safe
+    const src = `${API}/photos/${p.id}/file`;
+    const card = el(`<figure class="photo">
+      <button class="photo-del" title="Delete photo">×</button>
+      <img src="${src}" alt="${esc(p.caption || p.original)}" loading="lazy" />
+      ${p.caption ? `<figcaption class="cap">${esc(p.caption)}</figcaption>` : ""}
+    </figure>`);
+    card.querySelector(".photo-del").addEventListener("click", async () => {
+      await api(`/photos/${p.id}`, { method: "DELETE" }); toast("Photo removed"); showDetail(site.id);
+    });
+    box.appendChild(card);
+  });
+}
+
+function editNotes(site) {
+  simpleForm("Edit notes", [
+    { id: "notes", label: "Notes", type: "textarea", value: site.notes },
+  ], async (vals) => {
+    await api(`/sites/${site.id}`, { method: "PATCH", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ notes: vals.notes }) });
+    toast("Notes saved"); showDetail(site.id); return true;
+  });
+}
+
+// generic small modal form
+function simpleForm(title, fields, onSubmit) {
+  const fieldHtml = fields.map((f) => {
+    const v = esc(f.value ?? "");
+    const input = f.type === "textarea"
+      ? `<textarea id="sf-${f.id}" placeholder="${esc(f.placeholder ?? "")}">${v}</textarea>`
+      : `<input id="sf-${f.id}" autocomplete="off" placeholder="${esc(f.placeholder ?? "")}" value="${v}" />`;
+    return `<div class="field"><label for="sf-${f.id}">${esc(f.label)}</label>${input}</div>`;
+  }).join("");
+  const m = el(`<div class="modal-backdrop"><div class="modal" role="dialog" aria-modal="true">
+      <div class="modal-head"><h2>${esc(title)}</h2></div>
+      <div class="modal-body">${fieldHtml}
+        <div class="modal-actions">
+          <button class="btn btn-ghost" id="sf-cancel" type="button">Cancel</button>
+          <button class="btn btn-primary" id="sf-save" type="button">Save</button>
+        </div>
+      </div></div></div>`);
+  document.body.appendChild(m);
+  const close = () => m.remove();
+  m.addEventListener("click", (e) => { if (e.target === m) close(); });
+  m.querySelector("#sf-cancel").addEventListener("click", close);
+  const first = m.querySelector("input, textarea"); if (first) first.focus();
+  m.querySelector("#sf-save").addEventListener("click", async () => {
+    const vals = {};
+    fields.forEach((f) => { vals[f.id] = m.querySelector(`#sf-${f.id}`).value.trim(); });
+    try { const ok = await onSubmit(vals); if (ok !== false) close(); }
+    catch (e) { toast(`Failed: ${e.message}`); }
+  });
+}
+
+function confirmDialog(title, body, onYes) {
+  const m = el(`<div class="modal-backdrop"><div class="modal" role="dialog" aria-modal="true">
+      <div class="modal-head"><h2>${esc(title)}</h2><p>${esc(body)}</p></div>
+      <div class="modal-body"><div class="modal-actions">
+        <button class="btn btn-ghost" id="c-no" type="button">Cancel</button>
+        <button class="btn btn-danger" id="c-yes" type="button">Delete</button>
+      </div></div></div></div>`);
+  document.body.appendChild(m);
+  const close = () => m.remove();
+  m.addEventListener("click", (e) => { if (e.target === m) close(); });
+  m.querySelector("#c-no").addEventListener("click", close);
+  m.querySelector("#c-yes").addEventListener("click", async () => {
+    try { await onYes(); close(); } catch (e) { toast(`Failed: ${e.message}`); }
+  });
+}
+
+// ---- boot ----
+document.getElementById("new-site-btn").addEventListener("click", () => {
+  if (!map) { showList().then(() => { armAddMode(); openSiteForm(); }); }
+  else { armAddMode(); openSiteForm(); }
+});
+
+showList();

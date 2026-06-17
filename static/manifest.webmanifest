@@ -1,0 +1,13 @@
+{
+  "name": "Geòlas — geology field notebook",
+  "short_name": "Geòlas",
+  "description": "Record geology sites, samples, formations, notes and field photos, with BGS bedrock and superficial geology read at each site.",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "background_color": "#f4efe6",
+  "theme_color": "#2b2520",
+  "icons": [
+    { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}
