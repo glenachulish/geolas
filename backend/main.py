@@ -157,39 +157,93 @@ def init_db() -> None:
 
 
 # --- BGS query ------------------------------------------------------------
-def _bbox_around(lat: float, lon: float, d: float = 0.01) -> tuple[float, float, float, float]:
+# IMPORTANT (discovered against the LIVE service 2026-06-17): the BGS MapServer
+# does NOT support info_format=application/json — it returns a
+# ServiceExceptionReport ("Unsupported INFO_FORMAT value"). The GroundTruth
+# prototype's JSON assumption was wrong against this endpoint. What DOES work:
+#   - WMS 1.1.1 with srs=EPSG:4326, bbox in lon,lat order, pixel via x/y
+#   - info_format=application/vnd.ogc.gml  (structured XML we can parse)
+# Real field names confirmed from the live response (Arthur's Seat):
+#   LEX_D = unit name, RCS_D = lithology, MAX_TIME_D/MIN_TIME_D = age range,
+#   RANK = intrusion/etc. (NOT rcs_d-as-name, which the old code guessed.)
+import xml.etree.ElementTree as ET
+
+
+def _bbox_around(lat: float, lon: float, d: float = 0.02) -> tuple[float, float, float, float]:
+    # Returned in lon,lat order for the WMS 1.1.1 EPSG:4326 request.
     return (lon - d, lat - d, lon + d, lat + d)
 
 
-def _describe(props: dict[str, Any]) -> dict[str, Optional[str]]:
-    """Pull human-readable fields out of a BGS properties object.
+def _strip_ns(tag: str) -> str:
+    return tag.rsplit("}", 1)[-1] if "}" in tag else tag
 
-    Mirrors the defensive logic in the GroundTruth prototype: field names vary
-    between layers, so we try a list of candidate keys (case-insensitive).
+
+def _parse_gml_feature(gml_text: str) -> dict[str, str]:
+    """Parse the first feature's fields out of a BGS msGMLOutput document.
+
+    Returns a flat {FIELD: value} dict (field names upper-cased as BGS emits
+    them). Empty dict if the document has no feature (point off-map / sea).
     """
-    if not props:
-        return {"name": None, "age": None, "lithology": None}
-    lower = {k.lower(): v for k, v in props.items()}
+    try:
+        root = ET.fromstring(gml_text)
+    except ET.ParseError:
+        return {}
+    # Find the *_feature element, then collect its simple child fields.
+    for el in root.iter():
+        if _strip_ns(el.tag).endswith("_feature"):
+            fields: dict[str, str] = {}
+            for child in el:
+                tag = _strip_ns(child.tag)
+                # skip geometry/bounds containers
+                if tag in ("boundedBy", "Box", "coordinates", "name"):
+                    continue
+                text = (child.text or "").strip()
+                if text:
+                    fields[tag.upper()] = text
+            if fields:
+                return fields
+    return {}
 
-    def pick(cands: list[str]) -> Optional[str]:
+
+def _describe(fields: dict[str, str]) -> dict[str, Optional[str]]:
+    """Map BGS GML fields to our {name, age, lithology}.
+
+    Uses the real field names from the live service, with sensible fallbacks
+    so it still works if a layer omits one.
+    """
+    if not fields:
+        return {"name": None, "age": None, "lithology": None}
+
+    def pick(*cands: str) -> Optional[str]:
         for c in cands:
-            v = lower.get(c)
+            v = fields.get(c)
             if v:
-                return str(v)
+                return v
         return None
 
-    name = (
-        pick(["rcs_d", "lex_d", "lex_rcs_d", "description", "name", "rcs"])
-        or pick(["lex_rcs", "lex", "rcs_x"])
-        or next(
-            (str(v) for v in props.values() if isinstance(v, str) and len(v) > 3),
-            "Unnamed unit",
-        )
-    )
+    name = pick("LEX_D", "BED_EQ_D", "LEX_RCS", "RCS_D") or "Unnamed unit"
+
+    # Age: prefer a "MAX – MIN" range when both present, else whichever exists.
+    max_t = pick("MAX_TIME_D")
+    min_t = pick("MIN_TIME_D")
+    if max_t and min_t and max_t != min_t:
+        age: Optional[str] = f"{max_t.title()} – {min_t.title()}"
+    elif max_t or min_t:
+        age = (max_t or min_t or "").title() or None
+    else:
+        age = None
+
+    lithology = pick("RCS_D", "RCS_X", "RCS")
+    if lithology:
+        lithology = lithology.title()
+    rank = pick("RANK")
+    if rank and lithology and rank.title() not in lithology:
+        lithology = f"{lithology} ({rank.title()})"
+
     return {
-        "name": name,
-        "age": pick(["age", "max_time_d", "min_time_d", "rank"]),
-        "lithology": pick(["rock_d", "lithology", "rcs"]),
+        "name": name.title() if name == name.upper() else name,
+        "age": age,
+        "lithology": lithology,
     }
 
 
@@ -197,31 +251,22 @@ async def _query_bgs_layer(client: httpx.AsyncClient, layer: str, lat: float, lo
     minx, miny, maxx, maxy = _bbox_around(lat, lon)
     params = {
         "service": "WMS",
-        "version": "1.3.0",
+        "version": "1.1.1",
         "request": "GetFeatureInfo",
         "layers": layer,
         "query_layers": layer,
-        "crs": "CRS:84",  # lon/lat order
+        "srs": "EPSG:4326",                  # 1.1.1 → lon,lat bbox order
         "bbox": f"{minx},{miny},{maxx},{maxy}",
-        "width": "101",
-        "height": "101",
-        "i": "50",
-        "j": "50",
-        "info_format": "application/json",
+        "width": "201",
+        "height": "201",
+        "x": "100",                          # 1.1.1 uses x/y, not i/j
+        "y": "100",
+        "info_format": "application/vnd.ogc.gml",
         "feature_count": "5",
     }
     resp = await client.get(BGS_OWS, params=params, timeout=20.0)
     resp.raise_for_status()
-    text = resp.text
-    try:
-        data = resp.json()
-    except Exception:
-        # BGS sometimes returns XML/plain text for "no features".
-        return {"name": None, "age": None, "lithology": None}
-    feats = data.get("features") or []
-    if not feats:
-        return {"name": None, "age": None, "lithology": None}
-    return _describe(feats[0].get("properties") or {})
+    return _describe(_parse_gml_feature(resp.text))
 
 
 async def fetch_geology(lat: float, lon: float) -> dict[str, Any]:

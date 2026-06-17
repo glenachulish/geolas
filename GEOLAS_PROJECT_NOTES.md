@@ -40,10 +40,16 @@ on site delete; photo files are removed from disk too.
 
 ## Known gaps / cautions
 
-- **Live BGS path untested end-to-end** from this build's container (egress
-  allowlist blocked ogc.bgs.ac.uk). Logic is the GroundTruth prototype's, and
-  is unit-tested with a mock. Verify against the real service on first deploy;
-  the `describe()` candidate-key lists may need widening if field names differ.
+- **BGS uses GML, NOT JSON.** Discovered against the live service 2026-06-17:
+  the BGS MapServer rejects `info_format=application/json`
+  ("Unsupported INFO_FORMAT value") — the GroundTruth prototype's JSON
+  assumption was simply wrong for this endpoint. The working query is **WMS
+  1.1.1, srs=EPSG:4326, bbox in lon,lat order, pixel via x/y,
+  info_format=application/vnd.ogc.gml**, parsed with stdlib `xml.etree`. Real
+  field names: `LEX_D` (unit name), `RCS_D` (lithology), `MAX_TIME_D`/
+  `MIN_TIME_D` (age range), `RANK`. Verified live for Arthur's Seat → "Unnamed
+  Igneous Intrusion, Carboniferous to Permian / Mafic Igneous-Rock". An
+  off-map point returns an empty GML doc → all-null geology, still saves.
 - **Single-user, no auth.** If auth is ever added, use **bcrypt directly**, not
   passlib (passlib 1.7.4 breaks against bcrypt 5.x on the Pi's Python 3.13 —
   infra doc lesson).

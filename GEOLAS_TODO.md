@@ -13,11 +13,15 @@
 
 ## Before/at first deploy
 - [x] Create a NEW GitHub repo: `https://github.com/glenachulish/geolas.git` (branch `main`); URL filled into DEPLOY.md + GEOLAS_CLAUDE.md
-- [ ] Confirm internal port 8006 is free on the Pi (DEPLOY.md step 0)
-- [ ] Verify BGS lookups work from the Pi/browser — the container couldn't reach
-      ogc.bgs.ac.uk (egress allowlist), so the live BGS path is UNTESTED end-to-end.
-      The parsing logic is from the working GroundTruth prototype + mocked in tests.
-- [ ] After adding the `/geolas` Funnel path, curl Ceòl and Òrain to confirm they're untouched
+- [x] Confirm internal port 8006 is free on the Pi — confirmed, deployed live at /geolas/
+- [x] Verify BGS lookups work from the Pi — DONE 2026-06-17: JSON unsupported, switched to
+      GML (WMS 1.1.1 + EPSG:4326 + x/y). Arthur's Seat resolves correctly.
+- [x] After adding the `/geolas` Funnel path, curl Ceòl and Òrain — Òrain stayed 200; Ceòl `/` is a pre-existing 502 (not ours)
+
+## Done (session 2, 2026-06-17)
+- [x] Fix BGS: JSON → GML, correct field mapping (LEX_D/RCS_D/MAX_TIME_D), correct 1.1.1 query
+- [x] "Locate me" map control — flies to GPS position, drops a "you are here" marker
+- [x] Reference-sites layer — 10 classic Scottish localities, toggle on/off, "Log this site" adopts one
 
 ## Soon
 - [ ] Confirm the real BGS field names match what `describe()` expects; widen the

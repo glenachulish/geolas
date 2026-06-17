@@ -68,12 +68,17 @@ function fmtDate(unix) {
 //  LIST VIEW  (map + cards)
 // =========================================================================
 let map, markerLayer, addMode = false, addMarker = null;
+let refLayer = null, locateMarker = null;
 
 async function showList() {
   addMode = false; addMarker = null;
   view.innerHTML = `
     <div id="map"></div>
-    <p class="map-hint" id="map-hint">Tap “Log a site”, then tap the map to drop a pin — or search a place in the form.</p>
+    <div class="map-controls">
+      <button class="btn btn-sm btn-ghost" id="locate-btn">Locate me</button>
+      <label class="ref-toggle"><input type="checkbox" id="ref-toggle" /> Show classic sites</label>
+      <span class="map-hint" id="map-hint">Tap “Log a site”, then tap the map to drop a pin — or search a place in the form.</span>
+    </div>
     <div class="list-head">
       <h2>Your sites</h2>
       <span class="count-badge" id="count"></span>
@@ -81,6 +86,9 @@ async function showList() {
     <div id="list-body"><div class="loading"><div class="strata-spin"><span></span><span></span><span></span><span></span></div>Reading the notebook…</div></div>
   `;
   initMap();
+  document.getElementById("locate-btn").addEventListener("click", locateOnMap);
+  document.getElementById("ref-toggle").addEventListener("change", (e) =>
+    toggleReferenceSites(e.target.checked));
   try {
     const sites = await api("/sites");
     renderSiteCards(sites);
@@ -117,6 +125,71 @@ function pinIcon() {
     iconAnchor: [9, 18],
   });
 }
+
+function refPinIcon() {
+  return L.divIcon({
+    className: "",
+    html: `<div class="geolas-pin geolas-pin-ref"></div>`,
+    iconSize: [16, 16],
+    iconAnchor: [8, 16],
+  });
+}
+
+function locateOnMap() {
+  const hint = document.getElementById("map-hint");
+  if (!navigator.geolocation) {
+    if (hint) hint.textContent = "This device can't share its location.";
+    return;
+  }
+  if (hint) hint.textContent = "Finding your location…";
+  navigator.geolocation.getCurrentPosition(
+    (pos) => {
+      const { latitude: lat, longitude: lon } = pos.coords;
+      map.flyTo([lat, lon], 14, { duration: 0.8 });
+      if (locateMarker) locateMarker.setLatLng([lat, lon]);
+      else locateMarker = L.circleMarker([lat, lon], {
+        radius: 8, color: "#2b66b5", fillColor: "#2b66b5", fillOpacity: 0.6, weight: 2,
+      }).addTo(map);
+      locateMarker.bindTooltip("You are here", { direction: "top", offset: [0, -8] });
+      if (hint) { hint.textContent = "Centred on your location. Tap “Log a site” to record it."; }
+    },
+    () => { if (hint) hint.textContent = "Location permission denied. Search a place instead."; },
+    { enableHighAccuracy: true, timeout: 10000 }
+  );
+}
+
+function toggleReferenceSites(on) {
+  if (!map) return;
+  if (on) {
+    if (!refLayer) {
+      refLayer = L.layerGroup();
+      (window.REFERENCE_SITES || []).forEach((s) => {
+        const m = L.marker([s.lat, s.lon], { icon: refPinIcon() });
+        const popup = `<div class="ref-popup"><strong>${esc(s.name)}</strong>`
+          + `<p>${esc(s.note)}</p>`
+          + `<button class="btn btn-sm btn-primary ref-adopt" data-name="${esc(s.name)}" data-lat="${s.lat}" data-lon="${s.lon}">Log this site</button></div>`;
+        m.bindPopup(popup);
+        refLayer.addLayer(m);
+      });
+    }
+    refLayer.addTo(map);
+  } else if (refLayer) {
+    map.removeLayer(refLayer);
+  }
+}
+
+// Delegated handler: "Log this site" button inside a reference popup.
+document.addEventListener("click", (e) => {
+  const btn = e.target.closest(".ref-adopt");
+  if (!btn) return;
+  if (map) map.closePopup();
+  armAddMode();
+  openSiteForm({
+    lat: +parseFloat(btn.dataset.lat).toFixed(5),
+    lon: +parseFloat(btn.dataset.lon).toFixed(5),
+    name: btn.dataset.name,
+  });
+});
 
 function renderMarkers(sites) {
   if (!markerLayer) return;
@@ -189,7 +262,7 @@ function openSiteForm(prefill = {}) {
         <div class="modal-body">
           <div class="field">
             <label for="f-name">Site name</label>
-            <input id="f-name" autocomplete="off" placeholder="e.g. Siccar Point" />
+            <input id="f-name" autocomplete="off" placeholder="e.g. Siccar Point" value="${esc(prefill.name ?? "")}" />
           </div>
           <div class="field">
             <label for="f-search">Find a place (optional)</label>
