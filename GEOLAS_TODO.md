@@ -51,3 +51,23 @@
 - [ ] Curated reading/watching matched to rock type (port from GroundTruth's TOPIC_LINKS)
 - [ ] Offline tile caching for use in the field with no signal
 - [ ] Multi-user + auth (would bring in the passlib/bcrypt trap — use bcrypt directly, per infra doc)
+
+## Done (session 4, 2026-06-17 — knowledge base + area download)
+- [x] Confirmed BGS lookups: work for GB (England/Wales/Scotland); NOT Ireland (NI or ROI)
+      return no feature from this layer. Ireland = future round, needs other data source.
+- [x] 51 SGT geosites on the map (coords + region + SGT link), replacing the old 10
+- [x] Library view: by area (6 regions), by process (61-term glossary in 6 clusters),
+      by time (timescale), people (10 geologists), media & links
+- [x] Per-site explainer: decodes BGS lithology to plain glossary terms + nearest region,
+      links into the library. Matcher tested (Arthur's Seat -> mafic family).
+- [x] Area-download caching: "Download this area" caches current view to street zoom;
+      tile cache made version-independent so deploys don't wipe downloaded areas
+- [x] SW bumped to v2; KB + queue + new icons added to shell cache
+
+## Known limits / next round
+- [ ] Rest-of-UK + Ireland knowledge base (England/Wales/NI/ROI) — separate scour & build.
+      Ireland also needs a non-BGS geology data source (GSI / GSNI).
+- [ ] Geosite coords are approximate centroids; a few (Glen Coe, Cairngorms) span large
+      areas so an adopted point may read a neighbouring unit — nudge the pin if so.
+- [ ] FIELD TEST (only Callum): tap "Download this area", go offline, confirm the map
+      still renders at the zoomed-in level for that area.

@@ -12,11 +12,14 @@
    RELATIVE to the SW's own location, so it works at / or /geolas/ alike.
 */
 
-const CACHE_VERSION = "geolas-v1";
+const CACHE_VERSION = "geolas-v2";
 const SHELL_CACHE = `${CACHE_VERSION}-shell`;
-const TILE_CACHE = `${CACHE_VERSION}-tiles`;
 const API_CACHE = `${CACHE_VERSION}-api`;
-const MAX_TILES = 600; // rough cap; ~ a few zoom levels of a region
+// Tile cache is deliberately NOT version-stamped: a code deploy must not wipe
+// map areas the user downloaded for offline field use. It persists across
+// versions and is only trimmed by size (or cleared by the user).
+const TILE_CACHE = "geolas-tiles";
+const MAX_TILES = 5000; // allow real offline areas (street-level download)
 
 // Shell files, relative to the SW scope.
 const SHELL = [
@@ -25,6 +28,8 @@ const SHELL = [
   "app.js",
   "styles.css",
   "reference-sites.js",
+  "knowledge-base.js",
+  "offline-queue.js",
   "manifest.webmanifest",
   "icons/icon.svg",
   "icons/icon-180.png",
@@ -42,8 +47,6 @@ const SHELL = [
 self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(SHELL_CACHE).then((cache) =>
-      // addAll is atomic-ish; if one fails the install fails, so use individual
-      // puts that tolerate a missing optional file.
       Promise.all(
         SHELL.map((url) =>
           cache.add(new Request(url, { cache: "reload" })).catch(() => null)
@@ -58,7 +61,8 @@ self.addEventListener("activate", (event) => {
     caches.keys().then((keys) =>
       Promise.all(
         keys
-          .filter((k) => !k.startsWith(CACHE_VERSION))
+          // delete old VERSIONED caches, but never the persistent tile cache
+          .filter((k) => k !== TILE_CACHE && !k.startsWith(CACHE_VERSION))
           .map((k) => caches.delete(k))
       )
     ).then(() => self.clients.claim())
@@ -94,7 +98,10 @@ self.addEventListener("fetch", (event) => {
         if (hit) return hit;
         try {
           const resp = await fetch(req);
-          if (resp.ok) { cache.put(req, resp.clone()); trimTileCache(); }
+          // Tiles are cross-origin: a normal <img> load or a no-cors prefetch
+          // yields an OPAQUE response (status 0, ok=false). Cache those too —
+          // otherwise nothing would ever be stored and offline maps wouldn't work.
+          if (resp.ok || resp.type === "opaque") { cache.put(req, resp.clone()); trimTileCache(); }
           return resp;
         } catch (e) {
           return hit || Response.error();

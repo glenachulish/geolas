@@ -71,11 +71,13 @@ let map, markerLayer, addMode = false, addMarker = null;
 let refLayer = null, locateMarker = null;
 
 async function showList() {
+  setNav("notebook");
   addMode = false; addMarker = null;
   view.innerHTML = `
     <div id="map"></div>
     <div class="map-controls">
       <button class="btn btn-sm btn-ghost" id="locate-btn">Locate me</button>
+      <button class="btn btn-sm btn-ghost" id="download-area-btn">Download this area</button>
       <label class="ref-toggle"><input type="checkbox" id="ref-toggle" /> Show classic sites</label>
       <span class="map-hint" id="map-hint">Tap “Log a site”, then tap the map to drop a pin — or search a place in the form.</span>
     </div>
@@ -87,6 +89,7 @@ async function showList() {
   `;
   initMap();
   document.getElementById("locate-btn").addEventListener("click", locateOnMap);
+  document.getElementById("download-area-btn").addEventListener("click", downloadVisibleArea);
   document.getElementById("ref-toggle").addEventListener("change", (e) =>
     toggleReferenceSites(e.target.checked));
 
@@ -169,6 +172,56 @@ function locateOnMap() {
     },
     () => { if (hint) hint.textContent = "Location permission denied. Search a place instead."; },
     { enableHighAccuracy: true, timeout: 10000 }
+  );
+}
+
+// ---- offline map area download ----
+// Convert lon/lat to tile x/y at a zoom (standard slippy-map maths).
+function lonToTileX(lon, z) { return Math.floor((lon + 180) / 360 * Math.pow(2, z)); }
+function latToTileY(lat, z) {
+  const r = lat * Math.PI / 180;
+  return Math.floor((1 - Math.log(Math.tan(r) + 1 / Math.cos(r)) / Math.PI) / 2 * Math.pow(2, z));
+}
+
+function tilesForCurrentView() {
+  const b = map.getBounds();
+  const z0 = map.getZoom();
+  const zMax = Math.min(16, z0 + 3); // cap depth so storage stays sane
+  const urls = [];
+  for (let z = z0; z <= zMax; z++) {
+    const xMin = lonToTileX(b.getWest(), z), xMax = lonToTileX(b.getEast(), z);
+    const yMin = latToTileY(b.getNorth(), z), yMax = latToTileY(b.getSouth(), z);
+    for (let x = xMin; x <= xMax; x++)
+      for (let y = yMin; y <= yMax; y++)
+        urls.push(`https://tile.openstreetmap.org/${z}/${x}/${y}.png`);
+  }
+  return urls;
+}
+
+async function downloadVisibleArea() {
+  if (!map) return;
+  const urls = tilesForCurrentView();
+  const estMB = (urls.length * 0.015).toFixed(1); // ~15 KB/tile rough estimate
+  confirmDialog(
+    "Download this area for offline use?",
+    `About ${urls.length} map tiles (~${estMB} MB) for the current view, down to street level. They'll be cached on this device so the map works here with no signal.`,
+    async () => {
+      const hint = document.getElementById("map-hint");
+      let done = 0, failed = 0;
+      // Fetch sequentially-ish in small batches; the service worker caches each
+      // tile as it passes through its fetch handler.
+      const batch = 6;
+      for (let i = 0; i < urls.length; i += batch) {
+        const slice = urls.slice(i, i + batch);
+        await Promise.all(slice.map((u) =>
+          fetch(u, { mode: "no-cors" }).then(() => done++).catch(() => failed++)));
+        if (hint) hint.textContent = `Caching map… ${done}/${urls.length}`;
+      }
+      if (hint) hint.textContent = failed
+        ? `Cached ${done} tiles (${failed} failed). This area now works offline.`
+        : `Done — ${done} tiles cached. This area now works offline.`;
+      toast("Area cached for offline use");
+    }
   );
 }
 
@@ -430,6 +483,8 @@ async function showDetail(id) {
       <button class="btn btn-sm btn-ghost" id="refetch">Re-fetch geology</button>
     </div>
 
+    ${explainerHtml(site)}
+
     <hr class="strata-rule" />
 
     <section class="section">
@@ -463,6 +518,11 @@ async function showDetail(id) {
   renderSamples(site);
   renderFormations(site);
   renderPhotos(site);
+
+  // explainer links into the library
+  view.querySelectorAll(".explain [data-region]").forEach((b) =>
+    b.addEventListener("click", () => showLibrary("area")));
+  document.getElementById("explain-glossary")?.addEventListener("click", () => showLibrary("process"));
 
   document.getElementById("refetch").addEventListener("click", async (ev) => {
     ev.target.disabled = true; ev.target.textContent = "Reading…";
@@ -523,6 +583,42 @@ function geoCard(kind, tag, unit, empty) {
       <div class="geo-name">${esc(unit.name)}</div>
       ${meta.length ? `<dl class="geo-meta">${meta.join("")}</dl>` : ""}
     </div>`;
+}
+
+// Decode a site's BGS result into plain language using the knowledge base.
+function explainerHtml(site) {
+  const g = site.geology || {};
+  const bed = g.bedrock || {}, sup = g.superficial || {};
+  const text = [bed.name, bed.lithology, sup.name, sup.lithology].filter(Boolean).join(" ");
+  if (!text) return ""; // nothing fetched yet (e.g. unsynced offline site)
+  const terms = window.KB.matchGlossary(text);
+  const region = nearestRegion(site.lat, site.lon);
+  if (!terms.length && !region) return "";
+
+  let inner = `<div class="section-head"><h3>What this means</h3></div>`;
+  if (terms.length) {
+    inner += `<dl class="explain-terms">` + terms.slice(0, 5).map((t) =>
+      `<div><dt>${esc(t.term)}</dt><dd>${esc(t.def)}</dd></div>`).join("") + `</dl>`;
+  }
+  if (region) {
+    inner += `<p class="explain-region">This point sits in the <button class="link-btn" data-region="${esc(region.id)}">${esc(region.name)}</button> region. <span class="explain-region-blurb">${esc(region.blurb)}</span></p>`;
+  }
+  inner += `<p class="explain-foot"><button class="link-btn" id="explain-glossary">Open the full glossary →</button></p>`;
+  return `<section class="section explain">${inner}</section>`;
+}
+
+// Crude nearest-region by bounding latitude/longitude bands — good enough to
+// point the reader at the right regional chapter. Not a substitute for the
+// real geological boundaries, just a helpful "you're roughly here".
+function nearestRegion(lat, lon) {
+  const R = window.KB.regions.reduce((m, r) => (m[r.id] = r, m), {});
+  if (lat >= 59.5) return R["orkney-shetland"];      // Shetland
+  if (lat >= 58.7 && lon > -4.5) return R["orkney-shetland"]; // Orkney
+  if (lon <= -6.0) return R["hebrides"];             // Western Isles / inner Hebrides
+  if (lat >= 57.0 && lon <= -3.9) return R["northern-highlands"];
+  if (lat >= 56.3) return R["grampian-argyll"];
+  if (lat >= 55.6) return R["midland-valley"];
+  return R["southern-uplands"];
 }
 
 function renderSamples(site) {
@@ -682,8 +778,128 @@ document.getElementById("sync-now-btn").addEventListener("click", doSync);
 window.addEventListener("online", refreshSyncBar);
 window.addEventListener("offline", refreshSyncBar);
 
+// =========================================================================
+//  LIBRARY VIEW  (by area / process / time / people / resources)
+// =========================================================================
+function setNav(which) {
+  document.getElementById("nav-notebook").classList.toggle("nav-active", which === "notebook");
+  document.getElementById("nav-library").classList.toggle("nav-active", which === "library");
+}
+
+let libraryTab = "area";
+
+function showLibrary(tab) {
+  if (tab) libraryTab = tab;
+  setNav("library");
+  map = null; // leaving the notebook map behind
+  const tabs = [
+    ["area", "By area"], ["process", "By process"], ["time", "By time"],
+    ["people", "People"], ["resources", "Media & links"],
+  ];
+  view.innerHTML = `
+    <div class="lib-head">
+      <h2>Geology library</h2>
+      <p class="lib-sub">Scotland's geological story — browse by area, by process, or through time. Tap any classic site on the notebook map to log it.</p>
+    </div>
+    <div class="lib-tabs">
+      ${tabs.map(([k, label]) =>
+        `<button class="lib-tab${k === libraryTab ? " lib-tab-active" : ""}" data-tab="${k}">${label}</button>`).join("")}
+    </div>
+    <div id="lib-body"></div>
+  `;
+  view.querySelectorAll(".lib-tab").forEach((b) =>
+    b.addEventListener("click", () => showLibrary(b.dataset.tab)));
+  renderLibraryTab(libraryTab);
+  window.scrollTo(0, 0);
+}
+
+function renderLibraryTab(tab) {
+  const body = document.getElementById("lib-body");
+  if (tab === "area") body.innerHTML = libAreaHtml();
+  else if (tab === "process") body.innerHTML = libProcessHtml();
+  else if (tab === "time") body.innerHTML = libTimeHtml();
+  else if (tab === "people") body.innerHTML = libPeopleHtml();
+  else if (tab === "resources") body.innerHTML = libResourcesHtml();
+  // wire region expanders
+  body.querySelectorAll(".region-card").forEach((card) =>
+    card.querySelector(".region-toggle")?.addEventListener("click", () =>
+      card.classList.toggle("open")));
+}
+
+function libAreaHtml() {
+  return `<div class="region-list">` + window.KB.regions.map((r) => `
+    <div class="region-card">
+      <button class="region-toggle">
+        <span class="region-name">${esc(r.name)}</span>
+        <span class="region-blurb">${esc(r.blurb)}</span>
+      </button>
+      <div class="region-detail">
+        ${r.story.map((p) => `<p>${esc(p)}</p>`).join("")}
+        <a class="lib-source" href="${esc(r.source)}" target="_blank" rel="noopener noreferrer">Read more at the Scottish Geology Trust →</a>
+      </div>
+    </div>`).join("") + `</div>`;
+}
+
+function libProcessHtml() {
+  return Object.entries(window.KB.glossary).map(([cluster, terms]) => `
+    <section class="gloss-cluster">
+      <h3 class="gloss-h">${esc(cluster)}</h3>
+      <dl class="gloss-list">
+        ${terms.map((t) => `<div class="gloss-row"><dt>${esc(t.term)}</dt><dd>${esc(t.def)}</dd></div>`).join("")}
+      </dl>
+    </section>`).join("") +
+    `<p class="lib-source-foot">Definitions paraphrased from the <a href="https://www.scottishgeologytrust.org/geology/resources/glossary/" target="_blank" rel="noopener noreferrer">Scottish Geology Trust glossary</a>.</p>`;
+}
+
+function libTimeHtml() {
+  return `<div class="time-scale">` + window.KB.timescale.map((era) => `
+    <div class="era">
+      <div class="era-head"><span class="era-name">${esc(era.era)}</span><span class="era-span">${esc(era.span)}</span></div>
+      <div class="period-list">
+        ${era.periods.map((p) => `
+          <div class="period">
+            <div class="period-top"><span class="period-name">${esc(p.name)}</span><span class="period-span">${esc(p.span)}</span></div>
+            <p class="period-note">${esc(p.note)}</p>
+          </div>`).join("")}
+      </div>
+    </div>`).join("") + `</div>
+    <p class="lib-source-foot">Timescale from the <a href="https://www.scottishgeologytrust.org/geology/scotlands-geology/geological-timescale/" target="_blank" rel="noopener noreferrer">Scottish Geology Trust</a>. Ma = millions of years ago.</p>`;
+}
+
+function libPeopleHtml() {
+  return `<div class="people-list">` + window.KB.people.map((p) => `
+    <div class="person">
+      <div class="person-top"><span class="person-name">${esc(p.name)}</span><span class="person-dates">${esc(p.dates)}</span></div>
+      <p class="person-note">${esc(p.note)}</p>
+      <a class="lib-source" href="${esc(window.KB.peopleSource + p.slug + "/")}" target="_blank" rel="noopener noreferrer">Biography →</a>
+    </div>`).join("") + `</div>`;
+}
+
+function libResourcesHtml() {
+  const block = (title, items) => `
+    <section class="res-block">
+      <h3 class="res-h">${esc(title)}</h3>
+      <ul class="res-list">
+        ${items.map((i) => `<li><a href="${esc(i.u)}" target="_blank" rel="noopener noreferrer"><span class="res-t">${esc(i.t)}</span>${i.s ? `<span class="res-s">${esc(i.s)}</span>` : ""}</a></li>`).join("")}
+      </ul>
+    </section>`;
+  const r = window.KB.resources;
+  return block("Useful websites", r.websites)
+    + block("Geological societies", r.societies)
+    + block("Videos", r.videos);
+}
+
+// nav handlers
+document.getElementById("nav-notebook").addEventListener("click", () => { setNav("notebook"); showList(); });
+document.getElementById("nav-library").addEventListener("click", () => showLibrary());
+document.getElementById("brand-home").addEventListener("click", () => { setNav("notebook"); showList(); });
+document.getElementById("brand-home").addEventListener("keydown", (e) => {
+  if (e.key === "Enter" || e.key === " ") { setNav("notebook"); showList(); }
+});
+
 // ---- boot ----
 document.getElementById("new-site-btn").addEventListener("click", () => {
+  setNav("notebook");
   if (!map) { showList().then(() => { armAddMode(); openSiteForm(); }); }
   else { armAddMode(); openSiteForm(); }
 });

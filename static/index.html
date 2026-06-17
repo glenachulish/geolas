@@ -25,14 +25,18 @@
   <div id="app">
     <header class="masthead">
       <div class="masthead-inner">
-        <div class="brand">
+        <div class="brand" id="brand-home" role="button" tabindex="0">
           <span class="brand-mark" aria-hidden="true"></span>
           <div class="brand-text">
             <h1>Geòlas</h1>
             <p class="brand-sub">field notebook</p>
           </div>
         </div>
-        <button id="new-site-btn" class="btn btn-primary">Log a site</button>
+        <nav class="mast-nav">
+          <button id="nav-notebook" class="nav-btn nav-active">Notebook</button>
+          <button id="nav-library" class="nav-btn">Library</button>
+          <button id="new-site-btn" class="btn btn-primary">Log a site</button>
+        </nav>
       </div>
       <div id="sync-bar" class="sync-bar" hidden>
         <span id="sync-status"></span>
@@ -46,6 +50,7 @@
   <!-- Local vendored Leaflet — no runtime third-party script fetch. -->
   <script src="vendor/leaflet.js"></script>
   <script src="reference-sites.js"></script>
+  <script src="knowledge-base.js"></script>
   <script src="offline-queue.js"></script>
   <script src="app.js" type="module"></script>
   <script>
