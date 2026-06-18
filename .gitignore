@@ -7,3 +7,4 @@ __pycache__/
 .env
 disk-report.txt
 pk-report.txt
+static/*.bak-*
