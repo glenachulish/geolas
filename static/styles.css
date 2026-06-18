@@ -494,3 +494,33 @@ body {
 .res-pending { background: var(--muted); color: var(--paper); }
 .res-del { flex: none; font: inherit; font-size: 20px; line-height: 1; cursor: pointer; background: none; border: none; color: var(--muted); padding: 4px 6px; border-radius: 6px; }
 .res-del:hover { color: var(--rust-deep); background: rgba(0,0,0,.05); }
+
+/* ---- Media & links: by-region / by-process browse (stage 1) ---- */
+.res-axis { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 0 0 4px; }
+.res-axis-btn {
+  font-family: var(--font-mono); font-size: 12.5px; letter-spacing: .04em;
+  border: 1.5px solid var(--line); background: var(--paper); color: var(--ink);
+  border-radius: var(--r); padding: 6px 12px; cursor: pointer;
+}
+.res-axis-btn:hover { border-color: var(--rust); color: var(--rust-deep); }
+.res-axis-active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+.res-axis-active:hover { color: var(--paper); }
+.res-axis-add { margin-left: auto; }
+.res-axis-sub { margin: 0 0 16px; }
+.res-axis-btn:focus-visible { outline: 2px solid var(--ochre); outline-offset: 2px; }
+
+/* curated item description line, under the title + sub-label */
+.res-d { font-size: 13.5px; color: var(--ink-soft); line-height: 1.45; margin-top: 2px; }
+.res-list a:hover .res-d { color: var(--ink-soft); }
+
+/* disabled region/process card (no guides tagged) */
+.region-toggle[disabled] { cursor: default; opacity: .5; }
+.region-toggle[disabled]:hover { background: transparent; }
+
+/* the user's own links card */
+.region-card-yours { border-color: var(--ochre); }
+.res-empty { padding: 11px 0; color: var(--muted); font-size: 14px; line-height: 1.5; list-style: none; }
+
+/* tighten the res-list inside an expanded region card */
+.region-detail .res-list { margin-top: 4px; }
+
