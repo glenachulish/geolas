@@ -11,8 +11,9 @@
 */
 (function () {
   const DB_NAME = "geolas-offline";
-  const DB_VERSION = 1;
+  const DB_VERSION = 2;
   const STORE = "pending_sites";
+  const RES_STORE = "pending_resources";
 
   function openDB() {
     return new Promise((resolve, reject) => {
@@ -22,17 +23,21 @@
         if (!db.objectStoreNames.contains(STORE)) {
           db.createObjectStore(STORE, { keyPath: "client_uuid" });
         }
+        if (!db.objectStoreNames.contains(RES_STORE)) {
+          db.createObjectStore(RES_STORE, { keyPath: "client_uuid" });
+        }
       };
       req.onsuccess = () => resolve(req.result);
       req.onerror = () => reject(req.error);
     });
   }
 
-  async function tx(mode, fn) {
+  // tx(store, mode, fn) — operate on a named object store.
+  async function tx(storeName, mode, fn) {
     const db = await openDB();
     return new Promise((resolve, reject) => {
-      const t = db.transaction(STORE, mode);
-      const store = t.objectStore(STORE);
+      const t = db.transaction(storeName, mode);
+      const store = t.objectStore(storeName);
       let result;
       Promise.resolve(fn(store)).then((r) => { result = r; });
       t.oncomplete = () => resolve(result);
@@ -60,12 +65,12 @@
       created_at: Date.now(),
       status: "pending",
     };
-    await tx("readwrite", (store) => store.put(rec));
+    await tx(STORE, "readwrite", (store) => store.put(rec));
     return rec;
   }
 
   async function list() {
-    return tx("readonly", (store) =>
+    return tx(STORE, "readonly", (store) =>
       new Promise((res) => {
         const out = [];
         store.openCursor().onsuccess = (e) => {
@@ -78,7 +83,7 @@
   }
 
   async function remove(client_uuid) {
-    return tx("readwrite", (store) => store.delete(client_uuid));
+    return tx(STORE, "readwrite", (store) => store.delete(client_uuid));
   }
 
   async function count() {
@@ -123,14 +128,52 @@
     return site;
   }
 
+  // ---- resources (user-added library links) ----
+  async function enqueueResource({ category, title, url, note }) {
+    const rec = {
+      client_uuid: uuid(),
+      category, title, url, note: note || "",
+      created_at: Date.now(),
+      status: "pending",
+    };
+    await tx(RES_STORE, "readwrite", (store) => store.put(rec));
+    return rec;
+  }
+
+  async function listResources() {
+    return tx(RES_STORE, "readonly", (store) =>
+      new Promise((res) => {
+        const out = [];
+        store.openCursor().onsuccess = (e) => {
+          const cur = e.target.result;
+          if (cur) { out.push(cur.value); cur.continue(); }
+          else res(out.sort((a, b) => a.created_at - b.created_at));
+        };
+      })
+    );
+  }
+
+  async function removeResource(client_uuid) {
+    return tx(RES_STORE, "readwrite", (store) => store.delete(client_uuid));
+  }
+
+  // total pending items across both stores (for the sync bar count)
+  async function totalPending() {
+    const [s, r] = await Promise.all([list(), listResources()]);
+    return s.length + r.length;
+  }
+
   // Sync all queued items. Calls onProgress(done, total) as it goes.
   // Removes each from the queue only after it fully succeeds, so a failure
   // mid-way leaves the rest queued for the next attempt.
   async function syncAll(apiBase, onProgress) {
-    const items = await list();
+    const sites = await list();
+    const resources = await listResources();
+    const total = sites.length + resources.length;
     let done = 0, failed = 0;
     const errors = [];
-    for (const rec of items) {
+
+    for (const rec of sites) {
       try {
         await syncOne(apiBase, rec);
         await remove(rec.client_uuid);
@@ -139,12 +182,34 @@
         failed++;
         errors.push(`${rec.name}: ${e.message}`);
       }
-      if (onProgress) onProgress(done + failed, items.length);
+      if (onProgress) onProgress(done + failed, total);
     }
-    return { done, failed, total: items.length, errors };
+
+    for (const rec of resources) {
+      try {
+        const resp = await fetch(`${apiBase}/resources`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            category: rec.category, title: rec.title, url: rec.url,
+            note: rec.note, client_uuid: rec.client_uuid,
+          }),
+        });
+        if (!resp.ok) throw new Error(`create failed (${resp.status})`);
+        await removeResource(rec.client_uuid);
+        done++;
+      } catch (e) {
+        failed++;
+        errors.push(`${rec.title}: ${e.message}`);
+      }
+      if (onProgress) onProgress(done + failed, total);
+    }
+
+    return { done, failed, total, errors };
   }
 
   window.GeolasQueue = {
     enqueueSite, list, remove, count, pendingBytes, syncAll, uuid,
+    enqueueResource, listResources, removeResource, totalPending,
   };
 })();

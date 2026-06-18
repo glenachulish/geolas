@@ -71,3 +71,18 @@
       areas so an adopted point may read a neighbouring unit — nudge the pin if so.
 - [ ] FIELD TEST (only Callum): tap "Download this area", go offline, confirm the map
       still renders at the zoomed-in level for that area.
+
+## Done (session 5, 2026-06-17 — editable Media & links)
+- [x] resources table (category/title/url/note/client_uuid/created_at) + indexes;
+      created cleanly on existing DBs via CREATE TABLE IF NOT EXISTS (migration tested)
+- [x] GET/POST/DELETE /api/resources; POST idempotent on client_uuid (offline sync);
+      category validated (websites/societies/videos), title+url required
+- [x] Media & links tab now editable: user links MERGE into the 3 bundled categories,
+      marked "yours" with a delete ×. Bundled SGT links stay fixed.
+- [x] Offline support: enqueueResource in IndexedDB (DB v2, new pending_resources store),
+      syncAll syncs sites then resources, sync bar counts both ("items")
+- [x] SW bumped v2 -> v3. All 3 backend suites pass; migration from pre-resources DB tested.
+
+## Field test for Callum (session 5)
+- [ ] Library > Media & links: add a link in each category, confirm "yours" badge + delete
+- [ ] Add a link while offline (airplane mode) -> shows "not synced" -> Sync now -> persists

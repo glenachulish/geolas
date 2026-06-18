@@ -148,7 +148,20 @@ CREATE TABLE IF NOT EXISTS photos (
 
 CREATE INDEX IF NOT EXISTS idx_samples_site    ON samples(site_id);
 CREATE INDEX IF NOT EXISTS idx_formations_site ON formations(site_id);
+CREATE TABLE IF NOT EXISTS resources (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    category    TEXT    NOT NULL,
+    title       TEXT    NOT NULL,
+    url         TEXT    NOT NULL,
+    note        TEXT    NOT NULL DEFAULT '',
+    client_uuid TEXT,
+    created_at  INTEGER NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_samples_site    ON samples(site_id);
+CREATE INDEX IF NOT EXISTS idx_formations_site ON formations(site_id);
 CREATE INDEX IF NOT EXISTS idx_photos_site     ON photos(site_id);
+CREATE INDEX IF NOT EXISTS idx_resources_cat   ON resources(category);
 """
 
 
@@ -167,6 +180,10 @@ def init_db() -> None:
         conn.execute(
             "CREATE UNIQUE INDEX IF NOT EXISTS idx_sites_client_uuid "
             "ON sites(client_uuid) WHERE client_uuid IS NOT NULL"
+        )
+        conn.execute(
+            "CREATE UNIQUE INDEX IF NOT EXISTS idx_resources_client_uuid "
+            "ON resources(client_uuid) WHERE client_uuid IS NOT NULL"
         )
 
 
@@ -373,6 +390,17 @@ class SampleIn(BaseModel):
 class FormationIn(BaseModel):
     name: str
     description: str = ""
+
+
+VALID_RESOURCE_CATEGORIES = {"websites", "societies", "videos"}
+
+
+class ResourceIn(BaseModel):
+    category: str
+    title: str
+    url: str
+    note: str = ""
+    client_uuid: Optional[str] = None
 
 
 # --- app ------------------------------------------------------------------
@@ -599,6 +627,52 @@ def delete_formation(formation_id: int) -> dict[str, Any]:
         n = conn.execute("DELETE FROM formations WHERE id=?", (formation_id,)).rowcount
     if not n:
         raise HTTPException(404, "Formation not found")
+    return {"ok": True}
+
+
+# ---- resources (user-added library links) ----
+@app.get("/api/resources")
+def list_resources() -> list[dict[str, Any]]:
+    with _db() as conn:
+        rows = conn.execute("SELECT * FROM resources ORDER BY created_at").fetchall()
+    return [dict(r) for r in rows]
+
+
+@app.post("/api/resources")
+def add_resource(resource: ResourceIn) -> dict[str, Any]:
+    if resource.category not in VALID_RESOURCE_CATEGORIES:
+        raise HTTPException(400, f"Invalid category: {resource.category}")
+    if not resource.title.strip() or not resource.url.strip():
+        raise HTTPException(400, "Title and URL are required")
+
+    # Idempotency for offline sync, same pattern as sites.
+    if resource.client_uuid:
+        with _db() as conn:
+            existing = conn.execute(
+                "SELECT * FROM resources WHERE client_uuid = ?", (resource.client_uuid,)
+            ).fetchone()
+        if existing:
+            r = dict(existing)
+            r["deduplicated"] = True
+            return r
+
+    with _db() as conn:
+        cur = conn.execute(
+            "INSERT INTO resources (category, title, url, note, client_uuid, created_at) "
+            "VALUES (?,?,?,?,?,?)",
+            (resource.category, resource.title.strip(), resource.url.strip(),
+             resource.note.strip(), resource.client_uuid, int(time.time())),
+        )
+        row = conn.execute("SELECT * FROM resources WHERE id=?", (cur.lastrowid,)).fetchone()
+    return dict(row)
+
+
+@app.delete("/api/resources/{resource_id}")
+def delete_resource(resource_id: int) -> dict[str, Any]:
+    with _db() as conn:
+        n = conn.execute("DELETE FROM resources WHERE id=?", (resource_id,)).rowcount
+    if not n:
+        raise HTTPException(404, "Resource not found")
     return {"ok": True}
 
 

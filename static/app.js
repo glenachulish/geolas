@@ -739,19 +739,19 @@ async function refreshSyncBar() {
   const bar = document.getElementById("sync-bar");
   const status = document.getElementById("sync-status");
   if (!bar || !window.GeolasQueue) return;
-  const n = await window.GeolasQueue.count();
+  const n = await window.GeolasQueue.totalPending();
   if (n === 0 && navigator.onLine) { bar.hidden = true; return; }
   bar.hidden = false;
   const btn = document.getElementById("sync-now-btn");
   if (n === 0) {
-    status.textContent = navigator.onLine ? "" : "Offline — new sites will be saved on this device";
+    status.textContent = navigator.onLine ? "" : "Offline — new entries will be saved on this device";
     btn.hidden = true;
     if (navigator.onLine) bar.hidden = true;
     return;
   }
   const bytes = await window.GeolasQueue.pendingBytes();
   const mb = bytes > 0 ? ` · ${(bytes / 1048576).toFixed(1)} MB` : "";
-  status.textContent = `${n} site${n === 1 ? "" : "s"} waiting to sync${mb}`
+  status.textContent = `${n} item${n === 1 ? "" : "s"} waiting to sync${mb}`
     + (navigator.onLine ? "" : " · offline");
   btn.hidden = !navigator.onLine; // can only sync when there's signal
 }
@@ -819,7 +819,7 @@ function renderLibraryTab(tab) {
   else if (tab === "process") body.innerHTML = libProcessHtml();
   else if (tab === "time") body.innerHTML = libTimeHtml();
   else if (tab === "people") body.innerHTML = libPeopleHtml();
-  else if (tab === "resources") body.innerHTML = libResourcesHtml();
+  else if (tab === "resources") { renderResourcesTab(); return; }
   // wire region expanders
   body.querySelectorAll(".region-card").forEach((card) =>
     card.querySelector(".region-toggle")?.addEventListener("click", () =>
@@ -875,18 +875,105 @@ function libPeopleHtml() {
     </div>`).join("") + `</div>`;
 }
 
-function libResourcesHtml() {
-  const block = (title, items) => `
-    <section class="res-block">
-      <h3 class="res-h">${esc(title)}</h3>
-      <ul class="res-list">
-        ${items.map((i) => `<li><a href="${esc(i.u)}" target="_blank" rel="noopener noreferrer"><span class="res-t">${esc(i.t)}</span>${i.s ? `<span class="res-s">${esc(i.s)}</span>` : ""}</a></li>`).join("")}
-      </ul>
-    </section>`;
-  const r = window.KB.resources;
-  return block("Useful websites", r.websites)
-    + block("Geological societies", r.societies)
-    + block("Videos", r.videos);
+// Editable Media & links. Bundled SGT links are fixed; the user's own links
+// (from /api/resources, or queued offline) merge into the same three categories,
+// marked "yours" and removable. Falls back to offline queue when the network is down.
+const RES_CATEGORIES = [
+  { key: "websites", label: "Useful websites", bundled: "websites" },
+  { key: "societies", label: "Geological societies", bundled: "societies" },
+  { key: "videos", label: "Videos", bundled: "videos" },
+];
+
+async function renderResourcesTab() {
+  const body = document.getElementById("lib-body");
+  body.innerHTML = `<div class="loading"><div class="strata-spin"><span></span><span></span><span></span><span></span></div>Loading links…</div>`;
+
+  // user links: from the server if online, plus anything still queued offline
+  let mine = [];
+  try {
+    if (navigator.onLine) mine = await api("/resources");
+  } catch (e) { /* offline or error — fall back to queued only */ }
+  let queued = [];
+  try { queued = await window.GeolasQueue.listResources(); } catch (e) {}
+
+  const bundled = window.KB.resources;
+  body.innerHTML = RES_CATEGORIES.map((cat) => {
+    const fixed = (bundled[cat.bundled] || []).map((i) =>
+      resRow(i.t, i.u, i.s, null, false));
+    const saved = mine.filter((m) => m.category === cat.key).map((m) =>
+      resRow(m.title, m.url, m.note, m.id, true));
+    const pend = queued.filter((q) => q.category === cat.key).map((q) =>
+      resRow(q.title, q.url, q.note, null, true, true));
+    return `
+      <section class="res-block">
+        <div class="res-block-head">
+          <h3 class="res-h">${esc(cat.label)}</h3>
+          <button class="btn btn-sm btn-ghost res-add" data-cat="${cat.key}" data-label="${esc(cat.label)}">+ Add</button>
+        </div>
+        <ul class="res-list">${fixed.join("") + saved.join("") + pend.join("")}</ul>
+      </section>`;
+  }).join("") +
+  `<p class="lib-source-foot">Starter links from the <a href="https://www.scottishgeologytrust.org/geology/resources/online-resources/" target="_blank" rel="noopener noreferrer">Scottish Geology Trust</a>. Links marked “yours” are your own additions.</p>`;
+
+  // wire add buttons
+  body.querySelectorAll(".res-add").forEach((b) =>
+    b.addEventListener("click", () => openResourceForm(b.dataset.cat, b.dataset.label)));
+  // wire delete buttons (server-backed only)
+  body.querySelectorAll(".res-del").forEach((b) =>
+    b.addEventListener("click", () => deleteResource(parseInt(b.dataset.id, 10))));
+}
+
+function resRow(title, url, sub, id, mine, pending) {
+  const badge = pending ? `<span class="res-mine res-pending">not synced</span>`
+              : mine ? `<span class="res-mine">yours</span>` : "";
+  const del = (mine && id) ? `<button class="res-del" data-id="${id}" title="Remove this link" aria-label="Remove">×</button>` : "";
+  return `<li class="res-item${mine ? " res-item-mine" : ""}">
+      <a href="${esc(url)}" target="_blank" rel="noopener noreferrer">
+        <span class="res-t">${esc(title)}${badge}</span>
+        ${sub ? `<span class="res-s">${esc(sub)}</span>` : ""}
+      </a>${del}
+    </li>`;
+}
+
+function openResourceForm(category, label) {
+  simpleForm(`Add to ${label}`, [
+    { id: "title", label: "Title" },
+    { id: "url", label: "URL (https://…)" },
+    { id: "note", label: "Note (optional)" },
+  ], async (vals) => {
+    const title = (vals.title || "").trim();
+    const url = (vals.url || "").trim();
+    if (!title) { toast("Please give the link a title"); return false; }
+    if (!/^https?:\/\//i.test(url)) { toast("URL must start with http:// or https://"); return false; }
+    const payload = { category, title, url, note: (vals.note || "").trim() };
+    try {
+      if (navigator.onLine) {
+        await api("/resources", { method: "POST", body: JSON.stringify(payload),
+          headers: { "Content-Type": "application/json" } });
+        toast("Link added");
+      } else {
+        await window.GeolasQueue.enqueueResource(payload);
+        toast("Saved — will sync when online");
+      }
+    } catch (e) {
+      // network failed mid-request: queue it
+      await window.GeolasQueue.enqueueResource(payload);
+      toast("Saved offline — will sync later");
+    }
+    await refreshSyncBar();
+    renderResourcesTab();
+    return true;
+  });
+}
+
+function deleteResource(id) {
+  confirmDialog("Remove this link?", "This removes your saved link. The bundled Scottish Geology Trust links can't be removed.", async () => {
+    try {
+      await api(`/resources/${id}`, { method: "DELETE" });
+      toast("Link removed");
+      renderResourcesTab();
+    } catch (e) { toast("Couldn't remove: " + e.message); }
+  });
 }
 
 // nav handlers

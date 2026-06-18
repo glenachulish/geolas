@@ -482,3 +482,15 @@ body {
 .res-list a:hover .res-t { color: var(--rust-deep); text-decoration: underline; }
 .res-t { font-size: 16px; font-weight: 600; }
 .res-s { font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+
+/* ===== editable resources ===== */
+.res-block-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; border-bottom: 1.5px solid var(--line); padding-bottom: 8px; margin: 0 0 10px; }
+.res-block-head .res-h { border: none; padding: 0; margin: 0; }
+.res-add { white-space: nowrap; }
+.res-item { display: flex; align-items: flex-start; gap: 8px; }
+.res-item-mine { background: #fbf7ee; border-radius: var(--r); padding: 4px 8px; margin: 2px -8px; }
+.res-item > a { flex: 1; }
+.res-mine { display: inline-block; font-family: var(--font-mono); font-size: 10.5px; letter-spacing: .06em; text-transform: uppercase; background: var(--ochre); color: var(--ink); border-radius: 4px; padding: 1px 6px; margin-left: 8px; vertical-align: middle; }
+.res-pending { background: var(--muted); color: var(--paper); }
+.res-del { flex: none; font: inherit; font-size: 20px; line-height: 1; cursor: pointer; background: none; border: none; color: var(--muted); padding: 4px 6px; border-radius: 6px; }
+.res-del:hover { color: var(--rust-deep); background: rgba(0,0,0,.05); }
