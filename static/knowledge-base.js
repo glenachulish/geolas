@@ -213,7 +213,7 @@ const KB_RESOURCES = {
     { t: "Edinburgh Geological Society", u: "https://www.edinburghgeolsoc.org/", s: "Field trips, lectures, publications" },
     { t: "Geological Society of Glasgow", u: "http://www.geologyglasgow.org.uk/", s: "" },
     { t: "Aberdeen Geological Society", u: "http://www.aberdeengeolsoc.org.uk/", s: "" },
-    { t: "Highland Geological Society", u: "http://www.spanglefish.com/highlandgeologicalsociety", s: "" },
+    { t: "Highland Geological Society", u: "https://www.highlandgeologicalsociety.scot/", s: "" },
     { t: "Open University Geological Society (Scotland)", u: "https://ougs.org/scotland/", s: "" },
   ],
   videos: [
@@ -377,28 +377,28 @@ const KB_PROCESSES = [
 const KB_PROCESS_LIBRARY = [
   // ---- Igneous: volcanism, intrusion, hydrothermal ----
   { title:"How volcanoes work", url:"https://www.bgs.ac.uk/discovering-geology/earth-hazards/volcanoes/", note:"BGS overview of eruption styles, magma and volcanic hazards.", processes:["igneous"], bundled:true },
-  { title:"Hydrothermal systems and mineral veins", url:"https://www.bgs.ac.uk/discovering-geology/earth-processes/hydrothermal-mineralisation/", note:"How hot, mineral-rich waters circulate through rock and deposit ore.", processes:["igneous","structure"], bundled:true },
+  { title:"Hydrothermal systems and mineral veins", url:"https://www.scottishgeologytrust.org/geology/", note:"How hot, mineral-rich waters circulate through rock and deposit ore.", processes:["igneous","structure"], bundled:true },
   { title:"Plutons and igneous intrusions", url:"https://www.scottishgeologytrust.org/geology/", note:"Magma that cools underground — granites, sills and dykes.", processes:["igneous"], bundled:true },
 
   // ---- Sedimentary: erosion, transport, deposition, diagenesis ----
-  { title:"Erosion and weathering explained", url:"https://www.bgs.ac.uk/discovering-geology/earth-processes/erosion/", note:"How rock is broken down and carried away by water, wind and ice.", processes:["sedimentary","glacial"], bundled:true },
-  { title:"Sediment transport and deposition", url:"https://www.bgs.ac.uk/discovering-geology/earth-processes/sedimentary-processes/", note:"From grain to strata: how loose material is moved and laid down.", processes:["sedimentary"], bundled:true },
+  { title:"Erosion and weathering explained", url:"https://www.bgs.ac.uk/discovering-geology/geological-processes/erosion/", note:"How rock is broken down and carried away by water, wind and ice.", processes:["sedimentary","glacial"], bundled:true },
+  { title:"Sediment transport and deposition", url:"https://www.bgs.ac.uk/discovering-geology/geological-processes/deposition/", note:"From grain to strata: how loose material is moved and laid down.", processes:["sedimentary"], bundled:true },
   { title:"Diagenesis: turning sediment into rock", url:"https://www.scottishgeologytrust.org/geology/", note:"Compaction and cementation that lithify soft sediment over time.", processes:["sedimentary"], bundled:true },
   { title:"Soil formation and parent material", url:"https://www.bgs.ac.uk/geology-projects/sustainable-soils/", note:"How weathered rock (the soil's parent material), organic matter and time build a soil.", processes:["sedimentary"], bundled:true },
 
   // ---- Metamorphic ----
-  { title:"Metamorphism: rocks remade by heat and pressure", url:"https://www.bgs.ac.uk/discovering-geology/rocks/metamorphic-rocks/", note:"How existing rock recrystallises without melting.", processes:["metamorphic"], bundled:true },
+  { title:"Metamorphism: rocks remade by heat and pressure", url:"https://www.bgs.ac.uk/discovering-geology/rocks-and-minerals/", note:"How existing rock recrystallises without melting.", processes:["metamorphic"], bundled:true },
   { title:"Regional vs contact metamorphism", url:"https://www.scottishgeologytrust.org/geology/", note:"Mountain-scale versus heat-from-an-intrusion metamorphism.", processes:["metamorphic","igneous"], bundled:true },
 
   // ---- Structure & tectonics: deformation, faulting, isostasy, earthquakes ----
-  { title:"Plate tectonics", url:"https://www.bgs.ac.uk/discovering-geology/earth-processes/plate-tectonics/", note:"The engine behind mountains, oceans, earthquakes and volcanoes.", processes:["structure"], bundled:true },
-  { title:"Folds and faults: rock deformation", url:"https://www.bgs.ac.uk/discovering-geology/earth-processes/", note:"How stress bends and breaks rock over geological time.", processes:["structure"], bundled:true },
+  { title:"Plate tectonics", url:"https://www.bgs.ac.uk/discovering-geology/geological-processes/", note:"The engine behind mountains, oceans, earthquakes and volcanoes.", processes:["structure"], bundled:true },
+  { title:"Folds and faults: rock deformation", url:"https://www.bgs.ac.uk/discovering-geology/geological-processes/", note:"How stress bends and breaks rock over geological time.", processes:["structure"], bundled:true },
   { title:"Earthquakes", url:"https://www.bgs.ac.uk/discovering-geology/earth-hazards/earthquakes/", note:"What causes them, how they're measured, and UK seismicity.", processes:["structure"], bundled:true },
   { title:"Isostasy and land uplift", url:"https://www.bgs.ac.uk/discovering-geology/", note:"Why land rebounds as ice melts — Scotland is still rising.", processes:["structure","glacial"], bundled:true },
   { title:"Land subsidence and mass wasting", url:"https://www.bgs.ac.uk/discovering-geology/earth-hazards/landslides/", note:"Slope failure, landslides and ground that sinks or slips.", processes:["structure","sedimentary"], bundled:true },
 
   // ---- Glacial & Ice Age ----
-  { title:"Glaciation and the last Ice Age", url:"https://www.bgs.ac.uk/discovering-geology/earth-processes/ice-age/", note:"How ice sheets carved Scotland's glens, corries and lochs.", processes:["glacial"], bundled:true },
+  { title:"Glaciation and the last Ice Age", url:"https://www.scottishgeologytrust.org/geology/", note:"How ice sheets carved Scotland's glens, corries and lochs.", processes:["glacial"], bundled:true },
   { title:"Glacial landforms", url:"https://www.scottishgeologytrust.org/geology/", note:"Reading drumlins, moraines and erratics left behind by ice.", processes:["glacial"], bundled:true },
 
   // ---- Fossils & life ----
