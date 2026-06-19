@@ -794,7 +794,7 @@ function showLibrary(tab) {
   map = null; // leaving the notebook map behind
   const tabs = [
     ["area", "By area"], ["process", "By process"], ["time", "By time"],
-    ["people", "People"], ["resources", "Media & links"],
+    ["people", "People"], ["guides", "Guides"], ["resources", "Media & links"],
   ];
   view.innerHTML = `
     <div class="lib-head">
@@ -819,6 +819,7 @@ function renderLibraryTab(tab) {
   else if (tab === "process") body.innerHTML = libProcessHtml();
   else if (tab === "time") body.innerHTML = libTimeHtml();
   else if (tab === "people") body.innerHTML = libPeopleHtml();
+  else if (tab === "guides") body.innerHTML = libGuidesHtml();
   else if (tab === "resources") { renderResourcesTab(); return; }
   // wire region expanders
   body.querySelectorAll(".region-card").forEach((card) =>
@@ -875,20 +876,12 @@ function libPeopleHtml() {
     </div>`).join("") + `</div>`;
 }
 
-// Editable Media & links — browsable by REGION and by PROCESS.
-// Bundled curated resources come from KB.resourceLibrary (tagged with regions[]
-// and processes[]); the short general links from KB.resources fold in under a
-// "General" group. The user's own links (from /api/resources, or queued offline)
-// are untagged in this version, so they show under "Your links" in every view,
-// marked "yours" and removable. Falls back to the offline queue when offline.
-const RES_CATEGORIES = [
-  { key: "websites", label: "Useful websites", bundled: "websites" },
-  { key: "societies", label: "Geological societies", bundled: "societies" },
-  { key: "videos", label: "Videos", bundled: "videos" },
-];
-
-let resourceAxis = "region"; // "region" | "process"
-
+// =========================================================================
+//  GUIDES  (read-only, browse by area — nested inline-expanding list)
+//  Bundled curated resources only, from KB.resourceLibrary (tagged regions[]).
+//  Tapping an area expands its guides inline; each row shows the locality
+//  (area) and the resource type. No add, no delete, no DB writes.
+// =========================================================================
 const RES_TYPE_LABEL = {
   "pdf-booklet": "PDF booklet",
   "excursion-guide": "Excursion guide",
@@ -897,66 +890,22 @@ const RES_TYPE_LABEL = {
   "video": "Video",
 };
 
-async function renderResourcesTab() {
-  const body = document.getElementById("lib-body");
-  body.innerHTML = `<div class="loading"><div class="strata-spin"><span></span><span></span><span></span><span></span></div>Loading links…</div>`;
-
-  // user links: from the server if online, plus anything still queued offline
-  let mine = [];
-  try {
-    if (navigator.onLine) mine = await api("/resources");
-  } catch (e) { /* offline or error — fall back to queued only */ }
-  let queued = [];
-  try { queued = await window.GeolasQueue.listResources(); } catch (e) {}
-
+function libGuidesHtml() {
   const lib = window.KB.resourceLibrary || [];
-  const groups = (resourceAxis === "region")
-    ? window.KB.regions.map((r) => ({
-        key: r.id, name: r.name,
-        items: lib.filter((e) => (e.regions || []).includes(r.id)),
-      }))
-    : window.KB.processes.map((p) => ({
-        key: p.key, name: p.label,
-        items: lib.filter((e) => (e.processes || []).includes(p.key)),
-      }));
-
-  // user links count (server + queued) — shown as its own always-present group
-  const userCount = mine.length + queued.length;
-
-  body.innerHTML = `
-    <div class="res-axis" role="tablist" aria-label="Browse resources by">
-      <button class="res-axis-btn${resourceAxis === "region" ? " res-axis-active" : ""}" data-axis="region" role="tab" aria-selected="${resourceAxis === "region"}">By region</button>
-      <button class="res-axis-btn${resourceAxis === "process" ? " res-axis-active" : ""}" data-axis="process" role="tab" aria-selected="${resourceAxis === "process"}">By process</button>
-      <button class="btn btn-sm btn-ghost res-add res-axis-add" data-cat="websites" data-label="your links">+ Add a link</button>
-    </div>
-    <p class="lib-sub res-axis-sub">${resourceAxis === "region"
-      ? "Pick an area to see every curated guide tagged to it. Each item shows its locality."
-      : "Pick a geological process to see the curated guides that cover it."}</p>
-
+  const groups = window.KB.regions.map((r) => ({
+    name: r.name,
+    items: lib.filter((e) => (e.regions || []).includes(r.id)),
+  }));
+  return `
+    <p class="lib-sub res-axis-sub">Curated field guides, booklets and leaflets, grouped by area. Tap an area to see its guides; each opens its publisher's page or PDF.</p>
     <div class="region-list">
-      ${groups.map((g) => regionResourceCard(g)).join("")}
-      ${userResourceCard(mine, queued, userCount)}
-      ${generalResourceCard()}
+      ${groups.map((g) => guideRegionCard(g)).join("")}
     </div>
-    <p class="lib-source-foot">Curated guides from the Scottish Geology Trust (SNH/BGS booklets), Edinburgh, Aberdeen &amp; Glasgow geological societies. Links marked “yours” are your own additions.</p>`;
-
-  // wire region/process expanders
-  body.querySelectorAll(".region-card").forEach((card) =>
-    card.querySelector(".region-toggle")?.addEventListener("click", () =>
-      card.classList.toggle("open")));
-  // wire axis switch
-  body.querySelectorAll(".res-axis-btn").forEach((b) =>
-    b.addEventListener("click", () => { resourceAxis = b.dataset.axis; renderResourcesTab(); }));
-  // wire add buttons
-  body.querySelectorAll(".res-add").forEach((b) =>
-    b.addEventListener("click", () => openResourceForm(b.dataset.cat, b.dataset.label)));
-  // wire delete buttons (server-backed only)
-  body.querySelectorAll(".res-del").forEach((b) =>
-    b.addEventListener("click", () => deleteResource(parseInt(b.dataset.id, 10))));
+    <p class="lib-source-foot">Curated guides from the Scottish Geology Trust (SNH/BGS booklets), Edinburgh, Aberdeen &amp; Glasgow geological societies. Descriptions are paraphrased; each guide links to its publisher's original.</p>`;
 }
 
-// A collapsible card for one region or process, listing its curated resources.
-function regionResourceCard(g) {
+// One area card: an inline-expanding list of the curated guides tagged to it.
+function guideRegionCard(g) {
   const n = g.items.length;
   const rows = g.items.map((e) => libResRow(e)).join("");
   return `
@@ -971,13 +920,13 @@ function regionResourceCard(g) {
     </div>`;
 }
 
-// A bundled curated resource row: title, type + area/source sub-label, no delete.
+// A bundled curated resource row: title, area + type + source sub-label, no delete.
 function libResRow(e) {
   const bits = [];
   if (e.area) bits.push(e.area);
   if (RES_TYPE_LABEL[e.type]) bits.push(RES_TYPE_LABEL[e.type]);
   if (e.source) bits.push(e.source);
-  const sub = bits.join(" · ");
+  const sub = bits.join(" \u00b7 ");
   return `<li class="res-item">
       <a href="${esc(e.url)}" target="_blank" rel="noopener noreferrer">
         <span class="res-t">${esc(e.title)}</span>
@@ -987,40 +936,55 @@ function libResRow(e) {
     </li>`;
 }
 
-// The user's own links — always present, untagged in this version.
-function userResourceCard(mine, queued, count) {
-  const saved = mine.map((m) => resRow(m.title, m.url, m.note, m.id, true)).join("");
-  const pend = queued.map((q) => resRow(q.title, q.url, q.note, null, true, true)).join("");
-  const empty = `<li class="res-empty">No links of your own yet. Use “Add a link” to save a website, society or video.</li>`;
-  return `
-    <div class="region-card region-card-yours${count ? " open" : ""}">
-      <button class="region-toggle">
-        <span class="region-name">Your links</span>
-        <span class="region-blurb">${count} ${count === 1 ? "link" : "links"} you added</span>
-      </button>
-      <div class="region-detail">
-        <ul class="res-list">${count ? (saved + pend) : empty}</ul>
-      </div>
-    </div>`;
-}
+// =========================================================================
+//  MEDIA & LINKS  (editable; restored to its pre-Guides three-category form)
+//  Bundled SGT links are fixed; the user's own links (from /api/resources, or
+//  queued offline) merge into the same three categories, marked "yours" and
+//  removable. Falls back to the offline queue when the network is down.
+// =========================================================================
+const RES_CATEGORIES = [
+  { key: "websites", label: "Useful websites", bundled: "websites" },
+  { key: "societies", label: "Geological societies", bundled: "societies" },
+  { key: "videos", label: "Videos", bundled: "videos" },
+];
 
-// The short general website/society/video lists bundled with the app.
-function generalResourceCard() {
-  const b = window.KB.resources || {};
-  const all = RES_CATEGORIES.flatMap((cat) =>
-    (b[cat.bundled] || []).map((i) => libResRow({
-      title: i.t, url: i.u, source: i.s, type: "web-page",
-    })));
-  return `
-    <div class="region-card">
-      <button class="region-toggle">
-        <span class="region-name">General resources</span>
-        <span class="region-blurb">${all.length} websites, societies &amp; videos</span>
-      </button>
-      <div class="region-detail">
-        <ul class="res-list">${all.join("")}</ul>
-      </div>
-    </div>`;
+async function renderResourcesTab() {
+  const body = document.getElementById("lib-body");
+  body.innerHTML = `<div class="loading"><div class="strata-spin"><span></span><span></span><span></span><span></span></div>Loading links\u2026</div>`;
+
+  // user links: from the server if online, plus anything still queued offline
+  let mine = [];
+  try {
+    if (navigator.onLine) mine = await api("/resources");
+  } catch (e) { /* offline or error — fall back to queued only */ }
+  let queued = [];
+  try { queued = await window.GeolasQueue.listResources(); } catch (e) {}
+
+  const bundled = window.KB.resources;
+  body.innerHTML = RES_CATEGORIES.map((cat) => {
+    const fixed = (bundled[cat.bundled] || []).map((i) =>
+      resRow(i.t, i.u, i.s, null, false));
+    const saved = mine.filter((m) => m.category === cat.key).map((m) =>
+      resRow(m.title, m.url, m.note, m.id, true));
+    const pend = queued.filter((q) => q.category === cat.key).map((q) =>
+      resRow(q.title, q.url, q.note, null, true, true));
+    return `
+      <section class="res-block">
+        <div class="res-block-head">
+          <h3 class="res-h">${esc(cat.label)}</h3>
+          <button class="btn btn-sm btn-ghost res-add" data-cat="${cat.key}" data-label="${esc(cat.label)}">+ Add</button>
+        </div>
+        <ul class="res-list">${fixed.join("") + saved.join("") + pend.join("")}</ul>
+      </section>`;
+  }).join("") +
+  `<p class="lib-source-foot">Starter links from the <a href="https://www.scottishgeologytrust.org/geology/resources/online-resources/" target="_blank" rel="noopener noreferrer">Scottish Geology Trust</a>. Links marked \u201cyours\u201d are your own additions.</p>`;
+
+  // wire add buttons
+  body.querySelectorAll(".res-add").forEach((b) =>
+    b.addEventListener("click", () => openResourceForm(b.dataset.cat, b.dataset.label)));
+  // wire delete buttons (server-backed only)
+  body.querySelectorAll(".res-del").forEach((b) =>
+    b.addEventListener("click", () => deleteResource(parseInt(b.dataset.id, 10))));
 }
 
 function resRow(title, url, sub, id, mine, pending) {
