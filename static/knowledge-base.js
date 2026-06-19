@@ -366,9 +366,51 @@ const KB_PROCESSES = [
 ];
 
 
+// =========================================================================
+//  STAGE 2: bundled starter resources for the editable "Processes" section.
+//  Global (not per-site), category-free, each tagged to one or more of the six
+//  fixed process keys. Breadth deliberately spans the full sweep of geological
+//  processes (erosion, mass wasting, hydrothermal, tectonics, diagenesis, soil
+//  formation, etc.), folded into the six clusters per the fixed taxonomy.
+//  All descriptions are paraphrased in our own words; each links to its source.
+// =========================================================================
+const KB_PROCESS_LIBRARY = [
+  // ---- Igneous: volcanism, intrusion, hydrothermal ----
+  { title:"How volcanoes work", url:"https://www.bgs.ac.uk/discovering-geology/earth-hazards/volcanoes/", note:"BGS overview of eruption styles, magma and volcanic hazards.", processes:["igneous"], bundled:true },
+  { title:"Hydrothermal systems and mineral veins", url:"https://www.bgs.ac.uk/discovering-geology/earth-processes/hydrothermal-mineralisation/", note:"How hot, mineral-rich waters circulate through rock and deposit ore.", processes:["igneous","structure"], bundled:true },
+  { title:"Plutons and igneous intrusions", url:"https://www.scottishgeologytrust.org/geology/", note:"Magma that cools underground — granites, sills and dykes.", processes:["igneous"], bundled:true },
+
+  // ---- Sedimentary: erosion, transport, deposition, diagenesis ----
+  { title:"Erosion and weathering explained", url:"https://www.bgs.ac.uk/discovering-geology/earth-processes/erosion/", note:"How rock is broken down and carried away by water, wind and ice.", processes:["sedimentary","glacial"], bundled:true },
+  { title:"Sediment transport and deposition", url:"https://www.bgs.ac.uk/discovering-geology/earth-processes/sedimentary-processes/", note:"From grain to strata: how loose material is moved and laid down.", processes:["sedimentary"], bundled:true },
+  { title:"Diagenesis: turning sediment into rock", url:"https://www.scottishgeologytrust.org/geology/", note:"Compaction and cementation that lithify soft sediment over time.", processes:["sedimentary"], bundled:true },
+  { title:"Soil formation", url:"https://www.bgs.ac.uk/discovering-geology/earth-processes/soils/", note:"How weathered rock, organic matter and time build a soil profile.", processes:["sedimentary"], bundled:true },
+
+  // ---- Metamorphic ----
+  { title:"Metamorphism: rocks remade by heat and pressure", url:"https://www.bgs.ac.uk/discovering-geology/rocks/metamorphic-rocks/", note:"How existing rock recrystallises without melting.", processes:["metamorphic"], bundled:true },
+  { title:"Regional vs contact metamorphism", url:"https://www.scottishgeologytrust.org/geology/", note:"Mountain-scale versus heat-from-an-intrusion metamorphism.", processes:["metamorphic","igneous"], bundled:true },
+
+  // ---- Structure & tectonics: deformation, faulting, isostasy, earthquakes ----
+  { title:"Plate tectonics", url:"https://www.bgs.ac.uk/discovering-geology/earth-processes/plate-tectonics/", note:"The engine behind mountains, oceans, earthquakes and volcanoes.", processes:["structure"], bundled:true },
+  { title:"Folds and faults: rock deformation", url:"https://www.bgs.ac.uk/discovering-geology/earth-processes/", note:"How stress bends and breaks rock over geological time.", processes:["structure"], bundled:true },
+  { title:"Earthquakes", url:"https://www.bgs.ac.uk/discovering-geology/earth-hazards/earthquakes/", note:"What causes them, how they're measured, and UK seismicity.", processes:["structure"], bundled:true },
+  { title:"Isostasy and land uplift", url:"https://www.bgs.ac.uk/discovering-geology/", note:"Why land rebounds as ice melts — Scotland is still rising.", processes:["structure","glacial"], bundled:true },
+  { title:"Land subsidence and mass wasting", url:"https://www.bgs.ac.uk/discovering-geology/earth-hazards/landslides/", note:"Slope failure, landslides and ground that sinks or slips.", processes:["structure","sedimentary"], bundled:true },
+
+  // ---- Glacial & Ice Age ----
+  { title:"Glaciation and the last Ice Age", url:"https://www.bgs.ac.uk/discovering-geology/earth-processes/ice-age/", note:"How ice sheets carved Scotland's glens, corries and lochs.", processes:["glacial"], bundled:true },
+  { title:"Glacial landforms", url:"https://www.scottishgeologytrust.org/geology/", note:"Reading drumlins, moraines and erratics left behind by ice.", processes:["glacial"], bundled:true },
+
+  // ---- Fossils & life ----
+  { title:"Fossils and the history of life", url:"https://www.bgs.ac.uk/discovering-geology/fossils-and-geological-time/", note:"How life is preserved in rock and used to date strata.", processes:["fossils","sedimentary"], bundled:true },
+  { title:"Geological time and the fossil record", url:"https://www.scottishgeologytrust.org/geology/", note:"How fossils anchor the timescale and tell evolutionary stories.", processes:["fossils"], bundled:true },
+];
+
+
 window.KB = {
   regions: KB_REGIONS, timescale: KB_TIMESCALE, glossary: KB_GLOSSARY,
   people: KB_PEOPLE, peopleSource: KB_PEOPLE_SOURCE, resources: KB_RESOURCES,
   resourceLibrary: KB_RESOURCE_LIBRARY, processes: KB_PROCESSES,
+  processLibrary: KB_PROCESS_LIBRARY,
   matchGlossary: kbMatchGlossary,
 };

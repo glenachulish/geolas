@@ -521,6 +521,11 @@ body {
 .region-card-yours { border-color: var(--ochre); }
 .res-empty { padding: 11px 0; color: var(--muted); font-size: 14px; line-height: 1.5; list-style: none; }
 
+/* Stage 2: process-tag checkboxes in the "add resource" form */
+.proc-checks { display: flex; flex-wrap: wrap; gap: 8px 14px; margin-top: 4px; }
+.proc-check { display: inline-flex; align-items: center; gap: 6px; font-size: 14px; color: var(--ink); cursor: pointer; }
+.proc-check input { width: auto; margin: 0; }
+
 /* tighten the res-list inside an expanded region card */
 .region-detail .res-list { margin-top: 4px; }
 

@@ -691,6 +691,9 @@ function editNotes(site) {
 // generic small modal form
 function simpleForm(title, fields, onSubmit) {
   const fieldHtml = fields.map((f) => {
+    if (f.html !== undefined) {
+      return `<div class="field"><label>${esc(f.label)}</label>${f.html}</div>`;
+    }
     const v = esc(f.value ?? "");
     const input = f.type === "textarea"
       ? `<textarea id="sf-${f.id}" placeholder="${esc(f.placeholder ?? "")}">${v}</textarea>`
@@ -712,8 +715,12 @@ function simpleForm(title, fields, onSubmit) {
   const first = m.querySelector("input, textarea"); if (first) first.focus();
   m.querySelector("#sf-save").addEventListener("click", async () => {
     const vals = {};
-    fields.forEach((f) => { vals[f.id] = m.querySelector(`#sf-${f.id}`).value.trim(); });
-    try { const ok = await onSubmit(vals); if (ok !== false) close(); }
+    fields.forEach((f) => {
+      if (f.html !== undefined) return;            // non-input field, no value
+      const node = m.querySelector(`#sf-${f.id}`);
+      if (node) vals[f.id] = node.value.trim();
+    });
+    try { const ok = await onSubmit(vals, m); if (ok !== false) close(); }
     catch (e) { toast(`Failed: ${e.message}`); }
   });
 }
@@ -794,7 +801,8 @@ function showLibrary(tab) {
   map = null; // leaving the notebook map behind
   const tabs = [
     ["area", "By area"], ["process", "By process"], ["time", "By time"],
-    ["people", "People"], ["guides", "Guides"], ["resources", "Media & links"],
+    ["people", "People"], ["guides", "Guides"], ["processes", "Processes"],
+    ["resources", "Media & links"],
   ];
   view.innerHTML = `
     <div class="lib-head">
@@ -820,6 +828,7 @@ function renderLibraryTab(tab) {
   else if (tab === "time") body.innerHTML = libTimeHtml();
   else if (tab === "people") body.innerHTML = libPeopleHtml();
   else if (tab === "guides") body.innerHTML = libGuidesHtml();
+  else if (tab === "processes") { renderProcessResourcesTab(); return; }
   else if (tab === "resources") { renderResourcesTab(); return; }
   // wire region expanders
   body.querySelectorAll(".region-card").forEach((card) =>
@@ -934,6 +943,99 @@ function libResRow(e) {
         <span class="res-d">${esc(e.desc || "")}</span>
       </a>
     </li>`;
+}
+
+// =========================================================================
+//  PROCESSES  (Stage 2: editable; resources tagged to geological processes)
+//  Global (not per-site), category-free. Bundled starter resources from
+//  KB.processLibrary are fixed; the user's own (from /api/process-resources,
+//  or queued offline) merge in under each matching process, marked "yours"
+//  and removable. A resource can appear under several processes.
+// =========================================================================
+async function renderProcessResourcesTab() {
+  const body = document.getElementById("lib-body");
+  body.innerHTML = `<div class="loading"><div class="strata-spin"><span></span><span></span><span></span><span></span></div>Loading resources\u2026</div>`;
+
+  let mine = [];
+  try {
+    if (navigator.onLine) mine = await api("/process-resources");
+  } catch (e) { /* offline or error — fall back to queued only */ }
+  let queued = [];
+  try { queued = await window.GeolasQueue.listProcessResources(); } catch (e) {}
+
+  const bundled = window.KB.processLibrary || [];
+  const inProc = (item, key) => (item.processes || []).includes(key);
+
+  body.innerHTML = window.KB.processes.map((p) => {
+    const fixed = bundled.filter((i) => inProc(i, p.key)).map((i) =>
+      resRow(i.title, i.url, i.note, null, false));
+    const saved = mine.filter((m) => inProc(m, p.key)).map((m) =>
+      resRow(m.title, m.url, m.note, m.id, true, false, true));
+    const pend = queued.filter((q) => inProc(q, p.key)).map((q) =>
+      resRow(q.title, q.url, q.note, null, true, true));
+    const rows = fixed.join("") + saved.join("") + pend.join("");
+    return `
+      <section class="res-block">
+        <div class="res-block-head">
+          <h3 class="res-h">${esc(p.label)}</h3>
+          <button class="btn btn-sm btn-ghost proc-add" data-key="${p.key}" data-label="${esc(p.label)}">+ Add</button>
+        </div>
+        <ul class="res-list">${rows || `<li class="res-empty">No resources yet — tap “+ Add”.</li>`}</ul>
+      </section>`;
+  }).join("") +
+  `<p class="lib-source-foot">Starter resources point to the British Geological Survey and Scottish Geology Trust; descriptions are paraphrased. Resources marked \u201cyours\u201d are your own additions and can be tagged to more than one process.</p>`;
+
+  body.querySelectorAll(".proc-add").forEach((b) =>
+    b.addEventListener("click", () => openProcessResourceForm(b.dataset.key, b.dataset.label)));
+  body.querySelectorAll(".res-del").forEach((b) =>
+    b.addEventListener("click", () => deleteProcessResource(parseInt(b.dataset.id, 10))));
+}
+
+function openProcessResourceForm(presetKey, label) {
+  const checks = window.KB.processes.map((p) =>
+    `<label class="proc-check"><input type="checkbox" name="proc" value="${p.key}"${p.key === presetKey ? " checked" : ""}> ${esc(p.label)}</label>`
+  ).join("");
+  simpleForm(`Add a ${label} resource`, [
+    { id: "title", label: "Title" },
+    { id: "url", label: "URL (https://…)" },
+    { id: "note", label: "Note (optional)" },
+    { id: "_procs", label: "Processes", html: `<div class="proc-checks">${checks}</div>` },
+  ], async (vals, formEl) => {
+    const title = (vals.title || "").trim();
+    const url = (vals.url || "").trim();
+    if (!title) { toast("Please give the resource a title"); return false; }
+    if (!/^https?:\/\//i.test(url)) { toast("URL must start with http:// or https://"); return false; }
+    const processes = Array.from(
+      formEl.querySelectorAll('input[name="proc"]:checked')).map((c) => c.value);
+    if (!processes.length) { toast("Pick at least one process"); return false; }
+    const payload = { title, url, note: (vals.note || "").trim(), processes };
+    try {
+      if (navigator.onLine) {
+        await api("/process-resources", { method: "POST", body: JSON.stringify(payload),
+          headers: { "Content-Type": "application/json" } });
+        toast("Resource added");
+      } else {
+        await window.GeolasQueue.enqueueProcessResource(payload);
+        toast("Saved — will sync when online");
+      }
+    } catch (e) {
+      await window.GeolasQueue.enqueueProcessResource(payload);
+      toast("Saved offline — will sync later");
+    }
+    await refreshSyncBar();
+    renderProcessResourcesTab();
+    return true;
+  });
+}
+
+function deleteProcessResource(id) {
+  confirmDialog("Remove this resource?", "This removes your saved resource. The bundled starter resources can't be removed.", async () => {
+    try {
+      await api(`/process-resources/${id}`, { method: "DELETE" });
+      toast("Resource removed");
+      renderProcessResourcesTab();
+    } catch (e) { toast("Couldn't remove: " + e.message); }
+  });
 }
 
 // =========================================================================

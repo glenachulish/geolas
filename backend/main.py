@@ -158,10 +158,29 @@ CREATE TABLE IF NOT EXISTS resources (
     created_at  INTEGER NOT NULL
 );
 
+-- Stage 2: user-editable "Processes" library. Global (not tied to a site),
+-- category-free; each resource may carry several process tags (many-to-many
+-- via process_resource_tags). Brand-new tables, so purely additive.
+CREATE TABLE IF NOT EXISTS process_resources (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    title       TEXT    NOT NULL,
+    url         TEXT    NOT NULL,
+    note        TEXT    NOT NULL DEFAULT '',
+    client_uuid TEXT,
+    created_at  INTEGER NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS process_resource_tags (
+    resource_id INTEGER NOT NULL REFERENCES process_resources(id) ON DELETE CASCADE,
+    process_key TEXT    NOT NULL,
+    PRIMARY KEY (resource_id, process_key)
+);
+
 CREATE INDEX IF NOT EXISTS idx_samples_site    ON samples(site_id);
 CREATE INDEX IF NOT EXISTS idx_formations_site ON formations(site_id);
 CREATE INDEX IF NOT EXISTS idx_photos_site     ON photos(site_id);
 CREATE INDEX IF NOT EXISTS idx_resources_cat   ON resources(category);
+CREATE INDEX IF NOT EXISTS idx_prtags_key      ON process_resource_tags(process_key);
 """
 
 
@@ -184,6 +203,12 @@ def init_db() -> None:
         conn.execute(
             "CREATE UNIQUE INDEX IF NOT EXISTS idx_resources_client_uuid "
             "ON resources(client_uuid) WHERE client_uuid IS NOT NULL"
+        )
+        # Stage 2: process_resources is a brand-new table (no ALTER needed); its
+        # de-dupe index follows the same pattern as sites/resources.
+        conn.execute(
+            "CREATE UNIQUE INDEX IF NOT EXISTS idx_process_resources_client_uuid "
+            "ON process_resources(client_uuid) WHERE client_uuid IS NOT NULL"
         )
 
 
@@ -400,6 +425,21 @@ class ResourceIn(BaseModel):
     title: str
     url: str
     note: str = ""
+    client_uuid: Optional[str] = None
+
+
+# Stage 2: the six fixed glossary-cluster process keys (1:1 with KB.processes
+# on the frontend). The taxonomy is deliberately fixed — see project notes.
+VALID_PROCESS_KEYS = {
+    "igneous", "sedimentary", "metamorphic", "structure", "glacial", "fossils",
+}
+
+
+class ProcessResourceIn(BaseModel):
+    title: str
+    url: str
+    note: str = ""
+    processes: list[str] = []        # zero or more of VALID_PROCESS_KEYS
     client_uuid: Optional[str] = None
 
 
@@ -671,6 +711,71 @@ def add_resource(resource: ResourceIn) -> dict[str, Any]:
 def delete_resource(resource_id: int) -> dict[str, Any]:
     with _db() as conn:
         n = conn.execute("DELETE FROM resources WHERE id=?", (resource_id,)).rowcount
+    if not n:
+        raise HTTPException(404, "Resource not found")
+    return {"ok": True}
+
+
+# ---- process resources (Stage 2: user-added, tagged to geological processes) ----
+def _process_resource_row(conn: sqlite3.Connection, rid: int) -> dict[str, Any]:
+    row = dict(conn.execute(
+        "SELECT * FROM process_resources WHERE id=?", (rid,)).fetchone())
+    tags = conn.execute(
+        "SELECT process_key FROM process_resource_tags WHERE resource_id=? "
+        "ORDER BY process_key", (rid,)).fetchall()
+    row["processes"] = [t["process_key"] for t in tags]
+    return row
+
+
+@app.get("/api/process-resources")
+def list_process_resources() -> list[dict[str, Any]]:
+    with _db() as conn:
+        ids = [r["id"] for r in conn.execute(
+            "SELECT id FROM process_resources ORDER BY created_at").fetchall()]
+        return [_process_resource_row(conn, rid) for rid in ids]
+
+
+@app.post("/api/process-resources")
+def add_process_resource(resource: ProcessResourceIn) -> dict[str, Any]:
+    if not resource.title.strip() or not resource.url.strip():
+        raise HTTPException(400, "Title and URL are required")
+    keys = list(dict.fromkeys(resource.processes))  # de-dupe, preserve order
+    bad = [k for k in keys if k not in VALID_PROCESS_KEYS]
+    if bad:
+        raise HTTPException(400, f"Invalid process key(s): {', '.join(bad)}")
+
+    # Idempotency for offline sync, same pattern as sites/resources.
+    if resource.client_uuid:
+        with _db() as conn:
+            existing = conn.execute(
+                "SELECT id FROM process_resources WHERE client_uuid = ?",
+                (resource.client_uuid,)).fetchone()
+            if existing:
+                r = _process_resource_row(conn, existing["id"])
+                r["deduplicated"] = True
+                return r
+
+    with _db() as conn:
+        cur = conn.execute(
+            "INSERT INTO process_resources (title, url, note, client_uuid, created_at) "
+            "VALUES (?,?,?,?,?)",
+            (resource.title.strip(), resource.url.strip(),
+             resource.note.strip(), resource.client_uuid, int(time.time())),
+        )
+        rid = cur.lastrowid
+        for key in keys:
+            conn.execute(
+                "INSERT OR IGNORE INTO process_resource_tags (resource_id, process_key) "
+                "VALUES (?,?)", (rid, key))
+        return _process_resource_row(conn, rid)
+
+
+@app.delete("/api/process-resources/{resource_id}")
+def delete_process_resource(resource_id: int) -> dict[str, Any]:
+    # tags cascade via the FK (PRAGMA foreign_keys = ON in _db()).
+    with _db() as conn:
+        n = conn.execute(
+            "DELETE FROM process_resources WHERE id=?", (resource_id,)).rowcount
     if not n:
         raise HTTPException(404, "Resource not found")
     return {"ok": True}

@@ -11,9 +11,10 @@
 */
 (function () {
   const DB_NAME = "geolas-offline";
-  const DB_VERSION = 2;
+  const DB_VERSION = 3;
   const STORE = "pending_sites";
   const RES_STORE = "pending_resources";
+  const PROC_STORE = "pending_process_resources";
 
   function openDB() {
     return new Promise((resolve, reject) => {
@@ -25,6 +26,9 @@
         }
         if (!db.objectStoreNames.contains(RES_STORE)) {
           db.createObjectStore(RES_STORE, { keyPath: "client_uuid" });
+        }
+        if (!db.objectStoreNames.contains(PROC_STORE)) {
+          db.createObjectStore(PROC_STORE, { keyPath: "client_uuid" });
         }
       };
       req.onsuccess = () => resolve(req.result);
@@ -157,10 +161,40 @@
     return tx(RES_STORE, "readwrite", (store) => store.delete(client_uuid));
   }
 
-  // total pending items across both stores (for the sync bar count)
+  // ---- process resources (Stage 2: tagged to geological processes) ----
+  async function enqueueProcessResource({ title, url, note, processes }) {
+    const rec = {
+      client_uuid: uuid(),
+      title, url, note: note || "",
+      processes: Array.isArray(processes) ? processes : [],
+      created_at: Date.now(),
+      status: "pending",
+    };
+    await tx(PROC_STORE, "readwrite", (store) => store.put(rec));
+    return rec;
+  }
+
+  async function listProcessResources() {
+    return tx(PROC_STORE, "readonly", (store) =>
+      new Promise((res) => {
+        const out = [];
+        store.openCursor().onsuccess = (e) => {
+          const cur = e.target.result;
+          if (cur) { out.push(cur.value); cur.continue(); }
+          else res(out.sort((a, b) => a.created_at - b.created_at));
+        };
+      })
+    );
+  }
+
+  async function removeProcessResource(client_uuid) {
+    return tx(PROC_STORE, "readwrite", (store) => store.delete(client_uuid));
+  }
+
+  // total pending items across all stores (for the sync bar count)
   async function totalPending() {
-    const [s, r] = await Promise.all([list(), listResources()]);
-    return s.length + r.length;
+    const [s, r, p] = await Promise.all([list(), listResources(), listProcessResources()]);
+    return s.length + r.length + p.length;
   }
 
   // Sync all queued items. Calls onProgress(done, total) as it goes.
@@ -169,7 +203,8 @@
   async function syncAll(apiBase, onProgress) {
     const sites = await list();
     const resources = await listResources();
-    const total = sites.length + resources.length;
+    const procResources = await listProcessResources();
+    const total = sites.length + resources.length + procResources.length;
     let done = 0, failed = 0;
     const errors = [];
 
@@ -205,11 +240,32 @@
       if (onProgress) onProgress(done + failed, total);
     }
 
+    for (const rec of procResources) {
+      try {
+        const resp = await fetch(`${apiBase}/process-resources`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            title: rec.title, url: rec.url, note: rec.note,
+            processes: rec.processes || [], client_uuid: rec.client_uuid,
+          }),
+        });
+        if (!resp.ok) throw new Error(`create failed (${resp.status})`);
+        await removeProcessResource(rec.client_uuid);
+        done++;
+      } catch (e) {
+        failed++;
+        errors.push(`${rec.title}: ${e.message}`);
+      }
+      if (onProgress) onProgress(done + failed, total);
+    }
+
     return { done, failed, total, errors };
   }
 
   window.GeolasQueue = {
     enqueueSite, list, remove, count, pendingBytes, syncAll, uuid,
     enqueueResource, listResources, removeResource, totalPending,
+    enqueueProcessResource, listProcessResources, removeProcessResource,
   };
 })();
