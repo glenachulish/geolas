@@ -800,14 +800,14 @@ function showLibrary(tab) {
   setNav("library");
   map = null; // leaving the notebook map behind
   const tabs = [
-    ["area", "By area"], ["process", "By process"], ["time", "By time"],
+    ["area", "By area"], ["process", "Glossary"], ["time", "By time"],
     ["people", "People"], ["guides", "Guides"], ["processes", "Processes"],
     ["resources", "Media & links"],
   ];
   view.innerHTML = `
     <div class="lib-head">
       <h2>Geology library</h2>
-      <p class="lib-sub">Scotland's geological story — browse by area, by process, or through time. Tap any classic site on the notebook map to log it.</p>
+      <p class="lib-sub">Scotland's geological story — browse by area or through time, look up terms in the glossary, and keep links and resources for each geological process. Tap any classic site on the notebook map to log it.</p>
     </div>
     <div class="lib-tabs">
       ${tabs.map(([k, label]) =>

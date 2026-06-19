@@ -384,7 +384,7 @@ const KB_PROCESS_LIBRARY = [
   { title:"Erosion and weathering explained", url:"https://www.bgs.ac.uk/discovering-geology/earth-processes/erosion/", note:"How rock is broken down and carried away by water, wind and ice.", processes:["sedimentary","glacial"], bundled:true },
   { title:"Sediment transport and deposition", url:"https://www.bgs.ac.uk/discovering-geology/earth-processes/sedimentary-processes/", note:"From grain to strata: how loose material is moved and laid down.", processes:["sedimentary"], bundled:true },
   { title:"Diagenesis: turning sediment into rock", url:"https://www.scottishgeologytrust.org/geology/", note:"Compaction and cementation that lithify soft sediment over time.", processes:["sedimentary"], bundled:true },
-  { title:"Soil formation", url:"https://www.bgs.ac.uk/discovering-geology/earth-processes/soils/", note:"How weathered rock, organic matter and time build a soil profile.", processes:["sedimentary"], bundled:true },
+  { title:"Soil formation and parent material", url:"https://www.bgs.ac.uk/geology-projects/sustainable-soils/", note:"How weathered rock (the soil's parent material), organic matter and time build a soil.", processes:["sedimentary"], bundled:true },
 
   // ---- Metamorphic ----
   { title:"Metamorphism: rocks remade by heat and pressure", url:"https://www.bgs.ac.uk/discovering-geology/rocks/metamorphic-rocks/", note:"How existing rock recrystallises without melting.", processes:["metamorphic"], bundled:true },
