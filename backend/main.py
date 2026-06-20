@@ -176,11 +176,29 @@ CREATE TABLE IF NOT EXISTS process_resource_tags (
     PRIMARY KEY (resource_id, process_key)
 );
 
+-- Stage 3: per-site attachments. One table, discriminated by `kind`:
+--   'link' -> external URL (url set, filename/original empty)
+--   'doc'  -> uploaded file stored under UPLOAD_DIR (filename/original set,
+--             url empty). Same on-disk store and lifecycle as photos.
+-- Purely additive: new CREATE TABLE IF NOT EXISTS, no ALTER on existing tables.
+CREATE TABLE IF NOT EXISTS site_resources (
+    id          INTEGER PRIMARY KEY AUTOINCREMENT,
+    site_id     INTEGER NOT NULL REFERENCES sites(id) ON DELETE CASCADE,
+    kind        TEXT    NOT NULL,            -- 'link' | 'doc'
+    title       TEXT    NOT NULL,
+    url         TEXT    NOT NULL DEFAULT '', -- links only
+    filename    TEXT    NOT NULL DEFAULT '', -- docs only: stored name on disk
+    original    TEXT    NOT NULL DEFAULT '', -- docs only: original upload name
+    note        TEXT    NOT NULL DEFAULT '',
+    created_at  INTEGER NOT NULL
+);
+
 CREATE INDEX IF NOT EXISTS idx_samples_site    ON samples(site_id);
 CREATE INDEX IF NOT EXISTS idx_formations_site ON formations(site_id);
 CREATE INDEX IF NOT EXISTS idx_photos_site     ON photos(site_id);
 CREATE INDEX IF NOT EXISTS idx_resources_cat   ON resources(category);
 CREATE INDEX IF NOT EXISTS idx_prtags_key      ON process_resource_tags(process_key);
+CREATE INDEX IF NOT EXISTS idx_siteres_site    ON site_resources(site_id);
 """
 
 
@@ -345,6 +363,14 @@ async def fetch_geology(lat: float, lon: float) -> dict[str, Any]:
 # --- photo handling -------------------------------------------------------
 HEIC_EXTS = {".heic", ".heif"}
 ALLOWED_IMAGE_EXTS = {".jpg", ".jpeg", ".png", ".webp", ".gif"} | HEIC_EXTS
+# Stage 3 site documents. _save_upload already stores arbitrary bytes verbatim
+# (its passthrough branch), so no new storage logic is needed — just a guard.
+ALLOWED_DOC_EXTS = {".pdf", ".docx", ".txt"}
+DOC_MEDIA_TYPES = {
+    ".pdf": "application/pdf",
+    ".docx": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    ".txt": "text/plain",
+}
 
 
 def _save_upload(raw: bytes, original_name: str) -> str:
@@ -443,6 +469,12 @@ class ProcessResourceIn(BaseModel):
     client_uuid: Optional[str] = None
 
 
+class SiteLinkIn(BaseModel):
+    title: str
+    url: str
+    note: str = ""
+
+
 # --- app ------------------------------------------------------------------
 # NOTE: no root_path here, by design (see module docstring).
 app = FastAPI(title="Geòlas")
@@ -487,6 +519,14 @@ def get_site(site_id: int) -> dict[str, Any]:
         ).fetchall()]
         site["photos"] = [dict(r) for r in conn.execute(
             "SELECT * FROM photos WHERE site_id = ? ORDER BY created_at", (site_id,)
+        ).fetchall()]
+        site["links"] = [dict(r) for r in conn.execute(
+            "SELECT * FROM site_resources WHERE site_id = ? AND kind = 'link' "
+            "ORDER BY created_at", (site_id,)
+        ).fetchall()]
+        site["documents"] = [dict(r) for r in conn.execute(
+            "SELECT * FROM site_resources WHERE site_id = ? AND kind = 'doc' "
+            "ORDER BY created_at", (site_id,)
         ).fetchall()]
     return site
 
@@ -829,6 +869,89 @@ def photo_file(photo_id: int) -> FileResponse:
     if not path.exists():
         raise HTTPException(404, "File missing on disk")
     return FileResponse(path)
+
+
+# ---- per-site attachments: links and documents (Stage 3) ----
+@app.post("/api/sites/{site_id}/links")
+def add_site_link(site_id: int, link: SiteLinkIn) -> dict[str, Any]:
+    if not link.title.strip() or not link.url.strip():
+        raise HTTPException(400, "Title and URL are required")
+    with _db() as conn:
+        if not conn.execute("SELECT 1 FROM sites WHERE id=?", (site_id,)).fetchone():
+            raise HTTPException(404, "Site not found")
+        cur = conn.execute(
+            "INSERT INTO site_resources (site_id, kind, title, url, note, created_at) "
+            "VALUES (?,?,?,?,?,?)",
+            (site_id, "link", link.title.strip(), link.url.strip(),
+             link.note.strip(), int(time.time())),
+        )
+        row = conn.execute("SELECT * FROM site_resources WHERE id=?", (cur.lastrowid,)).fetchone()
+    return dict(row)
+
+
+@app.post("/api/sites/{site_id}/documents")
+async def add_site_document(
+    site_id: int,
+    file: UploadFile = File(...),
+    title: str = Form(""),
+    note: str = Form(""),
+) -> dict[str, Any]:
+    ext = Path(file.filename or "").suffix.lower()
+    if ext not in ALLOWED_DOC_EXTS:
+        raise HTTPException(400, f"Unsupported document type: {ext or '(none)'}")
+    with _db() as conn:
+        if not conn.execute("SELECT 1 FROM sites WHERE id=?", (site_id,)).fetchone():
+            raise HTTPException(404, "Site not found")
+    raw = await file.read()
+    stored = _save_upload(raw, file.filename or "upload")
+    original = file.filename or "upload"
+    label = title.strip() or original
+    with _db() as conn:
+        cur = conn.execute(
+            "INSERT INTO site_resources "
+            "(site_id, kind, title, filename, original, note, created_at) "
+            "VALUES (?,?,?,?,?,?,?)",
+            (site_id, "doc", label, stored, original, note.strip(), int(time.time())),
+        )
+        row = conn.execute("SELECT * FROM site_resources WHERE id=?", (cur.lastrowid,)).fetchone()
+    return dict(row)
+
+
+@app.get("/api/site-resources/{resource_id}/file")
+def site_resource_file(resource_id: int) -> FileResponse:
+    with _db() as conn:
+        row = conn.execute(
+            "SELECT filename, original FROM site_resources WHERE id=? AND kind='doc'",
+            (resource_id,),
+        ).fetchone()
+    if not row:
+        raise HTTPException(404, "Document not found")
+    path = UPLOAD_DIR / row["filename"]
+    if not path.exists():
+        raise HTTPException(404, "File missing on disk")
+    ext = Path(row["original"]).suffix.lower()
+    return FileResponse(
+        path,
+        media_type=DOC_MEDIA_TYPES.get(ext, "application/octet-stream"),
+        filename=row["original"] or "document",
+    )
+
+
+@app.delete("/api/site-resources/{resource_id}")
+def delete_site_resource(resource_id: int) -> dict[str, Any]:
+    with _db() as conn:
+        row = conn.execute(
+            "SELECT kind, filename FROM site_resources WHERE id=?", (resource_id,)
+        ).fetchone()
+        if not row:
+            raise HTTPException(404, "Resource not found")
+        conn.execute("DELETE FROM site_resources WHERE id=?", (resource_id,))
+    if row["kind"] == "doc" and row["filename"]:
+        try:
+            (UPLOAD_DIR / row["filename"]).unlink(missing_ok=True)
+        except Exception:
+            pass
+    return {"ok": True}
 
 
 # --- static frontend ------------------------------------------------------

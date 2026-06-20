@@ -306,6 +306,7 @@ body {
 .row-main { min-width: 0; }
 .row-main .row-title { font-weight: 600; }
 .row-main .row-sub { font-size: 13px; color: var(--muted); margin-top: 2px; }
+.row-main .row-link-url { word-break: break-all; }
 .row-main .row-note { font-size: 14px; color: var(--ink-soft); margin-top: 5px; white-space: pre-wrap; }
 
 /* photos */

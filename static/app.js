@@ -508,6 +508,17 @@ async function showDetail(id) {
       <input type="file" id="photo-input" accept="image/*,.heic,.heif" hidden />
     </section>
 
+    <section class="section">
+      <div class="section-head"><h3>Links</h3><button class="btn btn-sm btn-ghost" id="add-link">Add link</button></div>
+      <div class="rows" id="links"></div>
+    </section>
+
+    <section class="section">
+      <div class="section-head"><h3>Documents</h3><button class="btn btn-sm btn-ghost" id="add-document">Add document</button></div>
+      <div class="rows" id="documents"></div>
+      <input type="file" id="document-input" accept=".pdf,.docx,.txt" hidden />
+    </section>
+
     <hr class="strata-rule" />
     <div class="modal-actions" style="justify-content:flex-start">
       <button class="btn btn-danger" id="delete-site">Delete this site</button>
@@ -518,6 +529,8 @@ async function showDetail(id) {
   renderSamples(site);
   renderFormations(site);
   renderPhotos(site);
+  renderLinks(site);
+  renderDocuments(site);
 
   // explainer links into the library
   view.querySelectorAll(".explain [data-region]").forEach((b) =>
@@ -561,6 +574,30 @@ async function showDetail(id) {
     toast("Uploading photo…");
     try { await api(`/sites/${id}/photos`, { method: "POST", body: fd }); toast("Photo added"); showDetail(id); }
     catch (e) { toast(`Upload failed: ${e.message}`); }
+  });
+
+  document.getElementById("add-link").addEventListener("click", () =>
+    simpleForm("Add link", [
+      { id: "title", label: "Title", placeholder: "e.g. BGS Lexicon entry" },
+      { id: "url", label: "URL", placeholder: "https://…" },
+      { id: "note", label: "Note", type: "textarea" },
+    ], async (vals) => {
+      if (!vals.title || !vals.url) { toast("Link needs a title and URL"); return false; }
+      await api(`/sites/${id}/links`, j(vals)); toast("Link added"); showDetail(id); return true;
+    }));
+
+  const docInput = document.getElementById("document-input");
+  document.getElementById("add-document").addEventListener("click", () => docInput.click());
+  docInput.addEventListener("change", async () => {
+    const file = docInput.files[0];
+    if (!file) return;
+    const fd = new FormData();
+    fd.append("file", file);
+    fd.append("title", file.name);
+    toast("Uploading document…");
+    try { await api(`/sites/${id}/documents`, { method: "POST", body: fd }); toast("Document added"); showDetail(id); }
+    catch (e) { toast(`Upload failed: ${e.message}`); }
+    docInput.value = "";
   });
 
   document.getElementById("delete-site").addEventListener("click", () => {
@@ -676,6 +713,50 @@ function renderPhotos(site) {
       await api(`/photos/${p.id}`, { method: "DELETE" }); toast("Photo removed"); showDetail(site.id);
     });
     box.appendChild(card);
+  });
+}
+
+function renderLinks(site) {
+  const box = document.getElementById("links");
+  const links = site.links || [];
+  if (!links.length) { box.innerHTML = `<p class="row-empty">No links yet.</p>`; return; }
+  box.innerHTML = "";
+  links.forEach((l) => {
+    const row = el(`<div class="row">
+      <div class="row-main">
+        <div class="row-title"><a href="${esc(l.url)}" target="_blank" rel="noopener noreferrer">${esc(l.title)}</a></div>
+        <div class="row-sub row-link-url">${esc(l.url)}</div>
+        ${l.note ? `<div class="row-note">${esc(l.note)}</div>` : ""}
+      </div>
+      <button class="btn btn-sm btn-danger">Delete</button>
+    </div>`);
+    row.querySelector("button").addEventListener("click", async () => {
+      await api(`/site-resources/${l.id}`, { method: "DELETE" }); toast("Link removed"); showDetail(site.id);
+    });
+    box.appendChild(row);
+  });
+}
+
+function renderDocuments(site) {
+  const box = document.getElementById("documents");
+  const docs = site.documents || [];
+  if (!docs.length) { box.innerHTML = `<p class="row-empty">No documents yet.</p>`; return; }
+  box.innerHTML = "";
+  docs.forEach((d) => {
+    // relative URL — prefix-safe, like photo files
+    const href = `${API}/site-resources/${d.id}/file`;
+    const row = el(`<div class="row">
+      <div class="row-main">
+        <div class="row-title"><a href="${href}" target="_blank" rel="noopener noreferrer">${esc(d.title || d.original)}</a></div>
+        ${d.original && d.original !== d.title ? `<div class="row-sub">${esc(d.original)}</div>` : ""}
+        ${d.note ? `<div class="row-note">${esc(d.note)}</div>` : ""}
+      </div>
+      <button class="btn btn-sm btn-danger">Delete</button>
+    </div>`);
+    row.querySelector("button").addEventListener("click", async () => {
+      await api(`/site-resources/${d.id}`, { method: "DELETE" }); toast("Document removed"); showDetail(site.id);
+    });
+    box.appendChild(row);
   });
 }
 
