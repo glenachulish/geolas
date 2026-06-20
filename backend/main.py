@@ -930,11 +930,19 @@ def site_resource_file(resource_id: int) -> FileResponse:
     if not path.exists():
         raise HTTPException(404, "File missing on disk")
     ext = Path(row["original"]).suffix.lower()
-    return FileResponse(
-        path,
-        media_type=DOC_MEDIA_TYPES.get(ext, "application/octet-stream"),
-        filename=row["original"] or "document",
-    )
+    media_type = DOC_MEDIA_TYPES.get(ext, "application/octet-stream")
+    name = row["original"] or "document"
+    # Browsers can render PDFs and plain text inline; everything else (e.g.
+    # .docx) has no native viewer, so force a download with its real name.
+    # For inline types we still set the filename via Content-Disposition so a
+    # "Save as" keeps the original name, but use disposition=inline so a click
+    # opens the file in the browser instead of downloading it.
+    inline = ext in {".pdf", ".txt"}
+    disposition = "inline" if inline else "attachment"
+    headers = {
+        "Content-Disposition": f'{disposition}; filename="{name}"'
+    }
+    return FileResponse(path, media_type=media_type, headers=headers)
 
 
 @app.delete("/api/site-resources/{resource_id}")
