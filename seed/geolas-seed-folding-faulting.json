@@ -1,0 +1,403 @@
+{
+  "category": "Folding and Faulting",
+  "source": "Geological Society of London — 100 Great Geosites (Folding and Faulting category)",
+  "note": "All 10 sites new; none collide by name with existing 28. Glencoul kept distinct from existing 'Assynt — Knockan Crag' (separate locality ~15km north on the same thrust belt).",
+  "sites": [
+    {
+      "name": "Glencoul — Moine Thrust transect",
+      "lat": 58.2606,
+      "lon": -4.9747,
+      "fetch_geology": true,
+      "notes": "The twin sea lochs of Glencoul and Glendhu in Sutherland cut a world-famous cross-section through the Moine Thrust Belt — the structure that first proved, in the 1880s, that older rocks could be pushed bodily over younger ones along a near-horizontal thrust. The 'Glencoul Thrust' carries a slice of Lewisian gneiss over Cambrian quartzites and limestones, and the relationships are laid bare on the loch sides. A keystone locality in the history of structural geology and part of the North West Highlands UNESCO Geopark.",
+      "formations": [
+        {
+          "name": "Lewisian gneiss (thrust sheet)",
+          "description": "Archaean–Palaeoproterozoic basement gneiss carried westward over younger strata along the Glencoul Thrust."
+        },
+        {
+          "name": "Cambrian quartzite & Durness Group",
+          "description": "Quartzites and dolomitic limestones of the foreland sequence beneath the thrust, locally overridden."
+        },
+        {
+          "name": "Mylonite (thrust-zone rock)",
+          "description": "Intensely sheared, finely banded rock formed by ductile deformation along the thrust plane."
+        }
+      ],
+      "resources": [
+        {
+          "category": "websites",
+          "title": "GeolSoc — Glencoul",
+          "url": "https://www.geolsoc.org.uk/GeositesGlencoul",
+          "note": "100 Great Geosites entry."
+        },
+        {
+          "category": "websites",
+          "title": "North West Highlands UNESCO Geopark",
+          "url": "https://www.nwhgeopark.com/",
+          "note": "Geopark covering the Moine Thrust Belt and Assynt window."
+        },
+        {
+          "category": "societies",
+          "title": "Edinburgh Geological Society",
+          "url": "https://www.edinburghgeolsoc.org/",
+          "note": "Highland thrust-belt excursions and guides."
+        },
+        {
+          "category": "videos",
+          "title": "Moine Thrust Belt (YouTube search)",
+          "url": "https://www.youtube.com/results?search_query=moine+thrust+belt+assynt",
+          "note": "Field overviews of the thrust geology."
+        }
+      ],
+      "photos": []
+    },
+    {
+      "name": "The Muidhe — Glenfinnan folds",
+      "lat": 56.8717,
+      "lon": -5.5181,
+      "fetch_geology": true,
+      "notes": "A roadside coastal locality about 4 km west of Glenfinnan in Lochaber, where Moine schists and psammites are intensely deformed. The outcrops show superb tight folding and pull-apart (boudinage) structures, where stiffer layers have been stretched and broken into sausage-like segments while softer layers flowed around them. A compact, accessible demonstration of ductile deformation in the Caledonian metamorphic rocks of the Highlands.",
+      "formations": [
+        {
+          "name": "Moine psammite & schist",
+          "description": "Neoproterozoic metamorphosed sandstones and pelites of the Moine Supergroup, folded and metamorphosed during the Caledonian orogeny."
+        },
+        {
+          "name": "Boudinage structures",
+          "description": "Pull-apart segmentation of competent layers stretched during deformation, with necking and separation."
+        }
+      ],
+      "resources": [
+        {
+          "category": "websites",
+          "title": "GeolSoc — The Muidhe",
+          "url": "https://www.geolsoc.org.uk/GeositesMuidhe",
+          "note": "100 Great Geosites entry."
+        },
+        {
+          "category": "societies",
+          "title": "Edinburgh Geological Society",
+          "url": "https://www.edinburghgeolsoc.org/",
+          "note": "Moine deformation field resources."
+        },
+        {
+          "category": "videos",
+          "title": "Boudinage and folding (YouTube search)",
+          "url": "https://www.youtube.com/results?search_query=boudinage+folding+moine+schist",
+          "note": "Explanations of folding and boudinage structures."
+        }
+      ],
+      "photos": []
+    },
+    {
+      "name": "Millook Haven — chevron folds",
+      "lat": 50.7717,
+      "lon": -4.5733,
+      "fetch_geology": true,
+      "notes": "A small north Cornwall cove with some of the most photographed folds in Britain — sharp, zig-zag 'chevron' folds in interbedded sandstones and shales. The rocks were laid down as deep-water turbidites and then buckled during the Variscan mountain-building, the angular chevron shape being characteristic of strongly layered sequences folded under compression. Part of the Crackington Formation coastal section running toward Bude and Hartland. People's Choice winner for the category.",
+      "formations": [
+        {
+          "name": "Crackington Formation (Culm)",
+          "description": "Carboniferous turbidite sequence of interbedded sandstone and shale, deposited in deep water and later folded."
+        },
+        {
+          "name": "Chevron folds",
+          "description": "Angular, near-symmetrical folds with straight limbs and sharp hinges, typical of well-layered rocks under compression."
+        }
+      ],
+      "resources": [
+        {
+          "category": "websites",
+          "title": "GeolSoc — Millook Haven",
+          "url": "https://www.geolsoc.org.uk/GeositesMillook",
+          "note": "100 Great Geosites entry; People's Choice winner."
+        },
+        {
+          "category": "societies",
+          "title": "Ussher Society (SW England geology)",
+          "url": "https://www.ussher.org.uk/",
+          "note": "Devon & Cornwall geological society and field guides."
+        },
+        {
+          "category": "videos",
+          "title": "Millook Haven chevron folds (YouTube search)",
+          "url": "https://www.youtube.com/results?search_query=millook+haven+chevron+folds",
+          "note": "Field footage of the chevron folding."
+        }
+      ],
+      "photos": []
+    },
+    {
+      "name": "South Stack — Anglesey folds",
+      "lat": 53.3047,
+      "lon": -4.6997,
+      "fetch_geology": true,
+      "notes": "The cliffs around South Stack lighthouse on Holy Island, Anglesey, expose dramatically folded Precambrian metasediments. The site is celebrated for showing how small parasitic folds develop on the limbs and 'backs' of much larger folds — a textbook illustration of fold hierarchy in deformed strata. The rocks belong to the South Stack Formation of the Monian Supergroup, deformed during early Palaeozoic events. A staircase descent gives close access below the lighthouse.",
+      "formations": [
+        {
+          "name": "South Stack Formation (Monian Supergroup)",
+          "description": "Precambrian–early Cambrian quartzites and pelites, strongly folded; part of Anglesey's Mona Complex."
+        },
+        {
+          "name": "Parasitic folds",
+          "description": "Smaller-order folds developed on the limbs of larger folds, recording the same deformation at multiple scales."
+        }
+      ],
+      "resources": [
+        {
+          "category": "websites",
+          "title": "GeolSoc — South Stack Formation, Anglesey",
+          "url": "https://www.geolsoc.org.uk/GeositesSouthStackAnglesey",
+          "note": "100 Great Geosites entry."
+        },
+        {
+          "category": "websites",
+          "title": "GeoMôn UNESCO Global Geopark",
+          "url": "https://www.geomon.co.uk/",
+          "note": "Anglesey geopark covering the Mona Complex and South Stack."
+        },
+        {
+          "category": "videos",
+          "title": "South Stack Anglesey folds (YouTube search)",
+          "url": "https://www.youtube.com/results?search_query=south+stack+anglesey+folds+geology",
+          "note": "Field footage of the folded cliffs."
+        }
+      ],
+      "photos": []
+    },
+    {
+      "name": "Loch Monar — polyphase folding",
+      "lat": 57.4031,
+      "lon": -5.0892,
+      "fetch_geology": true,
+      "notes": "A remote Inverness-shire loch that became a 'type area' for understanding polyphase folding — rocks folded more than once, with later folds refolding earlier ones into complex interference patterns. It was here in the 1950s that John Ramsay worked out the protocols still used to describe and unravel such superimposed structures, making it a landmark site in the development of modern structural geology. The rocks are Moine metasediments of the Caledonian belt.",
+      "formations": [
+        {
+          "name": "Moine metasediments",
+          "description": "Neoproterozoic psammites and pelites metamorphosed and repeatedly folded during the Caledonian orogeny."
+        },
+        {
+          "name": "Fold interference patterns",
+          "description": "Dome-and-basin and hook-shaped outcrop patterns produced where later folds refold earlier ones."
+        }
+      ],
+      "resources": [
+        {
+          "category": "websites",
+          "title": "GeolSoc — Loch Monar Polyphase Folding",
+          "url": "https://www.geolsoc.org.uk/GeositesLochMonar",
+          "note": "100 Great Geosites entry."
+        },
+        {
+          "category": "societies",
+          "title": "Edinburgh Geological Society",
+          "url": "https://www.edinburghgeolsoc.org/",
+          "note": "Highland structural-geology resources."
+        },
+        {
+          "category": "videos",
+          "title": "Polyphase folding interference (YouTube search)",
+          "url": "https://www.youtube.com/results?search_query=polyphase+folding+interference+patterns",
+          "note": "Explanations of refolded folds and interference patterns."
+        }
+      ],
+      "photos": []
+    },
+    {
+      "name": "Broadhaven — Variscan fold-thrust",
+      "lat": 51.7783,
+      "lon": -5.1083,
+      "fetch_geology": true,
+      "notes": "The Pembrokeshire sea cliffs between Little Haven and Broadhaven preserve the front of the Variscan mountain belt — a rare, well-exposed example of an orogenic front that has escaped erosion. In Upper Carboniferous sandstones and shales, asymmetric north-facing folds are cut by northward-directed thrusts; classic work by Williams and Chapman (1983) showed here that the folds form in response to displacement on the thrusts. Best visited at low tide. A classic teaching site for fold–thrust relationships.",
+      "formations": [
+        {
+          "name": "Upper Carboniferous sandstone & shale",
+          "description": "Fluvio-deltaic sandstones and shales (Coal Measures-aged) deformed at the Variscan front."
+        },
+        {
+          "name": "Fold-thrust structures",
+          "description": "Asymmetric north-facing folds cut by northward-directed thrust faults, recording the propagation of the orogenic front."
+        }
+      ],
+      "resources": [
+        {
+          "category": "websites",
+          "title": "GeolSoc — Folding at Broadhaven",
+          "url": "https://www.geolsoc.org.uk/GeositesBroadhaven",
+          "note": "100 Great Geosites entry."
+        },
+        {
+          "category": "websites",
+          "title": "Pembrokeshire Coast National Park",
+          "url": "https://www.pembrokeshirecoast.wales/",
+          "note": "Access and coastal geology information."
+        },
+        {
+          "category": "videos",
+          "title": "Variscan fold thrust Pembrokeshire (YouTube search)",
+          "url": "https://www.youtube.com/results?search_query=variscan+fold+thrust+pembrokeshire",
+          "note": "Field footage of the fold-thrust structures."
+        }
+      ],
+      "photos": []
+    },
+    {
+      "name": "Outer Isles Fault — Lochmaddy pseudotachylytes",
+      "lat": 57.5953,
+      "lon": -7.1561,
+      "fetch_geology": true,
+      "notes": "Near Lochmaddy on North Uist are some of the world's finest exposures of pseudotachylyte — dark, glassy veins of rock that was melted by the friction of ancient earthquakes along the Outer Isles Fault (a major Caledonian thrust). The melt was injected into the surrounding Lewisian gneiss and froze in place, preserving a fossil record of seismic slip. A site of international importance for understanding earthquake mechanics in the deep crust.",
+      "formations": [
+        {
+          "name": "Lewisian gneiss (host rock)",
+          "description": "Archaean basement gneiss of the Outer Hebrides forming the fault's host rock."
+        },
+        {
+          "name": "Pseudotachylyte",
+          "description": "Dark glassy/microcrystalline rock formed by frictional melting during seismic slip on the Outer Isles Fault, injected as veins into the gneiss."
+        }
+      ],
+      "resources": [
+        {
+          "category": "websites",
+          "title": "GeolSoc — Outer Isles Fault and Pseudotachylytes",
+          "url": "https://www.geolsoc.org.uk/GeositesOuterIslesFault",
+          "note": "100 Great Geosites entry."
+        },
+        {
+          "category": "societies",
+          "title": "Edinburgh Geological Society",
+          "url": "https://www.edinburghgeolsoc.org/",
+          "note": "Hebridean basement and fault-rock resources."
+        },
+        {
+          "category": "videos",
+          "title": "Pseudotachylyte earthquake rock (YouTube search)",
+          "url": "https://www.youtube.com/results?search_query=pseudotachylyte+fault+earthquake+rock",
+          "note": "Explanations of pseudotachylyte and fossil earthquakes."
+        }
+      ],
+      "photos": []
+    },
+    {
+      "name": "Cromer — glacio-tectonic folds",
+      "lat": 52.9417,
+      "lon": 1.3017,
+      "fetch_geology": true,
+      "notes": "The soft cliffs of the north Norfolk coast near Cromer show spectacular glacio-tectonic folds — layers of sand, gravel and chalk-rich till crumpled and thrust not by deep-earth forces but by the bulldozing pressure of advancing Pleistocene ice sheets. Because the cliffs are soft and constantly eroding, the exposures change with every storm, so each visit can reveal new structures. A vivid demonstration that 'folding and faulting' can be driven by ice as well as by tectonics.",
+      "formations": [
+        {
+          "name": "Pleistocene glacial till & outwash",
+          "description": "Diamicton (till), sands and gravels deposited and then deformed by Quaternary ice sheets."
+        },
+        {
+          "name": "Glacio-tectonic folds & thrusts",
+          "description": "Folds and thrust faults produced by the push of advancing ice rather than by deep tectonic stress."
+        }
+      ],
+      "resources": [
+        {
+          "category": "websites",
+          "title": "GeolSoc — Cromer Glacio-tectonic folds",
+          "url": "https://www.geolsoc.org.uk/GeositesCromer",
+          "note": "100 Great Geosites entry."
+        },
+        {
+          "category": "societies",
+          "title": "Geologists' Association",
+          "url": "https://geologistsassociation.org.uk/",
+          "note": "East Anglian Quaternary field guides."
+        },
+        {
+          "category": "videos",
+          "title": "Glaciotectonic folds Norfolk (YouTube search)",
+          "url": "https://www.youtube.com/results?search_query=glaciotectonic+folds+norfolk+cromer",
+          "note": "Field footage of ice-pushed structures."
+        }
+      ],
+      "photos": []
+    },
+    {
+      "name": "Kilve — Liassic faults and folds",
+      "lat": 51.1933,
+      "lon": -3.2231,
+      "fetch_geology": true,
+      "notes": "The foreshore at Kilve on the Somerset coast exposes Lower Jurassic (Lias) limestones and shales that are famous for small-scale faults and the folds associated with them — perfect, accessible micro-examples for learning how faulting and folding relate. The rhythmic limestone–shale bedding makes the structures easy to read, and the flat wave-cut platform lets you walk across them. A long-standing teaching and field-trip locality on the Bristol Channel.",
+      "formations": [
+        {
+          "name": "Blue Lias (Lower Jurassic)",
+          "description": "Rhythmically bedded marine limestones and shales of early Jurassic age, rich in ammonites."
+        },
+        {
+          "name": "Fault-related folds",
+          "description": "Small-scale normal faults and the drag/fault-propagation folds developed alongside them."
+        }
+      ],
+      "resources": [
+        {
+          "category": "websites",
+          "title": "GeolSoc — Kilve",
+          "url": "https://www.geolsoc.org.uk/GeositesKilve",
+          "note": "100 Great Geosites entry."
+        },
+        {
+          "category": "societies",
+          "title": "Geologists' Association",
+          "url": "https://geologistsassociation.org.uk/",
+          "note": "Bristol Channel Lias field guides."
+        },
+        {
+          "category": "videos",
+          "title": "Kilve beach geology faults (YouTube search)",
+          "url": "https://www.youtube.com/results?search_query=kilve+beach+geology+faults+folds",
+          "note": "Field footage of the foreshore structures."
+        }
+      ],
+      "photos": []
+    },
+    {
+      "name": "Clashach Cove — Hopeman Sandstone fault",
+      "lat": 57.7053,
+      "lon": -3.4083,
+      "fetch_geology": true,
+      "notes": "A cove on the Moray coast east of Hopeman, cut into the Permian Hopeman Sandstone — wind-blown desert dune sandstone with large-scale cross-bedding. A well-exposed fault runs through the cove, its polished plane carrying slickenlines that record more than one phase of movement, and the dune beds show striking soft-sediment ('post-depositional') deformation. The sandstone is a prized building stone (used in the National Museum of Scotland and elsewhere) and a noted reservoir analogue. Access is tidal — a dropping spring tide is best.",
+      "formations": [
+        {
+          "name": "Hopeman Sandstone (Permian)",
+          "description": "Aeolian (desert dune) sandstone with large-scale cross-bedding and soft-sediment deformation; a building stone and oil/gas reservoir analogue."
+        },
+        {
+          "name": "Clashach Cove Fault",
+          "description": "An E–W normal fault with a ~30 cm iron-stained gouge core and slickenlines recording Jurassic and later Cenozoic movement."
+        }
+      ],
+      "resources": [
+        {
+          "category": "websites",
+          "title": "GeolSoc — Clashach",
+          "url": "https://www.geolsoc.org.uk/GeositesClashachMoray",
+          "note": "100 Great Geosites entry."
+        },
+        {
+          "category": "websites",
+          "title": "Scottish Geology Trust — Clashach/Covesea",
+          "url": "https://geosites.scottishgeologytrust.org/geosite/3010",
+          "note": "SGT geosite page with access notes and Permian desert palaeoenvironment."
+        },
+        {
+          "category": "societies",
+          "title": "Aberdeen Geological Society",
+          "url": "https://www.aberdeengeolsoc.org.uk/",
+          "note": "Moray coast field excursions."
+        },
+        {
+          "category": "videos",
+          "title": "Clashach Cove Hopeman Sandstone (YouTube search)",
+          "url": "https://www.youtube.com/results?search_query=clashach+cove+hopeman+sandstone+fault",
+          "note": "Field footage of the cove, fault and dune bedding."
+        }
+      ],
+      "photos": []
+    }
+  ]
+}
