@@ -317,6 +317,8 @@ body {
 }
 .photo img { display: block; width: 100%; height: 140px; object-fit: cover; }
 .photo .cap { padding: 7px 9px; font-size: 12.5px; color: var(--ink-soft); }
+.photo .cap .photo-src { color: var(--rust-deep); text-decoration: none; white-space: nowrap; }
+.photo .cap .photo-src:hover { text-decoration: underline; }
 .photo .photo-del {
   position: absolute; top: 6px; right: 6px;
   background: rgba(43,37,32,.78); color: #fff; border: none; cursor: pointer;

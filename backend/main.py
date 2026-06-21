@@ -140,9 +140,12 @@ CREATE TABLE IF NOT EXISTS formations (
 CREATE TABLE IF NOT EXISTS photos (
     id          INTEGER PRIMARY KEY AUTOINCREMENT,
     site_id     INTEGER NOT NULL REFERENCES sites(id) ON DELETE CASCADE,
-    filename    TEXT    NOT NULL,   -- stored name on disk, under UPLOAD_DIR
-    original    TEXT    NOT NULL,   -- original filename as uploaded
+    filename    TEXT    NOT NULL DEFAULT '',   -- stored name on disk (file photos)
+    original    TEXT    NOT NULL DEFAULT '',   -- original filename as uploaded
     caption     TEXT    NOT NULL DEFAULT '',
+    -- Stage 4: a photo is EITHER a file (filename set, url empty) OR a hot-linked
+    -- remote image (url set, filename empty). url renders directly; not proxied.
+    url         TEXT    NOT NULL DEFAULT '',
     created_at  INTEGER NOT NULL
 );
 
@@ -211,6 +214,12 @@ def init_db() -> None:
         cols = {r["name"] for r in conn.execute("PRAGMA table_info(sites)").fetchall()}
         if "client_uuid" not in cols:
             conn.execute("ALTER TABLE sites ADD COLUMN client_uuid TEXT")
+        # Stage 4 migration: older databases have a photos table without `url`.
+        # Add it if missing (CREATE TABLE IF NOT EXISTS won't alter an existing
+        # table). Existing rows default to url='' i.e. file-backed — unchanged.
+        photo_cols = {r["name"] for r in conn.execute("PRAGMA table_info(photos)").fetchall()}
+        if "url" not in photo_cols:
+            conn.execute("ALTER TABLE photos ADD COLUMN url TEXT NOT NULL DEFAULT ''")
         # Create the unique index AFTER the column is guaranteed to exist (on
         # both fresh and migrated DBs). Doing it inside SCHEMA would run before
         # the ALTER on an old DB and crash startup.
@@ -845,6 +854,32 @@ async def add_photo(
     return dict(row)
 
 
+class PhotoUrlIn(BaseModel):
+    url: str
+    caption: str = ""
+
+
+@app.post("/api/sites/{site_id}/photo-url")
+def add_photo_url(site_id: int, body: PhotoUrlIn) -> dict[str, Any]:
+    """Attach a hot-linked remote image to a site. We store the URL and render
+    it directly in the gallery — nothing is downloaded to the Pi. Only the URL
+    scheme is validated; we do NOT fetch or verify the image (that would only
+    work online anyway, and proxying was explicitly out of scope for Stage 4)."""
+    url = (body.url or "").strip()
+    if not (url.startswith("http://") or url.startswith("https://")):
+        raise HTTPException(400, "Photo URL must start with http:// or https://")
+    with _db() as conn:
+        if not conn.execute("SELECT 1 FROM sites WHERE id=?", (site_id,)).fetchone():
+            raise HTTPException(404, "Site not found")
+        cur = conn.execute(
+            "INSERT INTO photos (site_id, filename, original, caption, url, created_at) "
+            "VALUES (?,?,?,?,?,?)",
+            (site_id, "", "", body.caption.strip(), url, int(time.time())),
+        )
+        row = conn.execute("SELECT * FROM photos WHERE id=?", (cur.lastrowid,)).fetchone()
+    return dict(row)
+
+
 @app.delete("/api/photos/{photo_id}")
 def delete_photo(photo_id: int) -> dict[str, Any]:
     with _db() as conn:
@@ -852,10 +887,12 @@ def delete_photo(photo_id: int) -> dict[str, Any]:
         if not row:
             raise HTTPException(404, "Photo not found")
         conn.execute("DELETE FROM photos WHERE id=?", (photo_id,))
-    try:
-        (UPLOAD_DIR / row["filename"]).unlink(missing_ok=True)
-    except Exception:
-        pass
+    # URL-photos have no on-disk file; only unlink when a filename is present.
+    if row["filename"]:
+        try:
+            (UPLOAD_DIR / row["filename"]).unlink(missing_ok=True)
+        except Exception:
+            pass
     return {"ok": True}
 
 
@@ -865,6 +902,9 @@ def photo_file(photo_id: int) -> FileResponse:
         row = conn.execute("SELECT filename FROM photos WHERE id=?", (photo_id,)).fetchone()
     if not row:
         raise HTTPException(404, "Photo not found")
+    if not row["filename"]:
+        # URL-photo: there is no local file — the client renders row['url'].
+        raise HTTPException(409, "This photo is a remote URL; use its url field")
     path = UPLOAD_DIR / row["filename"]
     if not path.exists():
         raise HTTPException(404, "File missing on disk")

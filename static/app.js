@@ -565,7 +565,6 @@ async function showDetail(id) {
     }));
 
   const photoInput = document.getElementById("photo-input");
-  document.getElementById("add-photo").addEventListener("click", () => photoInput.click());
   photoInput.addEventListener("change", async () => {
     const file = photoInput.files[0];
     if (!file) return;
@@ -574,6 +573,22 @@ async function showDetail(id) {
     toast("Uploading photo…");
     try { await api(`/sites/${id}/photos`, { method: "POST", body: fd }); toast("Photo added"); showDetail(id); }
     catch (e) { toast(`Upload failed: ${e.message}`); }
+    finally { photoInput.value = ""; }
+  });
+  document.getElementById("add-photo").addEventListener("click", () => {
+    // Two ways to add a photo: upload a file, or hot-link a photo already
+    // online (e.g. BGS GeoScenic, Geograph). URL photos only show when online.
+    photoChoice(
+      () => photoInput.click(),
+      () => simpleForm("Add photo by URL", [
+        { id: "url", label: "Image URL", placeholder: "https://…/photo.jpg" },
+        { id: "caption", label: "Caption", placeholder: "optional" },
+      ], async (vals) => {
+        if (!vals.url) { toast("Need an image URL"); return false; }
+        await api(`/sites/${id}/photo-url`, j({ url: vals.url, caption: vals.caption || "" }));
+        toast("Photo added"); showDetail(id); return true;
+      })
+    );
   });
 
   document.getElementById("add-link").addEventListener("click", () =>
@@ -702,12 +717,18 @@ function renderPhotos(site) {
   if (!site.photos.length) { box.innerHTML = `<p class="row-empty">No photos yet.</p>`; return; }
   box.innerHTML = "";
   site.photos.forEach((p) => {
-    // relative URL — prefix-safe
-    const src = `${API}/photos/${p.id}/file`;
+    // File photos are served by the backend; URL photos hot-link the remote
+    // image directly (only visible online, by design).
+    const isUrl = !!p.url && !p.filename;
+    const src = isUrl ? p.url : `${API}/photos/${p.id}/file`;
+    const cap = p.caption || p.original || "";
+    const source = isUrl
+      ? `<a class="photo-src" href="${esc(p.url)}" target="_blank" rel="noopener">source ↗</a>`
+      : "";
     const card = el(`<figure class="photo">
       <button class="photo-del" title="Delete photo">×</button>
-      <img src="${src}" alt="${esc(p.caption || p.original)}" loading="lazy" />
-      ${p.caption ? `<figcaption class="cap">${esc(p.caption)}</figcaption>` : ""}
+      <img src="${esc(src)}" alt="${esc(cap)}" loading="lazy" referrerpolicy="no-referrer" />
+      ${(cap || source) ? `<figcaption class="cap">${esc(cap)} ${source}</figcaption>` : ""}
     </figure>`);
     card.querySelector(".photo-del").addEventListener("click", async () => {
       await api(`/photos/${p.id}`, { method: "DELETE" }); toast("Photo removed"); showDetail(site.id);
@@ -820,6 +841,25 @@ function confirmDialog(title, body, onYes) {
   m.querySelector("#c-yes").addEventListener("click", async () => {
     try { await onYes(); close(); } catch (e) { toast(`Failed: ${e.message}`); }
   });
+}
+
+// Small chooser shown when adding a photo: upload a file, or link a URL.
+function photoChoice(onFile, onUrl) {
+  const m = el(`<div class="modal-backdrop"><div class="modal" role="dialog" aria-modal="true">
+      <div class="modal-head"><h2>Add photo</h2></div>
+      <div class="modal-body">
+        <div class="modal-actions" style="flex-direction:column;align-items:stretch;gap:.5rem">
+          <button class="btn btn-primary" id="pc-file" type="button">Upload a file</button>
+          <button class="btn btn-ghost" id="pc-url" type="button">Add by URL</button>
+          <button class="btn btn-ghost" id="pc-cancel" type="button">Cancel</button>
+        </div>
+      </div></div></div>`);
+  document.body.appendChild(m);
+  const close = () => m.remove();
+  m.addEventListener("click", (e) => { if (e.target === m) close(); });
+  m.querySelector("#pc-cancel").addEventListener("click", close);
+  m.querySelector("#pc-file").addEventListener("click", () => { close(); onFile(); });
+  m.querySelector("#pc-url").addEventListener("click", () => { close(); onUrl(); });
 }
 
 // ---- offline sync bar ----
