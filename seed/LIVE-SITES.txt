@@ -1,0 +1,66 @@
+5 Assynt
+6 Edinburgh — Salisbury Crags
+7 Glen Coe — Caldera (Stob Mhic Mhartuin)
+8 Beinn a' Bheithir — the pluton (Sgorr Dhearg)
+9 Ballachulish — slate quarry
+10 Eriskay — Lewisian gneiss
+11 Oban — McCaig's Tower / Lorne lavas
+12 Assynt — Knockan Crag (Moine Thrust)
+13 Skye — Cuillin Hills
+14 Hawick — Southern Uplands greywackes
+15 The Lake District — Honister Pass
+16 Manchester — Castlefield
+17 The Peak District — Dark Peak (Stanage Edge)
+18 The Peak District — White Peak (Castleton)
+19 Liverpool — St George's Plateau
+20 Carlisle — Carlisle Basin
+21 The Mendips — Cheddar Gorge
+22 The Quantocks — Quantock Hills
+23 West Huntspill — Somerset Levels
+24 Porth yr Ogof — Afon Mellte cave
+25 Gaping Gill — Ingleborough pothole
+26 Staffa — Fingal's Cave
+27 Snowdon / Yr Wyddfa — summit
+28 Mixon Hole — Selsey Bill deep gully
+29 Uyea — Northmavine tidal island
+30 St Kilda — Hirta
+31 Old Man of Hoy & St John's Head
+32 The Needles — Isle of Wight
+33 Giant's Causeway — Antrim
+34 Cliffs of Moher — County Clare
+35 Hunstanton Cliffs — Norfolk
+36 Seven Sisters & Beachy Head — East Sussex
+37 Sango Bay & Smoo Cave — Durness
+38 Mizen Head — County Cork
+39 Achmelvich — Sutherland
+40 Cliffs of Slieve League — County Donegal
+41 Barafundle Bay & Stackpole Quay — Pembrokeshire
+42 Lulworth Cove & Durdle Door — Dorset
+43 Cwm Idwal & Darwin's Boulders
+44 Parallel Roads of Glen Roy
+45 Drumlins of Clew Bay — County Mayo
+46 Borrowdale Volcanics & Crinkle Crags — Cumbria
+47 Slieve Gullion ring complex — County Armagh
+48 Elgol minor intrusions — Skye
+49 Hallival & Askival layered intrusion — Rum
+50 Benbulben — County Sligo
+51 Glencoul — Moine Thrust transect
+52 The Muidhe — Glenfinnan folds
+53 Millook Haven — chevron folds
+54 South Stack — Anglesey folds
+55 Loch Monar — polyphase folding
+56 Broadhaven — Variscan fold-thrust
+57 Outer Isles Fault — Lochmaddy pseudotachylytes
+58 Cromer — glacio-tectonic folds
+59 Kilve — Liassic faults and folds
+60 Clashach Cove — Hopeman Sandstone fault
+61 Upper Teesdale & High Force
+62 The Foreland Mountains — Assynt
+63 The Burren — County Clare
+64 Pen y Fan — Brecon Beacons
+65 Loughareema — the Vanishing Lake
+66 The Wrekin — Shropshire
+67 Malham Cove — Yorkshire Dales
+68 Ardnamurchan Ring Complex
+69 Raised Beach at Loch Tarbert — Jura
+70 Lundy — Bristol Channel
