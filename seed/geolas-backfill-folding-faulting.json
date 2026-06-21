@@ -1,0 +1,279 @@
+{
+  "category": "Folding and Faulting (backfill: per-site links + photo)",
+  "source": "Geological Society of London — 100 Great Geosites (Folding and Faulting category)",
+  "note": "Backfill for sites created under v1 seeder. Run with --backfill. Re-attaches resources as per-site links and adds one Wikimedia photo each. Formations already exist and are not touched. Idempotent.",
+  "sites": [
+    {
+      "name": "Glencoul — Moine Thrust transect",
+      "lat": 58.2606,
+      "lon": -4.9747,
+      "resources": [
+        {
+          "category": "websites",
+          "title": "GeolSoc — Glencoul",
+          "url": "https://www.geolsoc.org.uk/GeositesGlencoul",
+          "note": "100 Great Geosites entry."
+        },
+        {
+          "category": "websites",
+          "title": "North West Highlands UNESCO Geopark",
+          "url": "https://www.nwhgeopark.com/",
+          "note": "Geopark covering the Moine Thrust Belt and Assynt window."
+        },
+        {
+          "category": "societies",
+          "title": "Edinburgh Geological Society",
+          "url": "https://www.edinburghgeolsoc.org/",
+          "note": "Highland thrust-belt excursions and guides."
+        },
+        {
+          "category": "videos",
+          "title": "Moine Thrust Belt (YouTube search)",
+          "url": "https://www.youtube.com/results?search_query=moine+thrust+belt+assynt",
+          "note": "Field overviews of the thrust geology."
+        }
+      ],
+      "photos": []
+    },
+    {
+      "name": "The Muidhe — Glenfinnan folds",
+      "lat": 56.8717,
+      "lon": -5.5181,
+      "resources": [
+        {
+          "category": "websites",
+          "title": "GeolSoc — The Muidhe",
+          "url": "https://www.geolsoc.org.uk/GeositesMuidhe",
+          "note": "100 Great Geosites entry."
+        },
+        {
+          "category": "societies",
+          "title": "Edinburgh Geological Society",
+          "url": "https://www.edinburghgeolsoc.org/",
+          "note": "Moine deformation field resources."
+        },
+        {
+          "category": "videos",
+          "title": "Boudinage and folding (YouTube search)",
+          "url": "https://www.youtube.com/results?search_query=boudinage+folding+moine+schist",
+          "note": "Explanations of folding and boudinage structures."
+        }
+      ],
+      "photos": []
+    },
+    {
+      "name": "Millook Haven — chevron folds",
+      "lat": 50.7717,
+      "lon": -4.5733,
+      "resources": [
+        {
+          "category": "websites",
+          "title": "GeolSoc — Millook Haven",
+          "url": "https://www.geolsoc.org.uk/GeositesMillook",
+          "note": "100 Great Geosites entry; People's Choice winner."
+        },
+        {
+          "category": "societies",
+          "title": "Ussher Society (SW England geology)",
+          "url": "https://www.ussher.org.uk/",
+          "note": "Devon & Cornwall geological society and field guides."
+        },
+        {
+          "category": "videos",
+          "title": "Millook Haven chevron folds (YouTube search)",
+          "url": "https://www.youtube.com/results?search_query=millook+haven+chevron+folds",
+          "note": "Field footage of the chevron folding."
+        }
+      ],
+      "photos": []
+    },
+    {
+      "name": "South Stack — Anglesey folds",
+      "lat": 53.3047,
+      "lon": -4.6997,
+      "resources": [
+        {
+          "category": "websites",
+          "title": "GeolSoc — South Stack Formation, Anglesey",
+          "url": "https://www.geolsoc.org.uk/GeositesSouthStackAnglesey",
+          "note": "100 Great Geosites entry."
+        },
+        {
+          "category": "websites",
+          "title": "GeoMôn UNESCO Global Geopark",
+          "url": "https://www.geomon.co.uk/",
+          "note": "Anglesey geopark covering the Mona Complex and South Stack."
+        },
+        {
+          "category": "videos",
+          "title": "South Stack Anglesey folds (YouTube search)",
+          "url": "https://www.youtube.com/results?search_query=south+stack+anglesey+folds+geology",
+          "note": "Field footage of the folded cliffs."
+        }
+      ],
+      "photos": []
+    },
+    {
+      "name": "Loch Monar — polyphase folding",
+      "lat": 57.4031,
+      "lon": -5.0892,
+      "resources": [
+        {
+          "category": "websites",
+          "title": "GeolSoc — Loch Monar Polyphase Folding",
+          "url": "https://www.geolsoc.org.uk/GeositesLochMonar",
+          "note": "100 Great Geosites entry."
+        },
+        {
+          "category": "societies",
+          "title": "Edinburgh Geological Society",
+          "url": "https://www.edinburghgeolsoc.org/",
+          "note": "Highland structural-geology resources."
+        },
+        {
+          "category": "videos",
+          "title": "Polyphase folding interference (YouTube search)",
+          "url": "https://www.youtube.com/results?search_query=polyphase+folding+interference+patterns",
+          "note": "Explanations of refolded folds and interference patterns."
+        }
+      ],
+      "photos": []
+    },
+    {
+      "name": "Broadhaven — Variscan fold-thrust",
+      "lat": 51.7783,
+      "lon": -5.1083,
+      "resources": [
+        {
+          "category": "websites",
+          "title": "GeolSoc — Folding at Broadhaven",
+          "url": "https://www.geolsoc.org.uk/GeositesBroadhaven",
+          "note": "100 Great Geosites entry."
+        },
+        {
+          "category": "websites",
+          "title": "Pembrokeshire Coast National Park",
+          "url": "https://www.pembrokeshirecoast.wales/",
+          "note": "Access and coastal geology information."
+        },
+        {
+          "category": "videos",
+          "title": "Variscan fold thrust Pembrokeshire (YouTube search)",
+          "url": "https://www.youtube.com/results?search_query=variscan+fold+thrust+pembrokeshire",
+          "note": "Field footage of the fold-thrust structures."
+        }
+      ],
+      "photos": []
+    },
+    {
+      "name": "Outer Isles Fault — Lochmaddy pseudotachylytes",
+      "lat": 57.5953,
+      "lon": -7.1561,
+      "resources": [
+        {
+          "category": "websites",
+          "title": "GeolSoc — Outer Isles Fault and Pseudotachylytes",
+          "url": "https://www.geolsoc.org.uk/GeositesOuterIslesFault",
+          "note": "100 Great Geosites entry."
+        },
+        {
+          "category": "societies",
+          "title": "Edinburgh Geological Society",
+          "url": "https://www.edinburghgeolsoc.org/",
+          "note": "Hebridean basement and fault-rock resources."
+        },
+        {
+          "category": "videos",
+          "title": "Pseudotachylyte earthquake rock (YouTube search)",
+          "url": "https://www.youtube.com/results?search_query=pseudotachylyte+fault+earthquake+rock",
+          "note": "Explanations of pseudotachylyte and fossil earthquakes."
+        }
+      ],
+      "photos": []
+    },
+    {
+      "name": "Cromer — glacio-tectonic folds",
+      "lat": 52.9417,
+      "lon": 1.3017,
+      "resources": [
+        {
+          "category": "websites",
+          "title": "GeolSoc — Cromer Glacio-tectonic folds",
+          "url": "https://www.geolsoc.org.uk/GeositesCromer",
+          "note": "100 Great Geosites entry."
+        },
+        {
+          "category": "societies",
+          "title": "Geologists' Association",
+          "url": "https://geologistsassociation.org.uk/",
+          "note": "East Anglian Quaternary field guides."
+        },
+        {
+          "category": "videos",
+          "title": "Glaciotectonic folds Norfolk (YouTube search)",
+          "url": "https://www.youtube.com/results?search_query=glaciotectonic+folds+norfolk+cromer",
+          "note": "Field footage of ice-pushed structures."
+        }
+      ],
+      "photos": []
+    },
+    {
+      "name": "Kilve — Liassic faults and folds",
+      "lat": 51.1933,
+      "lon": -3.2231,
+      "resources": [
+        {
+          "category": "websites",
+          "title": "GeolSoc — Kilve",
+          "url": "https://www.geolsoc.org.uk/GeositesKilve",
+          "note": "100 Great Geosites entry."
+        },
+        {
+          "category": "societies",
+          "title": "Geologists' Association",
+          "url": "https://geologistsassociation.org.uk/",
+          "note": "Bristol Channel Lias field guides."
+        },
+        {
+          "category": "videos",
+          "title": "Kilve beach geology faults (YouTube search)",
+          "url": "https://www.youtube.com/results?search_query=kilve+beach+geology+faults+folds",
+          "note": "Field footage of the foreshore structures."
+        }
+      ],
+      "photos": []
+    },
+    {
+      "name": "Clashach Cove — Hopeman Sandstone fault",
+      "lat": 57.7053,
+      "lon": -3.4083,
+      "resources": [
+        {
+          "category": "websites",
+          "title": "GeolSoc — Clashach",
+          "url": "https://www.geolsoc.org.uk/GeositesClashachMoray",
+          "note": "100 Great Geosites entry."
+        },
+        {
+          "category": "websites",
+          "title": "Scottish Geology Trust — Clashach/Covesea",
+          "url": "https://geosites.scottishgeologytrust.org/geosite/3010",
+          "note": "SGT geosite page with access notes and Permian desert palaeoenvironment."
+        },
+        {
+          "category": "societies",
+          "title": "Aberdeen Geological Society",
+          "url": "https://www.aberdeengeolsoc.org.uk/",
+          "note": "Moray coast field excursions."
+        },
+        {
+          "category": "videos",
+          "title": "Clashach Cove Hopeman Sandstone (YouTube search)",
+          "url": "https://www.youtube.com/results?search_query=clashach+cove+hopeman+sandstone+fault",
+          "note": "Field footage of the cove, fault and dune bedding."
+        }
+      ],
+      "photos": []
+    }
+  ]
+}

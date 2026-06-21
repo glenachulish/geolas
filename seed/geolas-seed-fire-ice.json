@@ -1,0 +1,341 @@
+{
+  "category": "Fire and Ice",
+  "source": "Geological Society of London — 100 Great Geosites (Fire and Ice category)",
+  "note": "8 sites. SKIPPED as duplicates of existing curated sites: Arthur's Seat & Salisbury Crags (= 'Edinburgh — Salisbury Crags', id 6) and Glencoe (= 'Glen Coe — Caldera (Stob Mhic Mhartuin)', id 7). Clew Bay & Benbulben (ROI) and Slieve Gullion (NI/ROI border) set fetch_geology=false (no BGS coverage).",
+  "sites": [
+    {
+      "name": "Cwm Idwal & Darwin's Boulders",
+      "lat": 53.1158,
+      "lon": -4.0264,
+      "fetch_geology": true,
+      "notes": "A textbook glaciated hanging valley in northern Eryri/Snowdonia, cradling the dark tarn of Llyn Idwal beneath the cliffs of the Devil's Kitchen. The rocks are Ordovician volcanics and shelf sediments laid down in a shallow sea and later buckled into the Idwal Syncline, a great downfold whose hinge is beautifully exposed in the headwall. Charles Darwin visited in 1831 and again in 1842, when he recognised the scattered erratic boulders and scratched rocks as the work of former glaciers — a key early demonstration of the Ice Age in Britain. Wales' first National Nature Reserve.",
+      "formations": [
+        {
+          "name": "Ordovician volcanics & sediments",
+          "description": "Volcanic tuffs and shallow-marine sedimentary rocks of the Snowdon area, folded into the Idwal Syncline."
+        },
+        {
+          "name": "Idwal Syncline",
+          "description": "A large downfold whose curved hinge is exposed in the cliffs of the cwm headwall."
+        },
+        {
+          "name": "Glacial features & erratics",
+          "description": "Ice-carved cirque, moraines, striated rocks and Darwin's erratic boulders recording Pleistocene glaciation."
+        }
+      ],
+      "resources": [
+        {
+          "category": "websites",
+          "title": "GeolSoc — Cwm Idwal & Darwin's Boulders",
+          "url": "https://www.geolsoc.org.uk/GeositesCwmIdwal",
+          "note": "100 Great Geosites entry."
+        },
+        {
+          "category": "websites",
+          "title": "Eryri / Snowdonia National Park",
+          "url": "https://www.eryri.llyw.cymru/",
+          "note": "Park authority; Cwm Idwal NNR access."
+        },
+        {
+          "category": "societies",
+          "title": "Geologists' Association",
+          "url": "https://geologistsassociation.org.uk/",
+          "note": "Snowdonia field guides."
+        },
+        {
+          "category": "videos",
+          "title": "Cwm Idwal glaciation (YouTube search)",
+          "url": "https://www.youtube.com/results?search_query=cwm+idwal+glaciation+geology",
+          "note": "Field overviews of the cwm and syncline."
+        }
+      ],
+      "photos": []
+    },
+    {
+      "name": "Parallel Roads of Glen Roy",
+      "lat": 56.9442,
+      "lon": -4.8533,
+      "fetch_geology": true,
+      "notes": "Three sets of horizontal 'roads' run along the hillsides of Glen Roy in Lochaber — not roads at all, but the shorelines of a lake that filled the glen when its mouth was dammed by ice at the end of the last Ice Age. As the ice dam rose and fell, the lake stabilised at different levels, each cutting a level bench. They prompted a famous debate: Darwin first thought them marine beaches, but Louis Agassiz and later workers showed they were glacial-lake shorelines — an early triumph of the glacial theory. Within Lochaber UNESCO Geopark.",
+      "formations": [
+        {
+          "name": "Glacial lake shorelines",
+          "description": "Three horizontal benches cut by a late-glacial ice-dammed lake at successive stable levels."
+        },
+        {
+          "name": "Moine schist (bedrock)",
+          "description": "Neoproterozoic metasediments forming the glen's bedrock, into which the shorelines are cut."
+        }
+      ],
+      "resources": [
+        {
+          "category": "websites",
+          "title": "GeolSoc — Parallel Roads of Glen Roy",
+          "url": "https://www.geolsoc.org.uk/GeositesGlenRoy",
+          "note": "100 Great Geosites entry."
+        },
+        {
+          "category": "websites",
+          "title": "Lochaber UNESCO Global Geopark",
+          "url": "https://www.lochabergeopark.org.uk/",
+          "note": "Geopark covering Glen Roy."
+        },
+        {
+          "category": "societies",
+          "title": "Edinburgh Geological Society",
+          "url": "https://www.edinburghgeolsoc.org/",
+          "note": "Highland glacial-geology resources."
+        },
+        {
+          "category": "videos",
+          "title": "Parallel Roads Glen Roy (YouTube search)",
+          "url": "https://www.youtube.com/results?search_query=parallel+roads+glen+roy",
+          "note": "Footage explaining the glacial-lake shorelines."
+        }
+      ],
+      "photos": []
+    },
+    {
+      "name": "Drumlins of Clew Bay — County Mayo",
+      "lat": 53.8333,
+      "lon": -9.65,
+      "fetch_geology": false,
+      "notes": "Clew Bay on the County Mayo coast is a classic 'drowned drumlin' landscape: hundreds of small, egg-shaped hills of glacial till, streamlined by an ice sheet moving westward, now partly flooded by the sea so that their tops form a scatter of low islands. Seen from above they give the rolling 'basket of eggs' topography that defines a drumlin field. The drumlins record the direction and behaviour of the ice that covered Ireland during the last glaciation; rising sea level since then has half-submerged them.",
+      "formations": [
+        {
+          "name": "Glacial till drumlins",
+          "description": "Streamlined mounds of unsorted glacial till shaped beneath a westward-moving ice sheet; partly drowned by post-glacial sea-level rise."
+        }
+      ],
+      "resources": [
+        {
+          "category": "websites",
+          "title": "GeolSoc — Drumlins of Clew Bay",
+          "url": "https://www.geolsoc.org.uk/GeositesClewBay",
+          "note": "100 Great Geosites entry."
+        },
+        {
+          "category": "websites",
+          "title": "Geological Survey Ireland",
+          "url": "https://www.gsi.ie/",
+          "note": "Republic of Ireland geological survey."
+        },
+        {
+          "category": "videos",
+          "title": "Clew Bay drumlins (YouTube search)",
+          "url": "https://www.youtube.com/results?search_query=clew+bay+drumlins+mayo",
+          "note": "Aerial footage of the drowned drumlin field."
+        }
+      ],
+      "photos": []
+    },
+    {
+      "name": "Borrowdale Volcanics & Crinkle Crags — Cumbria",
+      "lat": 54.4517,
+      "lon": -3.1006,
+      "fetch_geology": true,
+      "notes": "The rugged heart of the Lake District, built of the Borrowdale Volcanic Group — Ordovician lavas and tuffs erupted in a violent volcanic arc about 450 million years ago. These tough rocks form the highest and craggiest fells, including Scafell Pike, Great Gable and the knobbly ridge of Crinkle Crags above Great Langdale and Upper Eskdale. The jagged, broken skyline reflects how the hard, well-jointed volcanic rock resists erosion and was later sculpted by Ice Age glaciers into cirques, arêtes and U-shaped valleys.",
+      "formations": [
+        {
+          "name": "Borrowdale Volcanic Group",
+          "description": "Ordovician andesitic lavas, tuffs and volcaniclastic rocks of an ancient volcanic arc; forms the central Lakeland fells."
+        },
+        {
+          "name": "Glacial sculpting",
+          "description": "Cirques, arêtes and U-shaped valleys carved into the resistant volcanics by Pleistocene ice."
+        }
+      ],
+      "resources": [
+        {
+          "category": "websites",
+          "title": "GeolSoc — Borrowdale volcanics & Crinkle Crags",
+          "url": "https://www.geolsoc.org.uk/GeositesBorrowdaleCrinkleCrags",
+          "note": "100 Great Geosites entry."
+        },
+        {
+          "category": "websites",
+          "title": "Lake District National Park",
+          "url": "https://www.lakedistrict.gov.uk/",
+          "note": "Park authority; access and geology."
+        },
+        {
+          "category": "societies",
+          "title": "Cumberland Geological Society",
+          "url": "https://www.cumberland-geol-soc.org.uk/",
+          "note": "Local society and Lakeland field guides."
+        },
+        {
+          "category": "videos",
+          "title": "Borrowdale Volcanic Group geology (YouTube search)",
+          "url": "https://www.youtube.com/results?search_query=borrowdale+volcanic+group+lake+district",
+          "note": "Field overviews of the volcanic fells."
+        }
+      ],
+      "photos": []
+    },
+    {
+      "name": "Slieve Gullion ring complex — County Armagh",
+      "lat": 54.1217,
+      "lon": -6.435,
+      "fetch_geology": false,
+      "notes": "A textbook Palaeogene ring complex straddling the County Armagh / County Louth border, midway between Belfast and Dublin. It was among the first ring dykes ever described in the scientific literature, in the early 1930s, and has been a classic example ever since. A circular ring dyke of igneous rock surrounds a central mountain built of layered gabbro and granophyre — the deeply eroded roots of a volcano that collapsed along ring-shaped fractures as its magma chamber emptied. Part of the same Palaeogene igneous province as the Mournes and Antrim.",
+      "formations": [
+        {
+          "name": "Slieve Gullion ring dyke",
+          "description": "A near-circular Palaeogene ring dyke marking fractures along which a volcanic centre subsided."
+        },
+        {
+          "name": "Layered gabbro & granophyre",
+          "description": "Interlayered basic and acid plutonic rocks of the central complex, the eroded roots of the volcano."
+        }
+      ],
+      "resources": [
+        {
+          "category": "websites",
+          "title": "GeolSoc — Slieve Gullion, Mountains of Mourne",
+          "url": "https://www.geolsoc.org.uk/GeositesSlieveGullion",
+          "note": "100 Great Geosites entry."
+        },
+        {
+          "category": "websites",
+          "title": "Geological Survey of Northern Ireland (GSNI)",
+          "url": "https://www.bgs.ac.uk/geology-projects/gsni/",
+          "note": "Northern Ireland geological survey — Palaeogene centres."
+        },
+        {
+          "category": "videos",
+          "title": "Slieve Gullion ring complex (YouTube search)",
+          "url": "https://www.youtube.com/results?search_query=slieve+gullion+ring+dyke+geology",
+          "note": "Field overviews of the ring complex."
+        }
+      ],
+      "photos": []
+    },
+    {
+      "name": "Elgol minor intrusions — Skye",
+      "lat": 57.1453,
+      "lon": -6.1097,
+      "fetch_geology": true,
+      "notes": "The shore at Elgol on the Strathaird peninsula of Skye, looking across to the Cuillin, exposes a remarkable set of small igneous intrusions — sills and dykes of Palaeogene magma that pushed into wet Jurassic sediments. Where hot magma met soft, water-saturated sand and mud, the two mingled: the sediment was fluidised and the magma chilled and broke up, producing peperites and other magma–sediment mixtures. A celebrated site for studying how shallow intrusions interact with their soft host rocks.",
+      "formations": [
+        {
+          "name": "Palaeogene minor intrusions",
+          "description": "Small basaltic sills and dykes intruded into Jurassic sediments during the opening of the North Atlantic."
+        },
+        {
+          "name": "Jurassic sediments (host)",
+          "description": "Wet sandstones and mudstones into which the magma intruded, producing peperite and fluidisation textures."
+        }
+      ],
+      "resources": [
+        {
+          "category": "websites",
+          "title": "GeolSoc — Elgol Minor Intrusions",
+          "url": "https://www.geolsoc.org.uk/GeositesElgol",
+          "note": "100 Great Geosites entry."
+        },
+        {
+          "category": "websites",
+          "title": "Scottish Geology Trust",
+          "url": "https://www.scottishgeologytrust.org/",
+          "note": "Skye igneous geology background."
+        },
+        {
+          "category": "societies",
+          "title": "Edinburgh Geological Society",
+          "url": "https://www.edinburghgeolsoc.org/",
+          "note": "Hebridean Palaeogene resources."
+        },
+        {
+          "category": "videos",
+          "title": "Elgol Skye geology peperite (YouTube search)",
+          "url": "https://www.youtube.com/results?search_query=elgol+skye+geology+intrusions",
+          "note": "Field footage of the magma–sediment intrusions."
+        }
+      ],
+      "photos": []
+    },
+    {
+      "name": "Hallival & Askival layered intrusion — Rum",
+      "lat": 56.9908,
+      "lon": -6.3344,
+      "fetch_geology": true,
+      "notes": "The mountains of Rum are the deeply eroded innards of a Palaeogene volcano, and the peaks of Hallival and Askival show one of the world's finest examples of a layered igneous intrusion. The hillsides rise in great steps, each step a distinct layer of gabbro and peridotite that settled out as a fresh pulse of magma entered and cooled in the chamber — crystal by crystal, like sediment on a lake floor. Studying these layers helped work out how magma chambers evolve. Rum is a National Nature Reserve.",
+      "formations": [
+        {
+          "name": "Rum Layered Suite (gabbro & peridotite)",
+          "description": "Rhythmically layered ultrabasic and basic plutonic rocks formed by repeated pulses of magma and crystal settling in a Palaeogene magma chamber."
+        },
+        {
+          "name": "Stepped weathering profile",
+          "description": "Differential erosion of harder and softer layers gives the mountainsides their characteristic giant steps."
+        }
+      ],
+      "resources": [
+        {
+          "category": "websites",
+          "title": "GeolSoc — Hallival and Askival Layered Intrusions",
+          "url": "https://www.geolsoc.org.uk/GeositesHallivalAskival",
+          "note": "100 Great Geosites entry."
+        },
+        {
+          "category": "websites",
+          "title": "NatureScot — Rum NNR",
+          "url": "https://www.nature.scot/enjoying-outdoors/scotlands-national-nature-reserves/rum-national-nature-reserve",
+          "note": "National Nature Reserve information and access."
+        },
+        {
+          "category": "societies",
+          "title": "Edinburgh Geological Society",
+          "url": "https://www.edinburghgeolsoc.org/",
+          "note": "Layered-intrusion field resources."
+        },
+        {
+          "category": "videos",
+          "title": "Rum layered intrusion geology (YouTube search)",
+          "url": "https://www.youtube.com/results?search_query=isle+of+rum+layered+intrusion+geology",
+          "note": "Field overviews of the layered gabbros."
+        }
+      ],
+      "photos": []
+    },
+    {
+      "name": "Benbulben — County Sligo",
+      "lat": 54.3719,
+      "lon": -8.4683,
+      "fetch_geology": false,
+      "notes": "Ireland's 'table mountain', a great flat-topped block rising above County Sligo, made famous by W. B. Yeats. Its tiered cliffs are Carboniferous limestones and shales laid down in a tropical sea about 320 million years ago, the flat top capped by harder limestone that resists erosion. The steep sides and distinctive profile were sculpted by glaciers during the last Ice Age, which scoured the surrounding lowlands and left the resistant block standing proud. A County Geological Site.",
+      "formations": [
+        {
+          "name": "Dartry Limestone (Carboniferous)",
+          "description": "Hard, cliff-forming marine limestone capping the mountain and giving its flat top."
+        },
+        {
+          "name": "Glencar Limestone & Benbulben Shale",
+          "description": "Lower limestones and shales forming the tiered lower slopes, more easily eroded than the cap."
+        }
+      ],
+      "resources": [
+        {
+          "category": "websites",
+          "title": "GeolSoc — Benbulben",
+          "url": "https://www.geolsoc.org.uk/GeositesBenbulben",
+          "note": "100 Great Geosites entry."
+        },
+        {
+          "category": "websites",
+          "title": "Geological Survey Ireland",
+          "url": "https://www.gsi.ie/",
+          "note": "Republic of Ireland geological survey."
+        },
+        {
+          "category": "videos",
+          "title": "Benbulben Sligo geology (YouTube search)",
+          "url": "https://www.youtube.com/results?search_query=benbulben+sligo+geology",
+          "note": "Field overviews of the table mountain."
+        }
+      ],
+      "photos": []
+    }
+  ]
+}

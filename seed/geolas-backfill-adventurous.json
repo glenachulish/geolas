@@ -1,0 +1,271 @@
+{
+  "category": "Adventurous (backfill: per-site links + photo)",
+  "source": "Geological Society of London — 100 Great Geosites (Adventurous category)",
+  "note": "Backfill for sites created under v1 seeder. Run with --backfill. Re-attaches resources as per-site links and adds one Wikimedia photo each. Formations already exist and are not touched. Idempotent.",
+  "sites": [
+    {
+      "name": "Porth yr Ogof — Afon Mellte cave",
+      "lat": 51.8006,
+      "lon": -3.5562,
+      "resources": [
+        {
+          "category": "websites",
+          "title": "GeolSoc — Porth yr Ogof Caves",
+          "url": "https://www.geolsoc.org.uk/GeositesPorthYrOgof",
+          "note": "100 Great Geosites entry with visiting notes from Fforest Fawr Geopark."
+        },
+        {
+          "category": "websites",
+          "title": "Fforest Fawr Geopark",
+          "url": "https://www.fforestfawrgeopark.org.uk/",
+          "note": "UNESCO Global Geopark covering the site; geology trails and guides."
+        },
+        {
+          "category": "societies",
+          "title": "South Wales Caving Club",
+          "url": "https://www.swcc.org.uk/",
+          "note": "Local caving body with access and safety information for the region."
+        },
+        {
+          "category": "videos",
+          "title": "Porth yr Ogof walkthrough (YouTube search)",
+          "url": "https://www.youtube.com/results?search_query=porth+yr+ogof+cave",
+          "note": "Video walkthroughs of the main entrance and river passage."
+        }
+      ],
+      "photos": []
+    },
+    {
+      "name": "Gaping Gill — Ingleborough pothole",
+      "lat": 54.1497,
+      "lon": -2.3817,
+      "resources": [
+        {
+          "category": "websites",
+          "title": "GeolSoc — Gaping Gill",
+          "url": "https://www.geolsoc.org.uk/GeositesGapingGill",
+          "note": "100 Great Geosites entry."
+        },
+        {
+          "category": "societies",
+          "title": "Craven Pothole Club",
+          "url": "https://www.cravenpotholeclub.org/",
+          "note": "One of the clubs that runs the public winch meets at Gaping Gill."
+        },
+        {
+          "category": "societies",
+          "title": "Bradford Pothole Club",
+          "url": "https://bpc-cave.org.uk/",
+          "note": "Runs the spring-bank-holiday winch meet into the Main Chamber."
+        },
+        {
+          "category": "videos",
+          "title": "Gaping Gill winch descent (YouTube search)",
+          "url": "https://www.youtube.com/results?search_query=gaping+gill+winch+descent",
+          "note": "Footage of the public winch descents into the Main Chamber."
+        }
+      ],
+      "photos": []
+    },
+    {
+      "name": "Staffa — Fingal's Cave",
+      "lat": 56.4319,
+      "lon": -6.3417,
+      "resources": [
+        {
+          "category": "websites",
+          "title": "GeolSoc — Staffa",
+          "url": "https://www.geolsoc.org.uk/GeositesStaffa",
+          "note": "100 Great Geosites entry; People's Choice winner for the Adventurous category."
+        },
+        {
+          "category": "websites",
+          "title": "NatureScot — Staffa NNR",
+          "url": "https://www.nature.scot/enjoying-outdoors/scotlands-national-nature-reserves/staffa-national-nature-reserve",
+          "note": "National Nature Reserve information and access."
+        },
+        {
+          "category": "societies",
+          "title": "Edinburgh Geological Society",
+          "url": "https://www.edinburghgeolsoc.org/",
+          "note": "Hebridean igneous geology excursions and resources."
+        },
+        {
+          "category": "videos",
+          "title": "Fingal's Cave Staffa (YouTube search)",
+          "url": "https://www.youtube.com/results?search_query=fingals+cave+staffa+basalt",
+          "note": "Boat-trip and aerial footage of the columnar basalt."
+        }
+      ],
+      "photos": []
+    },
+    {
+      "name": "Snowdon / Yr Wyddfa — summit",
+      "lat": 53.0685,
+      "lon": -4.0763,
+      "resources": [
+        {
+          "category": "websites",
+          "title": "GeolSoc — Snowdon / Yr Wyddfa",
+          "url": "https://www.geolsoc.org.uk/GeositesSnowdon",
+          "note": "100 Great Geosites entry, text courtesy of Snowdonia National Park."
+        },
+        {
+          "category": "websites",
+          "title": "Eryri / Snowdonia National Park",
+          "url": "https://www.eryri.llyw.cymru/",
+          "note": "Official park authority — geology, paths and visiting."
+        },
+        {
+          "category": "videos",
+          "title": "Snowdon geology (YouTube search)",
+          "url": "https://www.youtube.com/results?search_query=snowdon+geology+ordovician+volcano",
+          "note": "Field overviews of the volcanic and glacial geology."
+        }
+      ],
+      "photos": []
+    },
+    {
+      "name": "Mixon Hole — Selsey Bill deep gully",
+      "lat": 50.6917,
+      "lon": -0.8,
+      "resources": [
+        {
+          "category": "websites",
+          "title": "GeolSoc — Mixon Hole",
+          "url": "https://www.geolsoc.org.uk/GeositesMixonHole",
+          "note": "100 Great Geosites entry."
+        },
+        {
+          "category": "societies",
+          "title": "Geologists' Association",
+          "url": "https://geologistsassociation.org.uk/",
+          "note": "Southern England field meetings and guides to Eocene strata."
+        },
+        {
+          "category": "videos",
+          "title": "Mixon Hole dive (YouTube search)",
+          "url": "https://www.youtube.com/results?search_query=mixon+hole+selsey+dive",
+          "note": "Dive footage of the gully walls."
+        }
+      ],
+      "photos": []
+    },
+    {
+      "name": "Uyea — Northmavine tidal island",
+      "lat": 60.5419,
+      "lon": -1.3892,
+      "resources": [
+        {
+          "category": "websites",
+          "title": "GeolSoc — Uyea",
+          "url": "https://www.geolsoc.org.uk/GeositesUyea",
+          "note": "100 Great Geosites entry; flagged Spectacular Scenery."
+        },
+        {
+          "category": "websites",
+          "title": "Shetland UNESCO Global Geopark",
+          "url": "https://www.shetlandamenity.org/shetland-unesco-global-geopark",
+          "note": "Geopark covering Northmavine and Uyea."
+        },
+        {
+          "category": "videos",
+          "title": "Uyea Shetland (YouTube search)",
+          "url": "https://www.youtube.com/results?search_query=uyea+shetland+northmavine",
+          "note": "Walk-in and aerial footage of the tombolo and coast."
+        }
+      ],
+      "photos": []
+    },
+    {
+      "name": "St Kilda — Hirta",
+      "lat": 57.8147,
+      "lon": -8.5783,
+      "resources": [
+        {
+          "category": "websites",
+          "title": "GeolSoc — St Kilda",
+          "url": "https://www.geolsoc.org.uk/GeositesStKilda",
+          "note": "100 Great Geosites entry."
+        },
+        {
+          "category": "websites",
+          "title": "National Trust for Scotland — St Kilda",
+          "url": "https://www.nts.org.uk/visit/places/st-kilda",
+          "note": "Owner/manager; access and World Heritage information."
+        },
+        {
+          "category": "societies",
+          "title": "Edinburgh Geological Society",
+          "url": "https://www.edinburghgeolsoc.org/",
+          "note": "Hebridean Palaeogene igneous geology resources."
+        },
+        {
+          "category": "videos",
+          "title": "St Kilda geology (YouTube search)",
+          "url": "https://www.youtube.com/results?search_query=st+kilda+geology+volcano",
+          "note": "Aerial and boat footage of the sea cliffs and stacks."
+        }
+      ],
+      "photos": []
+    },
+    {
+      "name": "Old Man of Hoy & St John's Head",
+      "lat": 58.8869,
+      "lon": -3.4306,
+      "resources": [
+        {
+          "category": "websites",
+          "title": "GeolSoc — Old Man of Hoy and St John's Head",
+          "url": "https://www.geolsoc.org.uk/GeositesHoy",
+          "note": "100 Great Geosites entry."
+        },
+        {
+          "category": "websites",
+          "title": "Scottish Geology Trust",
+          "url": "https://www.scottishgeologytrust.org/",
+          "note": "Orkney Old Red Sandstone background and sites."
+        },
+        {
+          "category": "videos",
+          "title": "Old Man of Hoy climb (YouTube search)",
+          "url": "https://www.youtube.com/results?search_query=old+man+of+hoy+climb",
+          "note": "Climbing and aerial footage of the stack and cliffs."
+        }
+      ],
+      "photos": []
+    },
+    {
+      "name": "The Needles — Isle of Wight",
+      "lat": 50.6622,
+      "lon": -1.5919,
+      "resources": [
+        {
+          "category": "websites",
+          "title": "GeolSoc — The Needles",
+          "url": "https://www.geolsoc.org.uk/GeositesNeedles",
+          "note": "100 Great Geosites entry."
+        },
+        {
+          "category": "websites",
+          "title": "UKGE / Isle of Wight geology guide",
+          "url": "https://www.ukfossils.co.uk/",
+          "note": "Isle of Wight Cretaceous and chalk locality information."
+        },
+        {
+          "category": "societies",
+          "title": "Geologists' Association",
+          "url": "https://geologistsassociation.org.uk/",
+          "note": "Isle of Wight field guides and excursions."
+        },
+        {
+          "category": "videos",
+          "title": "The Needles Isle of Wight geology (YouTube search)",
+          "url": "https://www.youtube.com/results?search_query=the+needles+isle+of+wight+chalk+geology",
+          "note": "Boat and aerial footage of the chalk stacks."
+        }
+      ],
+      "photos": []
+    }
+  ]
+}

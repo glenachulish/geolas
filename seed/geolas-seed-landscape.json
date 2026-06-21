@@ -1,0 +1,177 @@
+{
+  "category": "Landscape",
+  "source": "Geological Society of London — 100 Great Geosites (Landscape category)",
+  "note": "10 sites. 'The Foreland Mountains — Assynt' named distinctly from existing broad 'Assynt' (id 5); kept as a separate glaciated-inselberg landscape entry. The Burren (ROI) and Loughareema (NI) set fetch_geology=false (no BGS coverage). No photos — added in-app by user.",
+  "sites": [
+    {
+      "name": "Upper Teesdale & High Force",
+      "lat": 54.6503,
+      "lon": -2.1869,
+      "fetch_geology": true,
+      "notes": "A stretch of the upper Tees in the North Pennines, a Site of Special Scientific Interest combining dramatic geology, rare 'Teesdale assemblage' alpine plants and the spectacular High Force waterfall. The river tumbles over the Whin Sill — a hard sheet of dolerite (quartz-dolerite) intruded into the Carboniferous limestones and sandstones during the Permian. Where the river meets the resistant sill it forms the fall; nearby, the heat of the intrusion baked the adjacent limestone into the crumbly 'sugar limestone' that supports the unique flora. A classic teaching landscape for intrusion, contact metamorphism and differential erosion.",
+      "formations": [
+        {"name": "Whin Sill (quartz-dolerite)", "description": "A hard Permian dolerite sheet intruded into Carboniferous strata; its resistance forms High Force and Cauldron Snout."},
+        {"name": "Carboniferous limestone & sugar limestone", "description": "Marine limestones of the Pennines; where baked by the Whin Sill they recrystallised into friable 'sugar limestone' hosting rare alpine plants."}
+      ],
+      "resources": [
+        {"category": "websites", "title": "GeolSoc — Upper Teesdale", "url": "https://www.geolsoc.org.uk/GeositesUpperTeesdale", "note": "100 Great Geosites entry; Spectacular Scenery / Geotourism."},
+        {"category": "websites", "title": "North Pennines UNESCO Global Geopark", "url": "https://www.northpennines.org.uk/", "note": "Geopark covering Teesdale and the Whin Sill."},
+        {"category": "societies", "title": "Yorkshire Geological Society", "url": "https://www.yorksgeolsoc.org.uk/", "note": "Northern England field meetings and guides."},
+        {"category": "videos", "title": "High Force Whin Sill geology (YouTube search)", "url": "https://www.youtube.com/results?search_query=high+force+whin+sill+geology", "note": "Field footage of the waterfall and dolerite sill."}
+      ]
+    },
+    {
+      "name": "The Foreland Mountains — Assynt",
+      "lat": 58.1167,
+      "lon": -5.1389,
+      "fetch_geology": true,
+      "notes": "The isolated, dramatically shaped mountains of Assynt — Suilven, Quinag, Canisp, Cul Mor — rise abruptly from a rolling platform of ancient Lewisian gneiss as some of Britain's most distinctive peaks. Each is built of Torridonian sandstone, a thick pile of Precambrian river sediments laid unconformably on the gneiss, and some are capped by hard Cambrian quartzite that has protected the summits from erosion. Ice-age glaciers stripped away the softer surroundings to leave these 'inselbergs' standing as monuments. The People's Choice winner for the Landscape category and part of the North West Highlands UNESCO Geopark.",
+      "formations": [
+        {"name": "Torridonian sandstone", "description": "Thick Precambrian fluvial red sandstones forming the bulk of the inselberg mountains, resting unconformably on Lewisian gneiss."},
+        {"name": "Lewisian gneiss (platform)", "description": "Archaean basement gneiss forming the low, knock-and-lochan platform from which the mountains rise."},
+        {"name": "Cambrian quartzite (summit caps)", "description": "Hard quartzite capping some summits (e.g. on Canisp/Quinag), protecting them from erosion."}
+      ],
+      "resources": [
+        {"category": "websites", "title": "GeolSoc — The foreland mountains, Assynt", "url": "https://www.geolsoc.org.uk/GeositesAssyntMountains", "note": "100 Great Geosites entry; People's Choice winner."},
+        {"category": "websites", "title": "North West Highlands UNESCO Geopark", "url": "https://www.nwhgeopark.com/", "note": "Geopark covering the Assynt inselbergs."},
+        {"category": "societies", "title": "Edinburgh Geological Society", "url": "https://www.edinburghgeolsoc.org/", "note": "NW Highlands landscape and Torridonian resources."},
+        {"category": "videos", "title": "Suilven Assynt geology (YouTube search)", "url": "https://www.youtube.com/results?search_query=suilven+assynt+torridonian+geology", "note": "Field overviews of the inselberg mountains."}
+      ]
+    },
+    {
+      "name": "The Burren — County Clare",
+      "lat": 53.0833,
+      "lon": -9.0500,
+      "fetch_geology": false,
+      "notes": "A vast pavement of bare grey limestone in County Clare, one of the world's finest examples of a glacio-karst landscape. The rock is Visean (Lower Carboniferous) limestone, laid down in a tropical sea about 340 million years ago; glaciers later scraped it clean of soil, and rainwater has since dissolved the surface into 'clints' (blocks) and 'grikes' (deep fissures), with caves, sinking streams and turloughs (vanishing lakes) below. Erratic boulders dropped by the ice perch on the pavement. Rare arctic-alpine and Mediterranean plants grow side by side in the grikes. Part of the Burren & Cliffs of Moher UNESCO Geopark.",
+      "formations": [
+        {"name": "Visean limestone (Lower Carboniferous)", "description": "Pale, thickly bedded marine limestone forming the karst pavement; rich in corals, crinoids and brachiopods."},
+        {"name": "Glacio-karst features", "description": "Clints, grikes, caves, sinking streams, turloughs and glacial erratics produced by ice-scour and limestone dissolution."}
+      ],
+      "resources": [
+        {"category": "websites", "title": "GeolSoc — The Burren", "url": "https://www.geolsoc.org.uk/GeositesBurren", "note": "100 Great Geosites entry; Spectacular Scenery."},
+        {"category": "websites", "title": "Geological Survey Ireland", "url": "https://www.gsi.ie/", "note": "Republic of Ireland geological survey."},
+        {"category": "societies", "title": "Burren & Cliffs of Moher UNESCO Geopark", "url": "https://www.burrengeopark.ie/", "note": "Geopark covering the Burren glacio-karst."},
+        {"category": "videos", "title": "Burren glaciokarst geology (YouTube search)", "url": "https://www.youtube.com/results?search_query=burren+glaciokarst+limestone+pavement", "note": "Field overviews of the limestone pavement."}
+      ]
+    },
+    {
+      "name": "Pen y Fan — Brecon Beacons",
+      "lat": 51.8841,
+      "lon": -3.4360,
+      "fetch_geology": true,
+      "notes": "The highest peak in South Wales at 886 m, the flat-topped summit of Pen y Fan dominates the Brecon Beacons (Bannau Brycheiniog). It is built of Old Red Sandstone — red and brown river and floodplain sediments laid down on a desert continent during the Devonian. The hard 'Plateau Beds' sandstone caps the summit and resists erosion, while softer beds below were cut back by Ice Age glaciers into the steep north-facing scarp and the cirque holding Llyn Cwm Llwch. A textbook example of how rock hardness and glaciation together shape an upland.",
+      "formations": [
+        {"name": "Old Red Sandstone (Devonian)", "description": "Red-brown fluvial sandstones and mudstones of a desert continent; the hard Plateau Beds cap the summit."},
+        {"name": "Glacial scarp & cirque", "description": "North-facing scarp and the cwm holding Llyn Cwm Llwch, carved by Pleistocene ice."}
+      ],
+      "resources": [
+        {"category": "websites", "title": "GeolSoc — Pen y Fan", "url": "https://www.geolsoc.org.uk/GeositesPenYFan", "note": "100 Great Geosites entry; Spectacular Scenery."},
+        {"category": "websites", "title": "Bannau Brycheiniog National Park", "url": "https://www.bannau.wales/", "note": "Park authority; access and geology."},
+        {"category": "societies", "title": "Geologists' Association — South Wales Group", "url": "https://swga.org.uk/", "note": "South Wales field meetings and guides."},
+        {"category": "videos", "title": "Pen y Fan Brecon Beacons geology (YouTube search)", "url": "https://www.youtube.com/results?search_query=pen+y+fan+brecon+beacons+geology", "note": "Field overviews of the Old Red Sandstone uplands."}
+      ]
+    },
+    {
+      "name": "Loughareema — the Vanishing Lake",
+      "lat": 55.1244,
+      "lon": -6.0681,
+      "fetch_geology": false,
+      "notes": "An ephemeral or 'vanishing' lake near Ballycastle in County Antrim, whose name comes from the Irish for 'the lake of the fords'. It fills and empties with surprising speed — full one day, an empty grassy hollow the next — because it sits on a junction between impermeable basalt and porous Cretaceous chalk. Water drains away through a swallow hole in the chalk; when debris blocks the hole the basin fills, and when it clears the lake empties. A vivid demonstration of how geology controls drainage. The road across it has a tragic local history of flooding.",
+      "formations": [
+        {"name": "Antrim Basalt & Cretaceous Chalk junction", "description": "An impermeable Palaeogene basalt against porous Ulster White Limestone (chalk); the contact controls the lake's filling and draining."},
+        {"name": "Swallow hole (sink)", "description": "A sink in the chalk that drains the basin; blockage and clearing cause the lake to appear and vanish."}
+      ],
+      "resources": [
+        {"category": "websites", "title": "GeolSoc — Loughareema", "url": "https://www.geolsoc.org.uk/GeositesLoughareema", "note": "100 Great Geosites entry."},
+        {"category": "websites", "title": "Geological Survey of Northern Ireland (GSNI)", "url": "https://www.bgs.ac.uk/geology-projects/gsni/", "note": "Northern Ireland geological survey — Antrim geology."},
+        {"category": "videos", "title": "Loughareema vanishing lake (YouTube search)", "url": "https://www.youtube.com/results?search_query=loughareema+vanishing+lake+antrim", "note": "Footage of the lake filling and emptying."}
+      ]
+    },
+    {
+      "name": "The Wrekin — Shropshire",
+      "lat": 52.6683,
+      "lon": -2.5519,
+      "fetch_geology": true,
+      "notes": "A steep, isolated ridge rising abruptly from the Shropshire plain, a landmark for miles around and a window into deep time. Its core is among the oldest volcanic rock in England — Precambrian (Uriconian) lavas and tuffs around 560 million years old, erupted long before complex life. Around and across the hill, much younger rocks (Cambrian quartzites, and Quaternary glacial deposits on the plain) record an enormous span of geological history in a small area. The hard volcanic core resisted erosion to leave the ridge standing proud. Crowned by an Iron Age hillfort.",
+      "formations": [
+        {"name": "Uriconian volcanics (Precambrian)", "description": "~560-million-year-old lavas and tuffs forming the resistant core of the hill; among the oldest volcanic rocks in England."},
+        {"name": "Cambrian quartzite", "description": "Younger quartzites flanking the volcanic core, part of the long succession exposed across the hill."}
+      ],
+      "resources": [
+        {"category": "websites", "title": "GeolSoc — The Wrekin", "url": "https://www.geolsoc.org.uk/GeositesWrekin", "note": "100 Great Geosites entry."},
+        {"category": "websites", "title": "Shropshire Geology — Shropshire Geological Society", "url": "https://www.shropshiregeology.org.uk/", "note": "Local society and Wrekin/Uriconian guides."},
+        {"category": "videos", "title": "The Wrekin Shropshire geology (YouTube search)", "url": "https://www.youtube.com/results?search_query=the+wrekin+shropshire+precambrian+geology", "note": "Field overviews of the ancient volcanic ridge."}
+      ]
+    },
+    {
+      "name": "Malham Cove — Yorkshire Dales",
+      "lat": 54.0703,
+      "lon": -2.1556,
+      "fetch_geology": true,
+      "notes": "A sweeping 80 m-high curved cliff of pale Carboniferous limestone in the Yorkshire Dales, with a famous limestone pavement on top. The cove is a dry waterfall: a great meltwater river once poured over it as the last Ice Age ended, cutting the amphitheatre, but the water now sinks underground through the limestone and the cliff face is dry. The pavement above shows textbook clints and grikes dissolved along joints. Malham sits close to the Mid-Craven Fault, which juxtaposes the massive limestone against younger rocks. A classic Dales karst landscape.",
+      "formations": [
+        {"name": "Great Scar Limestone (Carboniferous)", "description": "Massive pale marine limestone forming the cove cliff and the pavement above."},
+        {"name": "Limestone pavement (clints & grikes)", "description": "Glacially scoured pavement dissolved along joints into blocks (clints) and fissures (grikes)."},
+        {"name": "Mid-Craven Fault (nearby)", "description": "A major fault near Malham that brings the massive limestone against younger Carboniferous rocks, influencing the landscape."}
+      ],
+      "resources": [
+        {"category": "websites", "title": "GeolSoc — Malham Cove", "url": "https://www.geolsoc.org.uk/GeositesMalhamCove", "note": "100 Great Geosites entry."},
+        {"category": "websites", "title": "Yorkshire Dales National Park", "url": "https://www.yorkshiredales.org.uk/", "note": "Park authority; access and geology."},
+        {"category": "societies", "title": "Yorkshire Geological Society", "url": "https://www.yorksgeolsoc.org.uk/", "note": "Dales karst field guides."},
+        {"category": "videos", "title": "Malham Cove geology karst (YouTube search)", "url": "https://www.youtube.com/results?search_query=malham+cove+geology+limestone+pavement", "note": "Field overviews of the cove and pavement."}
+      ]
+    },
+    {
+      "name": "Ardnamurchan Ring Complex",
+      "lat": 56.7167,
+      "lon": -6.2167,
+      "fetch_geology": true,
+      "notes": "The westernmost point of mainland Britain, Ardnamurchan is the deeply eroded root of a Palaeogene volcano whose plumbing survives as a set of concentric 'ring' intrusions. The rings — formed as magma rose along circular fractures while the volcano's centre repeatedly subsided — are strikingly clear from the air or satellite but subtle on the ground. The complex was foundational to understanding how central volcanoes work, and classic 1930s mapping here defined the very idea of ring complexes. Part of the same Palaeogene province as Mull, Rum and Skye.",
+      "formations": [
+        {"name": "Ring dykes & cone sheets", "description": "Concentric Palaeogene intrusions (gabbro and other rocks) emplaced along ring fractures as the volcanic centre subsided."},
+        {"name": "Country rock (Moine & Mesozoic)", "description": "Older metamorphic and sedimentary rocks intruded and domed by the volcanic centre."}
+      ],
+      "resources": [
+        {"category": "websites", "title": "GeolSoc — Ardnamurchan Ring Complex", "url": "https://www.geolsoc.org.uk/GeositesArdnamurchan", "note": "100 Great Geosites entry."},
+        {"category": "websites", "title": "Scottish Geology Trust", "url": "https://www.scottishgeologytrust.org/", "note": "Ardnamurchan igneous geology background."},
+        {"category": "societies", "title": "Edinburgh Geological Society", "url": "https://www.edinburghgeolsoc.org/", "note": "Hebridean Palaeogene ring-complex resources."},
+        {"category": "videos", "title": "Ardnamurchan ring complex geology (YouTube search)", "url": "https://www.youtube.com/results?search_query=ardnamurchan+ring+complex+geology", "note": "Aerial and field views of the ring structures."}
+      ]
+    },
+    {
+      "name": "Raised Beach at Loch Tarbert — Jura",
+      "lat": 55.9333,
+      "lon": -6.0000,
+      "fetch_geology": true,
+      "notes": "On the wild west coast of Jura, around Loch Tarbert, are some of Scotland's finest raised beaches — old shorelines now stranded well above the present sea, marked by lines of rounded quartzite cobbles and wave-cut platforms. They record the interplay of two Ice Age processes: global sea level rising as the ice melted, and the land itself springing back up (isostatic rebound) once the weight of the ice was removed. Where the land rose faster than the sea, former beaches were lifted clear of the waves. A textbook record of post-glacial sea-level change.",
+      "formations": [
+        {"name": "Raised beaches (Quaternary)", "description": "Stranded shingle beaches and wave-cut platforms lifted above present sea level by post-glacial isostatic rebound."},
+        {"name": "Dalradian quartzite (bedrock)", "description": "Hard Precambrian–early Palaeozoic quartzite forming Jura's coast and supplying the rounded beach cobbles."}
+      ],
+      "resources": [
+        {"category": "websites", "title": "GeolSoc — Raised Beach at Loch Tarbert", "url": "https://www.geolsoc.org.uk/GeositesTarbert", "note": "100 Great Geosites entry."},
+        {"category": "websites", "title": "Scottish Geology Trust", "url": "https://www.scottishgeologytrust.org/", "note": "Raised beaches and isostatic rebound background."},
+        {"category": "societies", "title": "Edinburgh Geological Society", "url": "https://www.edinburghgeolsoc.org/", "note": "Quaternary sea-level field resources."},
+        {"category": "videos", "title": "Raised beaches isostatic rebound Scotland (YouTube search)", "url": "https://www.youtube.com/results?search_query=raised+beaches+isostatic+rebound+scotland", "note": "Explanations of raised shorelines and rebound."}
+      ]
+    },
+    {
+      "name": "Lundy — Bristol Channel",
+      "lat": 51.1797,
+      "lon": -4.6672,
+      "fetch_geology": true,
+      "notes": "A granite island in the Bristol Channel off the Devon coast, intriguing geologists since the nineteenth century. Most of the island is a single mass of Palaeogene granite intruded about 58 million years ago — one of the few onshore records of igneous activity in southern Britain linked to the opening of the North Atlantic. The southeast tip exposes older Devonian slates against the granite. Striking features include the 'Earthquake', a set of deep ground fissures, and the 'Devil's Slide', a vast smooth granite slab beloved of climbers. A National Nature Reserve and Marine Conservation Zone.",
+      "formations": [
+        {"name": "Lundy Granite (Palaeogene)", "description": "A ~58-million-year-old granite pluton forming most of the island; linked to North Atlantic rifting."},
+        {"name": "Devonian slate (SE tip)", "description": "Older metamorphosed mudrocks exposed in contact with the granite at the island's southeast."}
+      ],
+      "resources": [
+        {"category": "websites", "title": "GeolSoc — Lundy", "url": "https://www.geolsoc.org.uk/GeositesLundy", "note": "100 Great Geosites entry; Spectacular Scenery."},
+        {"category": "websites", "title": "Landmark Trust — Lundy", "url": "https://www.landmarktrust.org.uk/lundyisland/", "note": "Island manager; access and visiting."},
+        {"category": "societies", "title": "Ussher Society (SW England geology)", "url": "https://www.ussher.org.uk/", "note": "Devon & Cornwall geology society and guides."},
+        {"category": "videos", "title": "Lundy Island granite geology (YouTube search)", "url": "https://www.youtube.com/results?search_query=lundy+island+granite+geology", "note": "Field overviews of the granite island."}
+      ]
+    }
+  ]
+}
