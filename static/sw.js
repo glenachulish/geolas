@@ -12,7 +12,7 @@
    RELATIVE to the SW's own location, so it works at / or /geolas/ alike.
 */
 
-const CACHE_VERSION = "geolas-v10";
+const CACHE_VERSION = "geolas-v11";
 const SHELL_CACHE = `${CACHE_VERSION}-shell`;
 const API_CACHE = `${CACHE_VERSION}-api`;
 // Tile cache is deliberately NOT version-stamped: a code deploy must not wipe
@@ -25,6 +25,7 @@ const MAX_TILES = 5000; // allow real offline areas (street-level download)
 const SHELL = [
   "",                    // the start_url (directory index)
   "index.html",
+  "deep-time.html",
   "app.js",
   "styles.css",
   "reference-sites.js",
