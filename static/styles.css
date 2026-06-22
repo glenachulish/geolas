@@ -398,6 +398,7 @@ body {
   padding: 8px 12px;
 }
 .nav-btn:hover { background: rgba(255,255,255,.1); }
+.nav-link { text-decoration: none; display: inline-block; line-height: normal; }
 .nav-active { border-color: var(--ochre); color: var(--ochre); }
 
 /* ===== download-area control reuses .map-controls ===== */
