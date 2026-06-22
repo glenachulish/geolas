@@ -1,0 +1,172 @@
+{
+  "category": "Outcrops",
+  "source": "Geological Society of London — 100 Great Geosites (Outcrops category)",
+  "note": "10 sites. 'Sub-Torridonian Unconformity — Assynt Road' named distinctly from existing Assynt entries (ids 5/12/51/62); kept as a specific named outcrop. Sand Volcanoes near Kilkee (ROI) and Dalradian Marble, Maam Valley (Connemara, ROI) set fetch_geology=false (no BGS coverage). No photos — added in-app by user.",
+  "sites": [
+    {
+      "name": "Brimham Rocks — Nidderdale",
+      "lat": 54.0789,
+      "lon": -1.6747,
+      "fetch_geology": true,
+      "notes": "A scatter of fantastically weathered sandstone tors strewn across Brimham Moor in Nidderdale, North Yorkshire. The rock is Millstone Grit — a coarse, pebbly, cross-bedded sandstone laid down in the Carboniferous by huge river deltas building southward across a subsiding basin. Differential weathering picked out the softer and harder bands over millions of years, and freeze-thaw, wind and rain through the Quaternary sculpted the surviving blocks into mushrooms, anvils and balancing stones. The shapes are a textbook display of how sedimentary structure controls the form of an outcrop. A National Trust site with open access; the tors are popular with scramblers and boulderers.",
+      "formations": [
+        {"name": "Millstone Grit (Carboniferous)", "description": "Coarse, pebbly, cross-bedded deltaic sandstone of Namurian age; its varying hardness controls the differential weathering that shaped the tors."}
+      ],
+      "resources": [
+        {"category": "websites", "title": "GeolSoc — Brimham Rocks", "url": "https://www.geolsoc.org.uk/GeositesBrimham", "note": "100 Great Geosites entry; Spectacular Scenery."},
+        {"category": "websites", "title": "National Trust — Brimham Rocks", "url": "https://www.nationaltrust.org.uk/visit/yorkshire/brimham-rocks", "note": "Access, parking and visitor information."},
+        {"category": "societies", "title": "Yorkshire Geological Society", "url": "https://www.yorksgeolsoc.org.uk/", "note": "Field meetings and guides across northern England."},
+        {"category": "videos", "title": "Brimham Rocks Millstone Grit (YouTube search)", "url": "https://www.youtube.com/results?search_query=brimham+rocks+millstone+grit+geology", "note": "Field footage of the weathered tors."}
+      ]
+    },
+    {
+      "name": "Snowball Earth Deposits — Islay (Garvellach / Port Askaig)",
+      "lat": 55.8494,
+      "lon": -6.1075,
+      "fetch_geology": true,
+      "notes": "Exposures on Islay (and the nearby Garvellachs) of the Port Askaig Tillite — a thick pile of glacial diamictite within the Dalradian Supergroup, dropped by ice during the Cryogenian around 650–720 million years ago. The chaotic, poorly-sorted mix of striated dropstones and clasts in a fine matrix is read as evidence of a near-global glaciation, the 'Snowball Earth' episode when ice is thought to have reached the tropics. Interbedded carbonates record the swings between icehouse and greenhouse conditions. One of the most complete records of this event anywhere, and a key locality in the debate over how far the Cryogenian ice extended.",
+      "formations": [
+        {"name": "Port Askaig Tillite (Dalradian, Cryogenian)", "description": "Glacial diamictite with striated dropstones recording a major Neoproterozoic glaciation; central evidence for the Snowball Earth hypothesis."},
+        {"name": "Dalradian Supergroup carbonates", "description": "Interbedded limestones and dolostones marking the transitions between glacial and interglacial conditions."}
+      ],
+      "resources": [
+        {"category": "websites", "title": "GeolSoc — Snowball Earth, Islay", "url": "https://www.geolsoc.org.uk/GeositesIslay", "note": "100 Great Geosites entry; Unsung Heroes."},
+        {"category": "websites", "title": "Scottish Geology Trust — Islay", "url": "https://www.scottishgeologytrust.org/", "note": "Scottish geosite background and outreach."},
+        {"category": "videos", "title": "Snowball Earth Port Askaig Tillite (YouTube search)", "url": "https://www.youtube.com/results?search_query=snowball+earth+port+askaig+tillite+islay", "note": "Explainer footage on the glacial deposits."}
+      ]
+    },
+    {
+      "name": "Coast around Craster — Whin Sill & Greymare Rock",
+      "lat": 55.4736,
+      "lon": -1.5972,
+      "fetch_geology": true,
+      "notes": "The Northumberland coast between Craster and Dunstanburgh Castle gives superb access to the Great Whin Sill — the same hard quartz-dolerite sheet that carries Hadrian's Wall and forms High Force in Teesdale. Here the sill was intruded into Carboniferous limestones and sandstones in the Permian, and erosion has left it standing proud as the crag on which Dunstanburgh Castle sits. Nearby, Greymare Rock displays unusual contorted bedding and folded sediments. The walk strings together the intrusion, its baked margins and the surrounding sedimentary sequence, making it the People's Choice for the Outcrops category. Easy coastal walking from Craster harbour.",
+      "formations": [
+        {"name": "Great Whin Sill (quartz-dolerite)", "description": "Hard Permian dolerite sheet intruded into Carboniferous strata; forms the Dunstanburgh Castle crag and resistant coastal reefs."},
+        {"name": "Carboniferous limestones & sandstones", "description": "Host strata into which the sill was intruded, with baked contact margins visible along the shore."}
+      ],
+      "resources": [
+        {"category": "websites", "title": "GeolSoc — Coast around Craster", "url": "https://www.geolsoc.org.uk/science-and-policy/100-great-geosites/outcrops/coast-around-craster/", "note": "100 Great Geosites entry; The People's Choice."},
+        {"category": "societies", "title": "Northumbrian Earth Sciences (NESS)", "url": "https://www.northumberland.gov.uk/", "note": "Regional earth-science and geodiversity information."},
+        {"category": "videos", "title": "Whin Sill Craster Dunstanburgh (YouTube search)", "url": "https://www.youtube.com/results?search_query=whin+sill+craster+dunstanburgh+geology", "note": "Coastal field footage of the sill."}
+      ]
+    },
+    {
+      "name": "Permian Red Sandstone Cliffs — Dawlish",
+      "lat": 50.5808,
+      "lon": -3.4669,
+      "fetch_geology": true,
+      "notes": "The vivid red cliffs and sea stacks around Dawlish in south Devon — including the well-known Dawlish breakwater stacks beside the railway — are cut in Permian sandstones and breccias. They formed when Britain lay near the equator in the early Permian, in a hot arid desert of wind-blown dunes, flash-flood fans and seasonal rivers. The deep red colour comes from iron oxide coating the grains, and large-scale dune cross-bedding is visible in the cliff faces. The famous coastal railway runs at the foot of the cliffs, repeatedly battered by storms — a vivid reminder of the soft, erodible nature of the rock. A classic locality for desert (aeolian) sedimentology.",
+      "formations": [
+        {"name": "Dawlish Sandstone (Permian)", "description": "Red aeolian (wind-blown) dune sandstone with large-scale cross-bedding; iron-oxide coatings give the cliffs their colour."},
+        {"name": "Permian breccias", "description": "Coarse flash-flood and scree deposits interbedded with the dune sands, recording desert alluvial fans."}
+      ],
+      "resources": [
+        {"category": "websites", "title": "GeolSoc — Permian Cliffs, Dawlish", "url": "https://www.geolsoc.org.uk/GeositesDawlish", "note": "100 Great Geosites entry."},
+        {"category": "websites", "title": "Jurassic Coast / Devon geology context", "url": "https://jurassiccoast.org/", "note": "Wider south-Devon coastal geology background."},
+        {"category": "societies", "title": "Ussher Society (SW England geology)", "url": "https://www.ussher.org.uk/", "note": "South-west England earth-science society."},
+        {"category": "videos", "title": "Dawlish Permian red sandstone (YouTube search)", "url": "https://www.youtube.com/results?search_query=dawlish+permian+red+sandstone+geology", "note": "Cliff and railway field footage."}
+      ]
+    },
+    {
+      "name": "Scourie More — Lewisian gneiss & Scourie dykes",
+      "lat": 58.3492,
+      "lon": -5.1592,
+      "fetch_geology": true,
+      "notes": "Coastal outcrops at Scourie More in Sutherland that lend their name to two key elements of the Lewisian Complex: the Scourian (the older, granulite-facies gneisses) and the Scourie dykes (a swarm of basic dykes that cut them). The relationships exposed here — ancient banded gneiss cross-cut by later dykes, themselves later deformed — let geologists read the sequence of events and establish relative ages across deep time. It is a type area for understanding the Precambrian basement of north-west Scotland and a classic demonstration of cross-cutting relationships. Rocky shore exposures; the dykes stand out as darker bands against the pale gneiss.",
+      "formations": [
+        {"name": "Scourian gneiss (Lewisian, Archaean)", "description": "Ancient granulite-facies banded gneiss; among the oldest rocks in Britain, the type locality for the Scourian event."},
+        {"name": "Scourie dykes", "description": "A swarm of basic (dolerite) dykes intruded into the gneiss, later metamorphosed; central to working out the Lewisian chronology."}
+      ],
+      "resources": [
+        {"category": "websites", "title": "GeolSoc — Scourie More", "url": "https://www.geolsoc.org.uk/GeositesScourieMore", "note": "100 Great Geosites entry; cross-cutting relationships and deep time."},
+        {"category": "websites", "title": "North West Highlands UNESCO Global Geopark", "url": "https://www.nwhgeopark.com/", "note": "Geopark covering Scourie, Assynt and the Lewisian terrain."},
+        {"category": "societies", "title": "Edinburgh Geological Society", "url": "https://www.edinburghgeolsoc.org/", "note": "Excursion guides to NW Highlands localities."},
+        {"category": "videos", "title": "Scourie dykes Lewisian gneiss (YouTube search)", "url": "https://www.youtube.com/results?search_query=scourie+dykes+lewisian+gneiss+geology", "note": "Field footage of the dyke-gneiss relationships."}
+      ]
+    },
+    {
+      "name": "Funzie — stretched pebble conglomerate, Fetlar",
+      "lat": 60.6133,
+      "lon": -0.7869,
+      "fetch_geology": true,
+      "notes": "A celebrated outcrop on the island of Fetlar in Shetland, at Funzie, where an old conglomerate has been dramatically strained during mountain-building. Pebbles that began as rounded cobbles have been flattened into discs and drawn out into rods, recording the intense ductile deformation the rocks endured. By measuring the shapes and orientations of the deformed pebbles, geologists can reconstruct the direction and amount of strain — making this a classic teaching locality for strain analysis. The deformed conglomerate sits within the rocks caught up in the Caledonian orogeny. Remote coastal exposure on a small island.",
+      "formations": [
+        {"name": "Funzie Conglomerate (deformed)", "description": "A metaconglomerate whose pebbles were flattened into discs and stretched into rods during Caledonian deformation; a classic strain-marker outcrop."}
+      ],
+      "resources": [
+        {"category": "websites", "title": "GeolSoc — Funzie", "url": "https://www.geolsoc.org.uk/GeositesFunzie", "note": "100 Great Geosites entry; stretched-pebble strain markers."},
+        {"category": "websites", "title": "Shetland UNESCO Global Geopark", "url": "https://www.shetlandamenity.org/shetland-geopark", "note": "Geopark covering Fetlar and the wider Shetland geology."},
+        {"category": "videos", "title": "Funzie stretched pebble conglomerate (YouTube search)", "url": "https://www.youtube.com/results?search_query=funzie+stretched+pebble+conglomerate+fetlar", "note": "Field footage of the deformed pebbles."}
+      ]
+    },
+    {
+      "name": "Sub-Torridonian Unconformity — Assynt Road",
+      "lat": 58.1850,
+      "lon": -5.1100,
+      "fetch_geology": true,
+      "notes": "One of the most visited unconformities in Britain, exposed beside the road through Assynt in Sutherland. Here the gently-inclined red Torridonian sandstones rest directly on a deeply eroded surface of much older Lewisian gneiss, with around a thousand million years of missing time between the two. The buried Lewisian land surface — an ancient, weathered topography of hills and valleys — is preserved beneath the sandstone, and the sandstone fills the old valleys. It is this great unconformity and the resistant Torridonian peaks above it that give Assynt its distinctive inselberg landscape. A roadside locality, easy to reach and a staple of field teaching. (Distinct from the broader Assynt, Knockan Crag and Glencoul entries — this is the named sub-Torridonian unconformity outcrop.)",
+      "formations": [
+        {"name": "Torridonian sandstone (Neoproterozoic)", "description": "Red-brown fluvial sandstone resting unconformably on the Lewisian; builds the isolated Assynt mountains above the gneiss platform."},
+        {"name": "Lewisian gneiss basement", "description": "Ancient gneiss whose deeply weathered and eroded surface forms the unconformity beneath the Torridonian."}
+      ],
+      "resources": [
+        {"category": "websites", "title": "GeolSoc — Sub-Torridonian Unconformity", "url": "https://www.geolsoc.org.uk/GeositesTorridonianUnconformity", "note": "100 Great Geosites entry; defines the Assynt landscape."},
+        {"category": "websites", "title": "North West Highlands UNESCO Global Geopark", "url": "https://www.nwhgeopark.com/", "note": "Geopark covering Assynt and the Torridonian/Lewisian relationships."},
+        {"category": "societies", "title": "Edinburgh Geological Society", "url": "https://www.edinburghgeolsoc.org/", "note": "Excursion guides to Assynt and the NW Highlands."},
+        {"category": "videos", "title": "Torridonian Lewisian unconformity Assynt (YouTube search)", "url": "https://www.youtube.com/results?search_query=torridonian+lewisian+unconformity+assynt", "note": "Field footage of the unconformity."}
+      ]
+    },
+    {
+      "name": "Sand Volcanoes near Kilkee",
+      "lat": 52.6800,
+      "lon": -9.6500,
+      "fetch_geology": false,
+      "notes": "Along the Atlantic coast near Kilkee in County Clare, the Carboniferous Namurian rocks of the Clare Basin preserve spectacular sand volcanoes and other soft-sediment deformation structures. These formed when water-saturated sand, jolted by earthquakes or rapid loading, liquefied and was forced upward through the overlying mud to erupt at the sea floor — building small cone-shaped vents of sand. Studying these features helps geologists recognise ancient seismic activity (palaeoseismicity) and understand how unconsolidated sediment behaves when shaken. The Clare coast exposures are part of the same deep-water-to-deltaic basin fill that makes this stretch a world reference for turbidite and delta sedimentology. NI/ROI: no BGS coverage, so geology is carried in notes and formations.",
+      "formations": [
+        {"name": "Namurian Clare Basin sandstones & shales", "description": "Carboniferous deep-water and deltaic sediments hosting sand volcanoes and soft-sediment deformation."},
+        {"name": "Sand volcanoes / sediment liquefaction structures", "description": "Cone-shaped sand vents formed where shaken, water-saturated sand was injected upward — markers of ancient earthquakes."}
+      ],
+      "resources": [
+        {"category": "websites", "title": "GeolSoc — Sand Volcanoes near Kilkee", "url": "https://www.geolsoc.org.uk/GeositesKilkee", "note": "100 Great Geosites entry; palaeoseismicity."},
+        {"category": "websites", "title": "Burren & Cliffs of Moher UNESCO Global Geopark", "url": "https://www.burrengeopark.ie/", "note": "Geopark covering the Clare coast geology."},
+        {"category": "societies", "title": "Irish Geological Association", "url": "https://irishgeology.ie/", "note": "Field guides and outreach for Irish geology."},
+        {"category": "videos", "title": "Kilkee sand volcanoes soft sediment deformation (YouTube search)", "url": "https://www.youtube.com/results?search_query=kilkee+sand+volcanoes+soft+sediment+deformation", "note": "Field footage of the structures."}
+      ]
+    },
+    {
+      "name": "The Moho — Heogs & Nikka Vord, Unst",
+      "lat": 60.7550,
+      "lon": -0.8400,
+      "fetch_geology": true,
+      "notes": "On the island of Unst, the northernmost of Shetland, the hills of the Heogs and Nikka Vord expose one of the most accessible and complete examples on Earth of an ophiolite — a slice of ancient oceanic crust and the mantle beneath it, thrust up onto land during the Caledonian orogeny. Walking across the ground here, you cross the Moho (the Mohorovičić discontinuity), the boundary between mantle rocks (peridotite) below and crustal rocks (gabbro) above — a junction normally buried kilometres deep beneath the oceans. The serpentinised mantle rocks weather to a distinctive rusty, barren terrain. A rare chance to stand on the crust-mantle boundary at the surface, and a key site for understanding ocean-floor structure.",
+      "formations": [
+        {"name": "Unst ophiolite — mantle peridotite", "description": "Serpentinised mantle rock forming the lower part of the obducted ocean-floor slice; weathers to rusty, barren ground."},
+        {"name": "Unst ophiolite — crustal gabbro", "description": "Coarse igneous rock of the oceanic crust overlying the mantle peridotite; the Moho lies at their contact."}
+      ],
+      "resources": [
+        {"category": "websites", "title": "GeolSoc — The Moho on the Heogs", "url": "https://www.geolsoc.org.uk/GeositesHeogsMoho", "note": "100 Great Geosites entry; crust-mantle boundary at the surface."},
+        {"category": "websites", "title": "Shetland UNESCO Global Geopark", "url": "https://www.shetlandamenity.org/shetland-geopark", "note": "Geopark covering the Unst ophiolite."},
+        {"category": "societies", "title": "Edinburgh Geological Society", "url": "https://www.edinburghgeolsoc.org/", "note": "Excursion guides to Shetland and Scottish localities."},
+        {"category": "videos", "title": "Unst ophiolite Moho Shetland (YouTube search)", "url": "https://www.youtube.com/results?search_query=unst+ophiolite+moho+shetland+geology", "note": "Field footage of the ophiolite and mantle rocks."}
+      ]
+    },
+    {
+      "name": "Dalradian Marble — Maam Valley, Connemara",
+      "lat": 53.5333,
+      "lon": -9.5667,
+      "fetch_geology": false,
+      "notes": "In the Maam (Maumeen) Valley of Connemara, County Galway, the Dalradian rocks display a 'structural and metamorphic paradise' of folded marbles and schists. The Connemara Marble — a green, banded metamorphosed limestone — was deformed and recrystallised during the Grampian phase of the Caledonian orogeny, when these rocks were buried, heated and folded multiple times. The interplay of folding, metamorphism and the distinctive green marble makes this a superb area for studying polyphase deformation and metamorphic mineral growth. Connemara Marble has long been quarried as a decorative stone. NI/ROI: no BGS coverage, so geology is carried in notes and formations.",
+      "formations": [
+        {"name": "Connemara Marble (Dalradian)", "description": "Green, banded metamorphosed limestone, folded and recrystallised during the Caledonian (Grampian) orogeny; a famous decorative stone."},
+        {"name": "Dalradian schists", "description": "Metamorphosed pelitic rocks recording polyphase folding and metamorphic mineral growth in the Maam Valley."}
+      ],
+      "resources": [
+        {"category": "websites", "title": "GeolSoc — Dalradian Marble, Maam Valley", "url": "https://www.geolsoc.org.uk/GeositesKnocknagurMarble", "note": "100 Great Geosites entry; structural and metamorphic paradise."},
+        {"category": "websites", "title": "Joyce Country & Western Lakes Geopark", "url": "https://www.geopark.ie/", "note": "Aspiring geopark covering the Maam Valley area."},
+        {"category": "societies", "title": "Irish Geological Association", "url": "https://irishgeology.ie/", "note": "Field guides and outreach for Irish geology."},
+        {"category": "videos", "title": "Connemara marble Dalradian folding (YouTube search)", "url": "https://www.youtube.com/results?search_query=connemara+marble+dalradian+folding+geology", "note": "Field footage of the folded marble."}
+      ]
+    }
+  ]
+}

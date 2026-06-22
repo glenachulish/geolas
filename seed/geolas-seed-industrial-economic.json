@@ -1,0 +1,303 @@
+{
+  "category": "Industrial & Economic",
+  "source": "Geological Society of London — 100 Great Geosites (Category: Industrial & Economic Importance)",
+  "note": "The tenth and final GeolSoc '100 Great Geosites' category. All ten canonical members are in Great Britain (no NI/ROI), so every site has fetch_geology:true. Cross-checked against live DB (101 sites, ids 5-105): none already present, so this is a clean 10-site batch with no skips. Photos omitted by project policy (added in-app).",
+  "sites": [
+    {
+      "name": "Great Orme Bronze Age Mine — Llandudno",
+      "lat": 53.3175,
+      "lon": -3.8403,
+      "fetch_geology": true,
+      "notes": "A headland of Carboniferous (Visean) limestone north-west of Llandudno, rising to 207 m, hosting the largest prehistoric copper mine yet found anywhere in the world. Rediscovered in 1987 during landscaping work, the workings date back roughly 4,000 years to the Bronze Age. The copper here is hydrothermal: fluids moving along fractures and faults in the limestone deposited chalcopyrite, occasionally with galena, and the secondary carbonates malachite and azurite that the early miners followed. Bronze Age miners used beach-cobble stone hammers and bone tools, and firesetting, to drive galleries up to ~50 m long and ~65 m deep. A textbook cross-curricular site linking Carboniferous carbonate geology, fracture-controlled mineralisation and prehistory.",
+      "formations": [
+        {
+          "name": "Carboniferous Limestone (Visean)",
+          "description": "Shallow-marine limestone, locally dolomitised, formed ~330 Ma; the host rock of the headland and of the copper mineralisation."
+        },
+        {
+          "name": "Fracture-controlled copper mineralisation",
+          "description": "Hydrothermal veins of chalcopyrite (with minor galena) along faults and fractures, weathering to the green malachite and blue azurite the Bronze Age miners worked."
+        }
+      ],
+      "resources": [
+        {
+          "category": "websites",
+          "title": "GeolSoc — Great Orme Bronze Age Mine",
+          "url": "https://www.geolsoc.org.uk/GeositesGreatOrme",
+          "note": "100 Great Geosites entry (Industrial & Economic); Geotourism."
+        },
+        {
+          "category": "websites",
+          "title": "Great Orme Mines — visitor site",
+          "url": "https://www.greatormemines.info/",
+          "note": "Official visitor attraction: tour, history and access information."
+        }
+      ]
+    },
+    {
+      "name": "Geevor Tin Mine — Cornwall",
+      "lat": 50.1517,
+      "lon": -5.6747,
+      "fetch_geology": true,
+      "notes": "A preserved 20th-century tin mine on the Atlantic coast at Pendeen, operational from 1911 to 1990 and now a museum and heritage centre within the Cornwall and West Devon Mining Landscape World Heritage Site. The tin and copper of west Cornwall sit in lodes around the margins of the Cornubian batholith, a large Permian granite intruded into folded Devonian slates ('killas'). Hot fluids driven off the cooling granite deposited cassiterite (tin oxide) and copper sulphides in steeply dipping veins, which were followed underground and, at Geevor's neighbour Levant, far out beneath the sea. A living record of hard-rock metal mining and of granite-related (greisen and vein) mineralisation.",
+      "formations": [
+        {
+          "name": "Cornubian granite & killas",
+          "description": "Permian granite of the Cornubian batholith intruded into folded Devonian slates and sandstones; the granite is the source of the mineralising fluids."
+        },
+        {
+          "name": "Tin–copper lodes",
+          "description": "Steep hydrothermal veins of cassiterite (SnO2) and copper sulphides around the granite margin, the ore bodies worked at Geevor."
+        }
+      ],
+      "resources": [
+        {
+          "category": "websites",
+          "title": "GeolSoc — Geevor Tin Mine",
+          "url": "https://www.geolsoc.org.uk/GeositesGeevor",
+          "note": "100 Great Geosites entry (Industrial & Economic)."
+        },
+        {
+          "category": "websites",
+          "title": "Geevor Tin Mine — museum & heritage centre",
+          "url": "https://geevor.com/",
+          "note": "Official site: underground tours, museum and history of the mine."
+        }
+      ]
+    },
+    {
+      "name": "Channel Tunnel — Straits of Dover",
+      "lat": 51.0967,
+      "lon": 1.1244,
+      "fetch_geology": true,
+      "notes": "One of the great engineering projects of the 20th century, and a geology story as much as an engineering one. The rail tunnel runs largely within a single stratum — the West Melbury Marly Chalk (the old 'Chalk Marl') near the base of the Lower Chalk — chosen because it is soft enough to bore yet impermeable and only weakly fissured, so it stays dry and self-supporting. Investigation began in 1985 and construction in 1988; rail services opened in 1994. The UK portal is at Castle Hill north of Folkestone. The site teaches how stratigraphy and rock properties (permeability, fissuring) govern major infrastructure, and why the chosen horizon mattered so much.",
+      "formations": [
+        {
+          "name": "West Melbury Marly Chalk",
+          "description": "A marly chalk near the base of the Lower Chalk: low-permeability, weakly fissured and flint-free, making it the ideal self-supporting, dry tunnelling medium."
+        }
+      ],
+      "resources": [
+        {
+          "category": "websites",
+          "title": "GeolSoc — Channel Tunnel",
+          "url": "https://www.geolsoc.org.uk/GeositesChannelTunnel",
+          "note": "100 Great Geosites entry (Industrial & Economic)."
+        }
+      ]
+    },
+    {
+      "name": "The Ironbridge Gorge — Shropshire",
+      "lat": 52.6275,
+      "lon": -2.4855,
+      "fetch_geology": true,
+      "notes": "A UNESCO World Heritage Site and the People's Choice in the GeolSoc list — widely regarded as a birthplace of the Industrial Revolution. The deep gorge of the River Severn, cut by glacial meltwater at the end of the last Ice Age, slices through a near-complete Carboniferous Coal Measures succession, exposing coal, ironstone, fireclay and limestone all in one place. That coincidence of raw materials let Abraham Darby smelt iron with coke here in 1709, and his grandson cast the world's first iron bridge across the gorge in 1779. A site that ties Quaternary erosion directly to economic geology and industrial history.",
+      "formations": [
+        {
+          "name": "Carboniferous Coal Measures",
+          "description": "Cyclic deltaic sediments — coal seams, ironstone, fireclay and sandstone — providing the fuel and ore for early ironmaking."
+        },
+        {
+          "name": "Severn meltwater gorge",
+          "description": "A steep gorge cut by glacial meltwater at the end of the last glaciation, exposing the Coal Measures and giving easy access to the seams."
+        }
+      ],
+      "resources": [
+        {
+          "category": "websites",
+          "title": "GeolSoc — The Ironbridge Gorge",
+          "url": "https://www.geolsoc.org.uk/GeositesIronbridge",
+          "note": "100 Great Geosites entry (Industrial & Economic); People's Choice."
+        },
+        {
+          "category": "websites",
+          "title": "Ironbridge Gorge Museums",
+          "url": "https://www.ironbridge.org.uk/",
+          "note": "World Heritage Site museums: history of iron and the gorge."
+        }
+      ]
+    },
+    {
+      "name": "Allenheads Lead Mining District — Northumberland",
+      "lat": 54.8033,
+      "lon": -2.2244,
+      "fetch_geology": true,
+      "notes": "A former lead-mining village high in the North Pennines, once site of the most productive lead mine in the orefield and headquarters of the W. B. Lead company. The North Pennine ore field is a classic example of hydrothermal mineralisation heated by a buried granite: warm, mineral-rich fluids, driven by the concealed Weardale Granite, moved through fractures in the Carboniferous limestones and sandstones and, on cooling, crystallised galena (lead ore) together with fluorite, barite and other 'gangue' minerals in the cracks. Mining ran from perhaps the 16th century, peaking in the 18th and 19th. Old washing floors, shafts and mine buildings survive around the village.",
+      "formations": [
+        {
+          "name": "Carboniferous limestones & sandstones",
+          "description": "The Pennine 'Yoredale' cyclic strata that host the mineral veins."
+        },
+        {
+          "name": "North Pennine lead–fluorite veins",
+          "description": "Hydrothermal fracture-fill of galena with fluorite and barite, mineralised by fluids warmed by the buried Weardale Granite."
+        }
+      ],
+      "resources": [
+        {
+          "category": "websites",
+          "title": "GeolSoc — Allenheads Lead Mining District",
+          "url": "https://www.geolsoc.org.uk/GeositesAllenheads",
+          "note": "100 Great Geosites entry (Industrial & Economic); Geotourism."
+        },
+        {
+          "category": "websites",
+          "title": "North Pennines UNESCO Global Geopark",
+          "url": "https://www.unesco.org/en/iggp/north-pennines-aonb-unesco-global-geopark",
+          "note": "UNESCO Geopark: the North Pennine Orefield, lead veins and Whin Sill."
+        }
+      ]
+    },
+    {
+      "name": "Kimmeridge Bay — Dorset",
+      "lat": 50.6086,
+      "lon": -2.1208,
+      "fetch_geology": true,
+      "notes": "A bay on the Jurassic Coast World Heritage Site and the type locality of the Kimmeridge Clay — one of the most important hydrocarbon source rocks in north-west Europe. The dark, organic-rich marine mudstones laid down here in the Late Jurassic are the source rock that, buried and heated elsewhere, generated much of the oil of the Wessex Basin and the North Sea. The cliffs include the 'Kimmeridge Coal' or blackstone, an oil-rich shale once burned locally, and a small onshore nodding-donkey well at the bay has produced oil for decades from rocks below. A direct, visible link between fine-grained sedimentology and the petroleum system.",
+      "formations": [
+        {
+          "name": "Kimmeridge Clay Formation",
+          "description": "Late Jurassic organic-rich marine mudstones; the type section here, and the principal source rock for Wessex Basin and North Sea hydrocarbons."
+        },
+        {
+          "name": "Bituminous shale ('blackstone')",
+          "description": "Especially oil-rich beds within the Kimmeridge Clay, historically burned as a fuel."
+        }
+      ],
+      "resources": [
+        {
+          "category": "websites",
+          "title": "GeolSoc — Kimmeridge Bay",
+          "url": "https://www.geolsoc.org.uk/GeositesKimmeridge",
+          "note": "100 Great Geosites entry (Industrial & Economic)."
+        },
+        {
+          "category": "websites",
+          "title": "Jurassic Coast — Kimmeridge",
+          "url": "https://jurassiccoast.org/",
+          "note": "Jurassic Coast World Heritage Site: geology and access."
+        }
+      ]
+    },
+    {
+      "name": "Farringdon Station — London",
+      "lat": 51.5203,
+      "lon": -0.1053,
+      "fetch_geology": true,
+      "notes": "A site that epitomises the link between London's geology, engineering and history. Farringdon was one of the world's first underground railway stations (Metropolitan Railway, 1863) and is now a hub of the Crossrail (Elizabeth line) and Thameslink networks. London sits in a broad downfold, the London Basin, where the thick, impermeable London Clay over the Chalk and Lambeth Group beds governs how tunnels are bored and stations excavated. The Crossrail works beneath London were a vast exercise in urban engineering geology, and the spoil and fossils raised gave a fresh window into the strata under the capital. A good anchor for teaching engineering geology in the everyday environment of a city.",
+      "formations": [
+        {
+          "name": "London Clay",
+          "description": "A thick Eocene marine clay — impermeable and relatively easy to tunnel — that controls deep construction across the London Basin."
+        },
+        {
+          "name": "Lambeth Group & Chalk",
+          "description": "The variable Lambeth Group sands and clays over the Chalk beneath, encountered and managed in the deepest London tunnelling."
+        }
+      ],
+      "resources": [
+        {
+          "category": "websites",
+          "title": "GeolSoc — Farringdon Station",
+          "url": "https://www.geolsoc.org.uk/GeositesFarringdon",
+          "note": "100 Great Geosites entry (Industrial & Economic)."
+        },
+        {
+          "category": "websites",
+          "title": "London Pavement Geology",
+          "url": "https://www.londonpavementgeology.co.uk/",
+          "note": "Curated guide to the building stones and urban geology of London."
+        }
+      ]
+    },
+    {
+      "name": "Dinorwig Power Station & Slate Quarry — Eryri",
+      "lat": 53.1186,
+      "lon": -4.1133,
+      "fetch_geology": true,
+      "notes": "Two layers of economic geology in one mountain at Elidir Fawr, above Llanberis in Eryri (Snowdonia). The hillside is the vast abandoned Dinorwig slate quarry, which in the 19th century roofed much of Britain and beyond; the slate is fine-grained Cambrian mudstone metamorphosed and given its perfect cleavage by the pressures of the Caledonian Orogeny, the cleavage cutting across the original bedding. Hollowed into the same mountain is the Dinorwig pumped-storage hydroelectric scheme ('Electric Mountain'), 1,728 MW behind 16 km of tunnels, which exploits the hard, stable rock and the height difference between two lakes to store and release power within seconds. Slate extraction and modern energy engineering on one site.",
+      "formations": [
+        {
+          "name": "Cambrian slate (Llanberis Slates)",
+          "description": "Fine Cambrian mudstones metamorphosed to slate, with a strong tectonic cleavage imposed during the Caledonian Orogeny — the basis of the roofing-slate industry."
+        },
+        {
+          "name": "Host rock for pumped storage",
+          "description": "Hard, mechanically stable rock into which the 16 km of tunnels and the turbine hall of the Dinorwig scheme were excavated."
+        }
+      ],
+      "resources": [
+        {
+          "category": "websites",
+          "title": "GeolSoc — Dinorwig Power Station and Slate Quarry",
+          "url": "https://www.geolsoc.org.uk/GeositesDinorwig",
+          "note": "100 Great Geosites entry (Industrial & Economic)."
+        },
+        {
+          "category": "websites",
+          "title": "Eryri National Park — geology",
+          "url": "https://eryri.gov.wales/discover/landscapes-and-wildlife/geology/",
+          "note": "National park context for the slate landscape and rocks of Eryri."
+        }
+      ]
+    },
+    {
+      "name": "Bath Spa — Somerset",
+      "lat": 51.3811,
+      "lon": -2.3597,
+      "fetch_geology": true,
+      "notes": "Britain's only natural hot springs and a city built from its own bedrock — two strands of economic geology in one World Heritage city. Rain falling on the Mendip Hills sinks deep along faults, is warmed at depth, and rises through a fracture system to emerge at Bath at around 45 C, delivering over a million litres a day; the Romans built baths here around AD 60 to exploit the geothermal water. The honey-coloured Georgian city is faced in Bath Stone, an oolitic limestone of the Middle Jurassic Great Oolite, quarried nearby (notably at Combe Down) as a freestone that cuts easily in any direction. Geothermal water and building stone, side by side.",
+      "formations": [
+        {
+          "name": "Bath Stone (Great Oolite)",
+          "description": "A Middle Jurassic oolitic limestone freestone, quarried around Bath and used for the city's distinctive Georgian architecture."
+        },
+        {
+          "name": "Geothermal spring system",
+          "description": "Meteoric water sinking on the Mendips, heated at depth, and rising along faults to emerge as Britain's only hot springs at ~45 C."
+        }
+      ],
+      "resources": [
+        {
+          "category": "websites",
+          "title": "GeolSoc — Bath Spa",
+          "url": "https://www.geolsoc.org.uk/GeositesBath",
+          "note": "100 Great Geosites entry (Industrial & Economic)."
+        },
+        {
+          "category": "websites",
+          "title": "The Roman Baths — Bath",
+          "url": "https://www.romanbaths.co.uk/",
+          "note": "The springs and Roman baths: geothermal water and visitor information."
+        }
+      ]
+    },
+    {
+      "name": "National Mining Museum Scotland — Midlothian",
+      "lat": 55.8497,
+      "lon": -3.0700,
+      "fetch_geology": true,
+      "notes": "Set in the Lady Victoria Colliery at Newtongrange — one of the most complete surviving Victorian collieries in Europe, preserved as a museum since 1984. The pit worked the Coal Measures of the Midlothian Coalfield, part of the Carboniferous of Scotland's Midland Valley, where tropical delta and swamp deposits laid down near the equator accumulated the peat that became coal. These seams fuelled the industrialisation of central Scotland. The museum's preserved winding engine, headframe and surface buildings make it the best single place to connect Carboniferous coal geology to the social and economic history it drove. A clean Scottish counterpart to the English and Welsh industrial sites in this category.",
+      "formations": [
+        {
+          "name": "Carboniferous Coal Measures (Midlothian)",
+          "description": "Cyclic deltaic and swamp sediments of the Midland Valley Carboniferous; the coal seams worked at the Lady Victoria Colliery."
+        }
+      ],
+      "resources": [
+        {
+          "category": "websites",
+          "title": "GeolSoc — The National Mining Museum, Midlothian",
+          "url": "https://www.geolsoc.org.uk/GeositesMiningMuseumScotland",
+          "note": "100 Great Geosites entry (Industrial & Economic)."
+        },
+        {
+          "category": "websites",
+          "title": "National Mining Museum Scotland",
+          "url": "https://nationalminingmuseum.com/",
+          "note": "Lady Victoria Colliery: preserved Victorian pit and visitor centre."
+        }
+      ]
+    }
+  ]
+}

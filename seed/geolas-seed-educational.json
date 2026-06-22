@@ -1,0 +1,92 @@
+{
+  "category": "Educational",
+  "source": "Geological Society of London — 100 Great Geosites (Educational category)",
+  "note": "Category has 10 sites; 5 already exist in the DB and were intentionally omitted at build time (Snowdon id27, Cuillin Hills id13, Gaping Gill id25, Porth yr Ogof id24, Knockan Crag id12). This file seeds the 5 new ones. Marble Arch Caves (NI) set fetch_geology=false (no BGS coverage); the other four GB true. No photos — added in-app by user.",
+  "sites": [
+    {
+      "name": "Wren's Nest — Wenlock reef & the Dudley Bug",
+      "lat": 52.5181,
+      "lon": -2.1003,
+      "fetch_geology": true,
+      "notes": "A famous fossil locality and National Nature Reserve on the edge of Dudley in the West Midlands — the first NNR in Britain declared specifically for its geology. The hill is built of Silurian Wenlock Limestone, formed around 425 million years ago as a reef in a warm, shallow tropical sea when this part of England lay south of the equator. The rock is packed with beautifully preserved reef fossils: corals, brachiopods, crinoids and especially the trilobite Calymene blumenbachii, so abundant here that it became known as the 'Dudley Bug' or 'Dudley Locust' and featured on the town's coat of arms. Centuries of limestone quarrying for the local iron and lime industries exposed the beds and left dramatic caverns and the tilted 'Seven Sisters' galleries. A superb teaching site for reef palaeontology and the link between geology and industry.",
+      "formations": [
+        {"name": "Wenlock Limestone (Silurian)", "description": "A fossil-rich reef limestone deposited in a tropical sea ~425 million years ago; full of corals, brachiopods, crinoids and trilobites."},
+        {"name": "Calymene blumenbachii — the 'Dudley Bug'", "description": "A trilobite so abundant in the Wenlock Limestone here that it became Dudley's emblem; a classic index fossil of the reef."}
+      ],
+      "resources": [
+        {"category": "websites", "title": "GeolSoc — Wren's Nest", "url": "https://www.geolsoc.org.uk/GeositesWrensNest", "note": "100 Great Geosites entry; Educational category."},
+        {"category": "websites", "title": "Wren's Nest National Nature Reserve (Dudley)", "url": "https://www.dudley.gov.uk/things-to-do/museums/wrens-nest/", "note": "Visitor information for the reserve and its fossils."},
+        {"category": "societies", "title": "Black Country Geological Society", "url": "https://bcgs.info/", "note": "Local society with guides to Wren's Nest and the Silurian of the region."},
+        {"category": "videos", "title": "Wren's Nest Wenlock limestone Dudley bug (YouTube search)", "url": "https://www.youtube.com/results?search_query=wrens+nest+wenlock+limestone+dudley+bug+trilobite", "note": "Field footage of the reef fossils and caverns."}
+      ]
+    },
+    {
+      "name": "Our Dynamic Earth — Edinburgh",
+      "lat": 55.9520,
+      "lon": -3.1742,
+      "fetch_geology": true,
+      "notes": "A geoscience visitor attraction in the heart of Edinburgh, set beneath Salisbury Crags and Arthur's Seat, telling the story of the processes that have shaped the planet through a suite of interactive exhibits in underground halls. Opened in 1999 with Millennium Commission funding, in a striking tented building by Hopkins Architects, the centre places earth science in historical context — especially celebrating James Hutton and the Edinburgh Enlightenment of the 18th century, when Hutton developed his theory of the Earth partly from the rocks of nearby Holyrood Park. The grounds include rock slabs giving snapshots of Scotland's roughly three-billion-year geological history. An ideal educational gateway, sitting right beside the classic Hutton localities of Salisbury Crags. (The natural crags themselves are covered by the Fire & Ice 'Arthur's Seat' geosite.)",
+      "formations": [
+        {"name": "Display rock slabs (Scottish geological time)", "description": "Outdoor rock panels in the grounds representing key stages of Scotland's ~3-billion-year geological history."},
+        {"name": "Salisbury Crags dolerite sill (setting)", "description": "The Carboniferous dolerite sill of Holyrood Park that overlooks the centre; the locality where Hutton studied igneous–sedimentary relationships."}
+      ],
+      "resources": [
+        {"category": "websites", "title": "GeolSoc — Our Dynamic Earth", "url": "https://www.geolsoc.org.uk/GeositesOurDynamicEarth", "note": "100 Great Geosites entry; Educational category."},
+        {"category": "websites", "title": "Our Dynamic Earth (official)", "url": "https://www.dynamicearth.org.uk/", "note": "Visitor information and exhibits."},
+        {"category": "societies", "title": "Edinburgh Geological Society", "url": "https://www.edinburghgeolsoc.org/", "note": "Guides to Hutton's Edinburgh localities and Holyrood Park."},
+        {"category": "videos", "title": "Our Dynamic Earth Edinburgh Hutton geology (YouTube search)", "url": "https://www.youtube.com/results?search_query=our+dynamic+earth+edinburgh+hutton+geology", "note": "Background on the centre and Hutton's nearby sites."}
+      ]
+    },
+    {
+      "name": "Lyme Regis Beaches — Blue Lias & Mary Anning",
+      "lat": 50.7200,
+      "lon": -2.9333,
+      "fetch_geology": true,
+      "notes": "The cliffs and foreshore around Lyme Regis in Dorset, part of the Jurassic Coast World Heritage Site, are one of the most celebrated fossil-collecting localities in the world. The rocks are Early Jurassic Blue Lias and overlying mudstones — rhythmic alternations of limestone and dark shale laid down on a muddy sea floor around 195–200 million years ago. As the soft cliffs erode, especially after winter storms, they constantly release ammonites, belemnites, fish and the bones of marine reptiles. It was here in the early 19th century that Mary Anning made her pioneering discoveries — the first ichthyosaur and plesiosaur skeletons known to science — transforming understanding of prehistoric life and the concept of extinction. A textbook site for sedimentary cycles, fossils and the history of palaeontology; collecting is best done on the foreshore after rockfalls, never by digging the unstable cliffs.",
+      "formations": [
+        {"name": "Blue Lias (Early Jurassic)", "description": "Rhythmic alternations of limestone and dark shale deposited ~195–200 million years ago; rich in ammonites and marine reptile fossils."},
+        {"name": "Charmouth Mudstone", "description": "Overlying dark Jurassic mudstones that also yield ammonites, belemnites and reptile remains as the cliffs erode."}
+      ],
+      "resources": [
+        {"category": "websites", "title": "GeolSoc — Lyme Regis Beaches", "url": "https://www.geolsoc.org.uk/GeositesLymeRegis", "note": "100 Great Geosites entry; Educational category."},
+        {"category": "websites", "title": "Jurassic Coast World Heritage Site", "url": "https://jurassiccoast.org/", "note": "Official site for the Dorset and East Devon coast geology."},
+        {"category": "websites", "title": "Lyme Regis Museum — fossils & Mary Anning", "url": "https://www.lymeregismuseum.co.uk/", "note": "Fossil walks and the Mary Anning story."},
+        {"category": "videos", "title": "Lyme Regis Blue Lias Mary Anning fossils (YouTube search)", "url": "https://www.youtube.com/results?search_query=lyme+regis+blue+lias+mary+anning+fossils", "note": "Field footage of the fossil coast."}
+      ]
+    },
+    {
+      "name": "Bendrick Rock — Triassic dinosaur footprints, Barry",
+      "lat": 51.3950,
+      "lon": -3.2350,
+      "fetch_geology": true,
+      "notes": "A foreshore site near Barry in South Glamorgan, Wales, of international importance for its fossil reptile and dinosaur trackways — listed as both an SSSI and a Geological Conservation Review site, the latter twice (for stratigraphy and for the footprints). The rocks are Late Triassic red beds of the Mercia Mudstone Group, about 220 million years old: fine red mudstones, marls and ripple-bedded sandstones laid down in a hot, semi-arid setting of seasonal lakes and mudflats. Across wide bedding planes the foreshore preserves remarkable dinosaur footprints and individual trackways, made by relatively primitive early dinosaurs not long evolved from their archosaur ancestors. A superb teaching site for trace fossils, Triassic environments and how footprints record behaviour. The footprints are protected — visitors must not collect or damage the rock.",
+      "formations": [
+        {"name": "Mercia Mudstone Group (Late Triassic)", "description": "Red mudstones, marls and ripple-bedded sandstones (~220 Ma) deposited on semi-arid mudflats; the host of the trackways."},
+        {"name": "Dinosaur footprints & trackways (trace fossils)", "description": "Footprints of early dinosaurs preserved across wide bedding planes; an internationally important ichnofossil site."}
+      ],
+      "resources": [
+        {"category": "websites", "title": "GeolSoc — Bendrick Rock", "url": "https://www.geolsoc.org.uk/GeositesBendrickRock", "note": "100 Great Geosites entry; Educational category; please do not collect."},
+        {"category": "websites", "title": "Natural Resources Wales", "url": "https://naturalresources.wales/", "note": "Statutory body for the SSSI; report any damage or illegal collecting."},
+        {"category": "societies", "title": "South Wales Geologists' Association", "url": "https://swga.org.uk/", "note": "Local field guides to the Triassic of the South Wales coast."},
+        {"category": "videos", "title": "Bendrick Rock Triassic dinosaur footprints Barry (YouTube search)", "url": "https://www.youtube.com/results?search_query=bendrick+rock+triassic+dinosaur+footprints+barry", "note": "Field footage of the trackways."}
+      ]
+    },
+    {
+      "name": "Marble Arch Caves — County Fermanagh",
+      "lat": 54.2589,
+      "lon": -7.8133,
+      "fetch_geology": false,
+      "notes": "A spectacular show-cave system in County Fermanagh, Northern Ireland, at the heart of the Marble Arch Caves UNESCO Global Geopark (which spans the border with Cavan in the Republic). The caves are cut into Carboniferous limestone, dissolved over hundreds of thousands of years by slightly acidic water draining off the slopes of Cuilcagh Mountain, where three rivers sink underground and combine. The result is a classic karst landscape: sinkholes, underground rivers, and inside the caves a wealth of stalactites, stalagmites, flowstones and calcite formations, explored partly by boat. The 'Marble Arch' itself is a natural limestone arch where the underground river re-emerges. An outstanding educational site for limestone solution, cave formation and the water cycle underground. NI: no BGS coverage, so geology is carried in notes and formations.",
+      "formations": [
+        {"name": "Carboniferous limestone (Dartry/Glencar)", "description": "Marine limestone dissolved by acidic groundwater to form the cave system and surrounding karst."},
+        {"name": "Cave formations (speleothems)", "description": "Stalactites, stalagmites, flowstones and calcite deposits built up by dripping, mineral-rich water inside the caves."}
+      ],
+      "resources": [
+        {"category": "websites", "title": "GeolSoc — Marble Arch Caves", "url": "https://www.geolsoc.org.uk/GeositesMarbleArchCaves", "note": "100 Great Geosites entry; Educational category."},
+        {"category": "websites", "title": "Marble Arch Caves UNESCO Global Geopark", "url": "https://www.marblearchcavesgeopark.com/", "note": "Visitor information and the cross-border geopark."},
+        {"category": "societies", "title": "Earth Science Ireland", "url": "https://www.earthscienceireland.org/", "note": "Northern Ireland and all-island earth-science outreach."},
+        {"category": "videos", "title": "Marble Arch Caves Fermanagh karst limestone (YouTube search)", "url": "https://www.youtube.com/results?search_query=marble+arch+caves+fermanagh+karst+limestone", "note": "Footage of the show caves and karst."}
+      ]
+    }
+  ]
+}

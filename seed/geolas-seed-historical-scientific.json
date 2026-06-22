@@ -1,0 +1,169 @@
+{
+  "category": "Historical & Scientific Importance",
+  "source": "Geological Society of London — 100 Great Geosites (Historical & Scientific Importance category)",
+  "note": "10 sites. Portrush (NI) set fetch_geology=false (no BGS coverage); all others GB true. Trotternish named distinctly from existing Skye entries (Cuillin id 13, Elgol id 48) as the northern landslip peninsula. Arnaboll distinct from Durness coastal entry (id 37). No photos — added in-app by user.",
+  "sites": [
+    {
+      "name": "Portrush — Neptunist–Vulcanist controversy",
+      "lat": 55.2056,
+      "lon": -6.6556,
+      "fetch_geology": false,
+      "notes": "The rocky shore and Ramore Head at Portrush in County Antrim is world-renowned for its place in one of geology's great early debates. Around 200 years ago, dark fine-grained rock here — baked Jurassic mudstone (the 'Portrush Rock') hardened by the heat of an intruded dolerite sill — was found to contain ammonite fossils. To the Neptunists, who held that all rocks crystallised from a primordial ocean, a fossil-bearing rock that looked igneous was a powerful argument. The Vulcanists, following Hutton, argued correctly that the rock was a sedimentary mudstone thermally metamorphosed by an igneous intrusion — the fossils were original to the sediment, the hardening was later. Resolving the puzzle was an early triumph for the igneous-intrusion view of basalt and dolerite. A key site in the history of the science. NI: no BGS coverage, so geology is carried in notes and formations.",
+      "formations": [
+        {"name": "Portrush Rock (baked Jurassic mudstone)", "description": "Lias mudstone thermally metamorphosed (hornfels) by an intruded dolerite sill; retains ammonite fossils, central to the Neptunist–Vulcanist debate."},
+        {"name": "Dolerite sill (Palaeogene)", "description": "Tertiary basic intrusion whose heat baked the adjacent mudstone, related to the wider Antrim igneous province."}
+      ],
+      "resources": [
+        {"category": "websites", "title": "GeolSoc — Portrush", "url": "https://www.geolsoc.org.uk/GeositesPortrush", "note": "100 Great Geosites entry; Unsung Heroes."},
+        {"category": "websites", "title": "Earth Science Ireland", "url": "https://www.earthscienceireland.org/", "note": "Northern Ireland and all-island earth-science outreach."},
+        {"category": "videos", "title": "Portrush Neptunist Vulcanist geology (YouTube search)", "url": "https://www.youtube.com/results?search_query=portrush+rock+neptunist+vulcanist+geology", "note": "Field background on the baked mudstone controversy."}
+      ]
+    },
+    {
+      "name": "Ludlow — type area of the Ludlow epoch",
+      "lat": 52.3667,
+      "lon": -2.7167,
+      "fetch_geology": true,
+      "notes": "The town of Ludlow in Shropshire gives its name to the Ludlow epoch and series of the Silurian Period, one of several global time terms drawn from Roderick Murchison's pioneering studies of these rocks in the 1830s. The surrounding country exposes a superb sequence of Silurian marine sediments — limestones, mudstones and siltstones — laid down in a shallow tropical sea on the edge of an ancient continent. The well-known 'Ludlow Bone Bed' marks a key horizon rich in fish remains near the Silurian–Devonian transition. These rocks helped establish the Silurian System and the principle of using fossils to correlate strata worldwide, making Ludlow foundational to stratigraphy. Classic teaching country with numerous quarries and road sections.",
+      "formations": [
+        {"name": "Ludlow Series (Silurian)", "description": "Marine limestones, siltstones and mudstones that are the global type for the Ludlow epoch; rich in shelly fossils."},
+        {"name": "Ludlow Bone Bed", "description": "A thin fossil-rich horizon packed with fish fragments near the Silurian–Devonian boundary; a key correlation marker."}
+      ],
+      "resources": [
+        {"category": "websites", "title": "GeolSoc — Ludlow", "url": "https://www.geolsoc.org.uk/GeositesLudlow", "note": "100 Great Geosites entry; type area of the Ludlow epoch."},
+        {"category": "societies", "title": "Shropshire Geological Society", "url": "https://www.shropshiregeology.org.uk/", "note": "Local guides to the Silurian of the Welsh Borders."},
+        {"category": "videos", "title": "Ludlow Silurian Murchison geology (YouTube search)", "url": "https://www.youtube.com/results?search_query=ludlow+silurian+murchison+geology", "note": "Background on the Silurian type rocks."}
+      ]
+    },
+    {
+      "name": "Siccar Point — Hutton's Unconformity",
+      "lat": 55.9322,
+      "lon": -2.3014,
+      "fetch_geology": true,
+      "notes": "A rocky headland on the Berwickshire coast, internationally celebrated as the place where James Hutton in 1788 found the clearest demonstration of his idea of deep time. Here, near-vertical Silurian greywacke sandstones and mudstones are truncated and overlain unconformably by gently-dipping Devonian Old Red Sandstone. The junction records a vast sequence of events: the older rocks were deposited, buried, folded upright, uplifted and eroded, then a new set of sediments laid down on the worn surface — proof that the Earth's processes are cyclical and operate over immense spans of time. Hutton's companion John Playfair wrote that the mind seemed to grow giddy looking so far into the abyss of time. Often called the most important geological site in the world; the People's Choice for this category. Reached by a steep scramble down to the shore.",
+      "formations": [
+        {"name": "Silurian greywacke (lower, vertical beds)", "description": "Deep-marine sandstones and mudstones tilted to near-vertical before erosion; the older half of Hutton's Unconformity."},
+        {"name": "Old Red Sandstone (Devonian, upper beds)", "description": "Gently-dipping red continental sandstone and breccia resting on the eroded greywacke; the younger half of the unconformity."}
+      ],
+      "resources": [
+        {"category": "websites", "title": "GeolSoc — Siccar Point", "url": "https://www.geolsoc.org.uk/GeositesSiccarPoint", "note": "100 Great Geosites entry; The People's Choice."},
+        {"category": "websites", "title": "Scottish Geology Trust — Siccar Point", "url": "https://www.scottishgeologytrust.org/", "note": "Background on Hutton's Unconformity and access."},
+        {"category": "societies", "title": "Edinburgh Geological Society", "url": "https://www.edinburghgeolsoc.org/", "note": "Excursion guides to the Berwickshire coast."},
+        {"category": "videos", "title": "Siccar Point Hutton unconformity deep time (YouTube search)", "url": "https://www.youtube.com/results?search_query=siccar+point+hutton+unconformity+deep+time", "note": "Field footage of the unconformity."}
+      ]
+    },
+    {
+      "name": "Trotternish Landslip — Skye (Storr & Quiraing)",
+      "lat": 57.5067,
+      "lon": -6.1797,
+      "fetch_geology": true,
+      "notes": "The Trotternish peninsula in northern Skye carries the longest continuous landslip in Britain, including two of Scotland's most famous landmarks — the Old Man of Storr and the Quiraing. The slips formed because heavy Palaeogene basalt lavas, erupted as part of the British Tertiary Volcanic Province, rest on weak, water-saturated Jurassic sediments (mudstones and limestones). The dense basalt cap loaded and oversteepened the soft underlying rock, which gave way in huge rotational landslides, leaving toppled blocks, pinnacles and back-tilted terraces. The Quiraing is still slowly moving today. A spectacular illustration of how rock strength contrasts and gravity sculpt landscapes, and a long-studied site for landslide processes. Distinct from the Cuillin and Elgol localities on Skye.",
+      "formations": [
+        {"name": "Palaeogene basalt lavas", "description": "Thick Tertiary plateau basalts of the British Tertiary Volcanic Province forming the resistant cap that drives the landslipping."},
+        {"name": "Jurassic sediments (mudstones & limestones)", "description": "Weak, water-saturated marine sediments beneath the basalt; their failure under the lava load produced the landslides."}
+      ],
+      "resources": [
+        {"category": "websites", "title": "GeolSoc — Trotternish", "url": "https://www.geolsoc.org.uk/GeositesTrotternish", "note": "100 Great Geosites entry; Spectacular Scenery."},
+        {"category": "websites", "title": "Scottish Geology Trust — Skye", "url": "https://www.scottishgeologytrust.org/", "note": "Skye geology background and outreach."},
+        {"category": "videos", "title": "Trotternish landslip Storr Quiraing geology (YouTube search)", "url": "https://www.youtube.com/results?search_query=trotternish+landslip+storr+quiraing+geology", "note": "Field footage of the landslip features."}
+      ]
+    },
+    {
+      "name": "Schiehallion — weighing the Earth",
+      "lat": 56.6675,
+      "lon": -4.0989,
+      "fetch_geology": true,
+      "notes": "A shapely quartzite mountain in Perth & Kinross, famous in the history of science as the site of the 1774 Schiehallion experiment. Astronomer Royal Nevil Maskelyne, working from a suggestion attributed to Charles Mason, used the mountain's gravitational pull to deflect a plumb-line and so estimate the mean density and mass of the Earth. To calculate the experiment, the mathematician Charles Hutton devised contour lines to map the mountain's shape — the first use of contours, now standard on every map. Geologically, Schiehallion is built of hard Dalradian quartzite which gives it its symmetrical ridge and resistance to erosion. A rare place where a single hill shaped both Earth science and cartography. A popular, straightforward hill walk.",
+      "formations": [
+        {"name": "Schiehallion Quartzite (Dalradian)", "description": "Hard, resistant metamorphosed sandstone of the Dalradian Supergroup; forms the mountain's symmetrical quartzite ridge."}
+      ],
+      "resources": [
+        {"category": "websites", "title": "GeolSoc — Schiehallion", "url": "https://www.geolsoc.org.uk/GeositesSchiehallion", "note": "100 Great Geosites entry; the 1774 mass-of-the-Earth experiment."},
+        {"category": "websites", "title": "Scottish Geology Trust — Schiehallion", "url": "https://www.scottishgeologytrust.org/", "note": "Background on the geology and the experiment."},
+        {"category": "videos", "title": "Schiehallion experiment weighing the Earth (YouTube search)", "url": "https://www.youtube.com/results?search_query=schiehallion+experiment+weighing+the+earth", "note": "Explainer on the gravity experiment and contours."}
+      ]
+    },
+    {
+      "name": "Buchan Type Metamorphism — Aberdeenshire coast",
+      "lat": 57.6667,
+      "lon": -2.0500,
+      "fetch_geology": true,
+      "notes": "The northern coast of Aberdeenshire is the type area for Buchan-type metamorphism — a style of regional metamorphism that occurs at relatively low pressure but high temperature, producing a distinctive set of minerals (andalusite, cordierite, sillimanite) rather than the higher-pressure minerals (kyanite, garnet) of the more familiar Barrovian sequence seen elsewhere in the Dalradian. The contrast between the Buchan and Barrovian zones in Scotland was crucial in showing that metamorphic mineral assemblages record both temperature and pressure, helping geologists read the depth and heat history of mountain belts. The coastal exposures display the metamorphosed Dalradian rocks in fine cliff sections. A foundational locality for metamorphic petrology.",
+      "formations": [
+        {"name": "Dalradian schists & gneisses (Buchan zones)", "description": "Metamorphosed sediments showing the low-pressure, high-temperature Buchan mineral sequence (andalusite–cordierite–sillimanite)."}
+      ],
+      "resources": [
+        {"category": "websites", "title": "GeolSoc — Buchan Type Metamorphism", "url": "https://www.geolsoc.org.uk/GeositesBuchanAberdeenshire", "note": "100 Great Geosites entry; type area for Buchan metamorphism."},
+        {"category": "societies", "title": "Aberdeen Geological Society", "url": "https://www.aberdeengeolsoc.org.uk/", "note": "Local excursion guides to the Aberdeenshire coast."},
+        {"category": "videos", "title": "Buchan Barrovian metamorphism Scotland (YouTube search)", "url": "https://www.youtube.com/results?search_query=buchan+barrovian+metamorphism+scotland", "note": "Explainer on metamorphic facies and zones."}
+      ]
+    },
+    {
+      "name": "Magnesian Limestone — South Shields (Zechstein Sea)",
+      "lat": 54.9667,
+      "lon": -1.4167,
+      "fetch_geology": true,
+      "notes": "The coastal cliffs at South Shields and Marsden in Tyne and Wear are a key locality for the Permian Magnesian Limestone (Zechstein Group). These dolomitic limestones record the Zechstein Sea — a hypersaline inland sea that repeatedly flooded and evaporated across north-west Europe in the late Permian, around 255 million years ago. The cliffs preserve striking reef structures, collapse breccias and unusual concretionary forms produced as the carbonate sediment was altered to dolomite and partly dissolved. Famous landmarks like Marsden Rock were carved from these beds. The succession is central to understanding the catastrophic marine inundations that created the Zechstein basin. An Unsung Heroes site with dramatic coastal scenery.",
+      "formations": [
+        {"name": "Magnesian Limestone (Zechstein, Permian)", "description": "Dolomitic limestone deposited in the hypersaline Zechstein Sea; includes reef structures and collapse breccias."}
+      ],
+      "resources": [
+        {"category": "websites", "title": "GeolSoc — Magnesian Limestone, South Shields", "url": "https://www.geolsoc.org.uk/GeositesMagnesianLimestone", "note": "100 Great Geosites entry; Unsung Heroes; the Zechstein Sea."},
+        {"category": "societies", "title": "Natural History Society of Northumbria", "url": "https://www.nhsn.org.uk/", "note": "Regional natural-science and geodiversity information."},
+        {"category": "videos", "title": "Magnesian limestone Zechstein sea Marsden (YouTube search)", "url": "https://www.youtube.com/results?search_query=magnesian+limestone+zechstein+sea+marsden", "note": "Coastal field footage of the Permian cliffs."}
+      ]
+    },
+    {
+      "name": "Arnaboll Thrust — Loch Eriboll",
+      "lat": 58.4833,
+      "lon": -4.6833,
+      "fetch_geology": true,
+      "notes": "On the east side of Loch Eriboll in the far north Highlands, the Arnaboll Thrust is one of the classic exposures within the Moine Thrust Belt and a landmark in the history of structural geology. Here ancient Lewisian gneiss has been carried westward and pushed up over much younger Lower Cambrian Pipe Rock (a quartzite riddled with worm burrows) along a major thrust fault. It was in studying this ground in the late 19th century — during the great 'Highlands Controversy' resolved by Peach and Horne — that the term mylonite was first coined by Lapworth for the intensely sheared, fine-grained rock produced along the fault. The site demonstrates how older rocks can end up resting on younger ones through low-angle thrusting, a key insight into how mountain belts shorten. Remote moorland and lochside exposure.",
+      "formations": [
+        {"name": "Lewisian gneiss thrust sheet", "description": "Ancient basement gneiss carried westward over younger strata along the Arnaboll Thrust."},
+        {"name": "Lower Cambrian Pipe Rock (footwall)", "description": "Quartzite with vertical worm-burrow 'pipes', overridden by the older gneiss; the contrast proves thrust transport."},
+        {"name": "Mylonite (sheared fault rock)", "description": "Intensely deformed, fine-grained rock along the thrust; Loch Eriboll is where the term mylonite was first used."}
+      ],
+      "resources": [
+        {"category": "websites", "title": "GeolSoc — Arnaboll", "url": "https://www.geolsoc.org.uk/GeositesArnaboll", "note": "100 Great Geosites entry; first use of the term mylonite."},
+        {"category": "websites", "title": "North West Highlands UNESCO Global Geopark", "url": "https://www.nwhgeopark.com/", "note": "Geopark covering Loch Eriboll and the Moine Thrust Belt."},
+        {"category": "societies", "title": "Edinburgh Geological Society", "url": "https://www.edinburghgeolsoc.org/", "note": "Excursion guides to the Moine Thrust Belt."},
+        {"category": "videos", "title": "Moine Thrust Loch Eriboll mylonite geology (YouTube search)", "url": "https://www.youtube.com/results?search_query=moine+thrust+loch+eriboll+mylonite+geology", "note": "Field footage of the thrust belt."}
+      ]
+    },
+    {
+      "name": "Upper Glen Tilt — Hutton's igneous junctions",
+      "lat": 56.8333,
+      "lon": -3.7333,
+      "fetch_geology": true,
+      "notes": "The upper end of Glen Tilt in Perthshire is where James Hutton, visiting in 1785, found one of the field relationships that underpinned his theory of the Earth. Veins of pink granite are seen cutting across and intruding the surrounding grey Dalradian schists and limestones, with fragments of the older rock caught up in the granite. To Hutton this proved that the granite had once been molten and forced its way into pre-existing solid rock — that granite was igneous, not a primordial crystalline deposit as the Neptunists claimed. The observation supported his vision of an Earth shaped by heat and renewed over immense time, captured in his phrase 'no vestige of a beginning, no prospect of an end.' A historic locality of geological pilgrimage along a scenic glen.",
+      "formations": [
+        {"name": "Intrusive granite veins", "description": "Pink granite cutting the country rock, with included fragments of schist; Hutton's evidence that granite is igneous."},
+        {"name": "Dalradian schists & limestones", "description": "Older metamorphosed country rock intruded and veined by the granite in Glen Tilt."}
+      ],
+      "resources": [
+        {"category": "websites", "title": "GeolSoc — Upper End of Glen Tilt", "url": "https://www.geolsoc.org.uk/GeositesGlenTilt", "note": "100 Great Geosites entry; Hutton's granite-junction observations."},
+        {"category": "websites", "title": "Cairngorms National Park", "url": "https://cairngorms.co.uk/", "note": "Glen Tilt lies within the national park; access information."},
+        {"category": "societies", "title": "Edinburgh Geological Society", "url": "https://www.edinburghgeolsoc.org/", "note": "Excursion guides to Perthshire localities."},
+        {"category": "videos", "title": "Glen Tilt Hutton granite junction geology (YouTube search)", "url": "https://www.youtube.com/results?search_query=glen+tilt+hutton+granite+junction+geology", "note": "Field background on the intrusive contacts."}
+      ]
+    },
+    {
+      "name": "Kynance Cove — Lizard serpentinite",
+      "lat": 49.9750,
+      "lon": -5.2306,
+      "fetch_geology": true,
+      "notes": "A famously beautiful cove on the Lizard Peninsula in Cornwall, set among striking green and red serpentinite rocks polished smooth by the sea. The Lizard is Britain's best-exposed ophiolite — a slice of ancient oceanic crust and underlying mantle obducted onto the continent during the Devonian Variscan orogeny. The serpentinite at Kynance formed when mantle peridotite reacted with seawater, altering to serpentine minerals that take a high polish; the colourful 'Lizard serpentine' has been worked for ornamental stone since Victorian times. The cove also shows the contrast between the dark serpentinite and pale veins, and the wider Lizard complex includes gabbros and sheeted dykes typical of ocean floor. A scientifically important window into the deep ocean lithosphere, and a scenic National Trust beach.",
+      "formations": [
+        {"name": "Lizard serpentinite", "description": "Altered mantle peridotite (serpentinite) with green and red banding; takes a polish and was worked as 'Lizard serpentine' ornamental stone."},
+        {"name": "Lizard ophiolite complex", "description": "An obducted slice of oceanic crust and mantle (gabbros, dykes, peridotite) emplaced during the Variscan orogeny."}
+      ],
+      "resources": [
+        {"category": "websites", "title": "GeolSoc — Kynance Cove", "url": "https://www.geolsoc.org.uk/GeositesKynance", "note": "100 Great Geosites entry; Lizard serpentinite."},
+        {"category": "websites", "title": "National Trust — Kynance Cove", "url": "https://www.nationaltrust.org.uk/visit/cornwall/lizard-point-and-kynance-cove", "note": "Access, parking and visitor information."},
+        {"category": "societies", "title": "Ussher Society (SW England geology)", "url": "https://www.ussher.org.uk/", "note": "South-west England earth-science society."},
+        {"category": "videos", "title": "Lizard ophiolite serpentinite Kynance (YouTube search)", "url": "https://www.youtube.com/results?search_query=lizard+ophiolite+serpentinite+kynance+geology", "note": "Field footage of the Lizard complex."}
+      ]
+    }
+  ]
+}

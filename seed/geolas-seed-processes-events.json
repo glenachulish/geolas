@@ -1,0 +1,475 @@
+{
+  "category": "Processes & Events (Geological Story of Scotland)",
+  "source": "User document: 'Ten Geological Processes & Events that shaped Great Britain & Ireland' (compiled June 2026; sources BGS, NatureScot, JNCC GCR, Geological Society, Scottish Geology Trust)",
+  "note": "A themed batch OUTSIDE the GeolSoc '100 Great Geosites' scheme. Ten narrative geological events, arranged oldest-first, each as a concept-level entry distinct from existing locality sites (e.g. 'The Moine Thrust Belt' the event, vs Knockan Crag id 12 / Glencoul id 51 the localities). Coordinates are a representative type-locality per event. All Scotland-centred GB events, so fetch_geology:true throughout. Every link verified live before seeding; the document's BRITICE URL (britice.group.shef.ac.uk, dead) was replaced with the live sheffield.ac.uk project page. Photos omitted per project policy. Cross-checked against live DB (111 sites): no exact-name clashes.",
+  "sites": [
+    {
+      "name": "The Lewisian Gneiss Complex",
+      "lat": 58.3500,
+      "lon": -5.1500,
+      "fetch_geology": true,
+      "notes": "Scotland's deepest foundation and among the oldest rocks in Britain and Ireland: Archaean to Palaeoproterozoic gneisses, c. 3,000–1,700 Ma, formed and repeatedly reworked over roughly 1,400 million years — close to a third of Earth's history. The banded pink-and-grey rock now at the surface was once tens of kilometres down, recording deep burial, high-grade metamorphism and several mountain-building episodes. Crucially the Lewisian is a fragment of Laurentia, the ancient continent that became North America and Greenland; its closest relatives are the gneisses of the Canadian Shield, not anything in England. This is the bedrock, in both senses, of the idea that Scotland began on a different continent from England. The type ground is the Sutherland coast around Scourie, Lochinver and Loch Laxford, plus almost all of the Outer Hebrides; the same gneiss built the Callanish standing stones. Coordinates here are set at Scourie.",
+      "formations": [
+        {
+          "name": "TTG gneisses",
+          "description": "Mostly granitic (tonalite-trondhjemite-granodiorite) gneisses, the bulk of the complex, with metamorphosed marble, quartzite and mica schist."
+        },
+        {
+          "name": "Scourie dykes",
+          "description": "Basaltic intrusions c. 2,400–2,000 Ma that cut the older gneiss and are themselves deformed, letting the sequence of events be read directly from an outcrop."
+        },
+        {
+          "name": "Terrane divisions",
+          "description": "Northern, Central and Southern mainland regions with different Archaean–Palaeoproterozoic histories; the Central region preserves the least-reworked Archaean."
+        }
+      ],
+      "resources": [
+        {
+          "category": "websites",
+          "title": "Scottish Geology Trust — Precambrian Era",
+          "url": "https://www.scottishgeologytrust.org/geology/scotlands-geology/geological-timescale/precambrian-era/",
+          "note": "Accessible overview of the oldest era of Scotland's geology."
+        },
+        {
+          "category": "websites",
+          "title": "NatureScot — North-west Seaboard geological foundations",
+          "url": "https://www.nature.scot/landforms-and-geology/scotlands-rocks-landforms-and-soils/rocks-and-minerals/scotlands-geological-foundations/north-west-seaboard-geological",
+          "note": "The Lewisian foundation of the north-west seaboard."
+        },
+        {
+          "category": "websites",
+          "title": "BGS / GCR Vol. 34 Ch.1 — Lewisian, Torridonian & Moine intro",
+          "url": "https://webapps.bgs.ac.uk/Memoirs/docs/GCR34_Chapter1Lewisian.html",
+          "note": "Technical Geological Conservation Review chapter."
+        },
+        {
+          "category": "websites",
+          "title": "Geological Society — Lewisian, Torridonian and Moine summary",
+          "url": "https://www.geolsoc.org.uk/Groups-and-Networks/Commissions/Stratigraphy-Commission/Brief-Summary-of-British-Stratigraphy/Lewisian-Torridonian-and-Moine",
+          "note": "Stratigraphy Commission summary."
+        }
+      ]
+    },
+    {
+      "name": "The Torridonian",
+      "lat": 57.5450,
+      "lon": -5.5050,
+      "fetch_geology": true,
+      "notes": "Ancient rivers across a Laurentian desert. By about a billion years ago the Lewisian had been worn to a hilly landscape, and huge rivers draining mountains in what is now Greenland and NE Canada spread red sand, mud and pebbles across it — the Torridonian, once a blanket up to ~7.5 km thick. Two things make it special: it sits on an unconformity of staggering relief (a fossil land surface with hills 300–500 m high, buried then re-exhumed — you can stand on a Precambrian hillside); and its lake deposits hold some of the oldest traces of life in Britain, microfossils and chemical signatures of non-marine eukaryotes. It builds the unmistakable isolated, tiered sandstone peaks — Suilven, Stac Pollaidh, Quinag, Slioch — rising abruptly from the pale gneiss platform, several capped by white Cambrian quartzite. The informal name bundles two sequences: the older Stoer Group (c. 1,200 Ma) and the younger Torridon Group (c. 1,000–950 Ma). Coordinates set at Glen Torridon.",
+      "formations": [
+        {
+          "name": "Torridon Group",
+          "description": "Red-brown fluvial sandstones and conglomerates, c. 1,000–950 Ma; builds the great tiered peaks of Torridon and Assynt."
+        },
+        {
+          "name": "Stoer Group",
+          "description": "The older sequence, c. 1,200 Ma, separated from the Torridon Group by its own unconformity; type section on the Stoer peninsula."
+        },
+        {
+          "name": "Basal unconformity",
+          "description": "The contact with the underlying Lewisian — an exhumed Precambrian land surface of great relief, beautifully exposed at Diabaig."
+        }
+      ],
+      "resources": [
+        {
+          "category": "websites",
+          "title": "NatureScot — North-west Seaboard geological foundations",
+          "url": "https://www.nature.scot/landforms-and-geology/scotlands-rocks-landforms-and-soils/rocks-and-minerals/scotlands-geological-foundations/north-west-seaboard-geological",
+          "note": "Regional setting of the Torridonian over the Lewisian."
+        },
+        {
+          "category": "websites",
+          "title": "JNCC GCR Vol. 34 Ch. 4 — Torridonian (PDF)",
+          "url": "https://data.jncc.gov.uk/data/17c34755-15be-4bf6-b132-6a2ab8eeb10b/gcr-v34-lewisian-torridonian-moine-c4.pdf",
+          "note": "Detailed monograph chapter with figures."
+        },
+        {
+          "category": "websites",
+          "title": "Scottish Geology Trust — Precambrian (Torridonian)",
+          "url": "https://www.scottishgeologytrust.org/geology/scotlands-geology/geological-timescale/precambrian-era/",
+          "note": "Accessible overview."
+        }
+      ]
+    },
+    {
+      "name": "The Iapetus Ocean & Its Closure",
+      "lat": 54.9500,
+      "lon": -3.6000,
+      "fetch_geology": true,
+      "notes": "Two continents, one country. Scotland and England were not merely in different places — they were on different continents, separated by a full-sized ocean. When Rodinia broke up around 600 Ma the Iapetus Ocean opened between Laurentia (the future Scotland and NW Ireland) and the Gondwanan margin, from which the microcontinent Avalonia (the future England, Wales and SE Ireland) later rifted and drifted north. The proof hid in fossils: early Palaeozoic trilobites in Scotland and western Newfoundland (the 'Pacific' fauna) differ from those of southern Britain (the 'Atlantic' fauna) — two shorelines either side of a wide ocean. Modern zircon-provenance work confirms sediment could not cross until the ocean closed, around 410 Ma. Iapetus closed by subduction in stages, the final join — the Iapetus Suture — now buried but traceable along the Solway Firth and the modern border, and across Ireland from the Shannon Estuary to Clogherhead. Its precise line is still debated. Coordinates set on the Solway, near the suture trace.",
+      "formations": [
+        {
+          "name": "Iapetus Suture",
+          "description": "The buried scar of the final continental join, running roughly along the Solway Firth and the Scotland–England border; exact line still debated."
+        },
+        {
+          "name": "Contrasting faunal provinces",
+          "description": "Pacific-realm trilobites (Laurentian side) versus Atlantic-realm trilobites (Avalonian side) — the original evidence for a wide intervening ocean."
+        }
+      ],
+      "resources": [
+        {
+          "category": "videos",
+          "title": "Geology Bites — Rob Strachan: terranes of the British Isles",
+          "url": "https://www.geologybites.com/rob-strachan",
+          "note": "Clear maps and plate-motion video."
+        },
+        {
+          "category": "websites",
+          "title": "NatureScot — How Scotland's foundations came together",
+          "url": "https://www.nature.scot/landforms-and-geology/scotlands-rocks-landforms-and-soils/rocks-and-minerals/how-scotlands-geological-foundations-came-together",
+          "note": "The continental collisions that closed Iapetus."
+        },
+        {
+          "category": "websites",
+          "title": "Geological Society — Clogherhead & the Shannon Estuary",
+          "url": "https://www.geolsoc.org.uk/science-and-policy/plate-tectonic-stories/clogherhead-and-shannon/",
+          "note": "Plate-tectonic story of the suture in Ireland."
+        },
+        {
+          "category": "websites",
+          "title": "EarthByte — GPlates plate reconstructions",
+          "url": "https://www.earthbyte.org/",
+          "note": "Interactive deep-time plate models."
+        }
+      ]
+    },
+    {
+      "name": "The Caledonian Orogeny",
+      "lat": 57.0800,
+      "lon": -3.6700,
+      "fetch_geology": true,
+      "notes": "The mountain-building that closed Iapetus and welded Scotland from separate crustal blocks. As the ocean shrank, three things collided in turn with the Laurentian margin: a chain of volcanic islands (the Grampian phase, ~475–465 Ma, deforming the Dalradian); then Baltica (the Scandian phase, ~435–425 Ma, driving the Moine Thrust); and the approach of Avalonia from the south (the Acadian phase, ~400 Ma, in southern Britain). The resulting range rivalled the Alps or Himalaya; its eroded roots are the Highlands. Two legacies dominate the modern map: the SW–NE structural grain that organises the whole country (the trend of the colliding margins and the great terrane faults), and the late granite plutons — the Cairngorms, Etive and Cruachan — that core the major massifs. The Caledonides continue into Scandinavia, East Greenland and the Appalachians, a single ocean-girdling system later split by the modern Atlantic. Coordinates set on the Cairngorm granite.",
+      "formations": [
+        {
+          "name": "Caledonian granites",
+          "description": "Late-orogenic 'newer granite' plutons (Cairngorm, Etive, Cruachan) intruded into the thickened crust; the cores of major massifs."
+        },
+        {
+          "name": "Deformed Dalradian",
+          "description": "The Grampian Highland metasediments folded and metamorphosed in the Grampian phase, ~470 Ma."
+        },
+        {
+          "name": "SW–NE structural grain",
+          "description": "The diagonal fabric imposed on the whole country by the colliding margins and terrane-bounding faults."
+        }
+      ],
+      "resources": [
+        {
+          "category": "websites",
+          "title": "NatureScot — Caledonian Orogeny / Southern Uplands foundations",
+          "url": "https://www.nature.scot/landforms-and-geology/scotlands-rocks-landforms-and-soils/rocks-and-minerals/scotlands-geological-foundations/southern-uplands-geological-foundations",
+          "note": "Covers the orogeny and the soft collision that built the Southern Uplands."
+        },
+        {
+          "category": "videos",
+          "title": "Geology Bites — Rob Strachan: the Caledonian orogeny",
+          "url": "https://www.geologybites.com/rob-strachan",
+          "note": "Audio and figures; good for the phased story."
+        },
+        {
+          "category": "websites",
+          "title": "Wikipedia — Caledonian orogeny",
+          "url": "https://en.wikipedia.org/wiki/Caledonian_orogeny",
+          "note": "Phase detail and references."
+        },
+        {
+          "category": "societies",
+          "title": "Geological Society of Glasgow — resources",
+          "url": "https://geologyglasgow.org.uk/",
+          "note": "Field and educational resources."
+        }
+      ]
+    },
+    {
+      "name": "The Moine Thrust Belt",
+      "lat": 58.0350,
+      "lon": -4.9950,
+      "fetch_geology": true,
+      "notes": "Where thrust tectonics was born. The Moine Thrust Belt is the outer, north-western edge in Britain of the Caledonian mountain belt — the zone where the deformed metamorphic interior was shoved WNW over the undeformed Laurentian foreland. A stack of low-angle thrusts (the Sole, Glencoul, Ben More and Moine thrusts) carried older rocks up and over younger, so ancient Lewisian gneiss and Moine schist now sit physically on top of much younger Cambrian quartzites and limestones — a complete inversion of the normal age order. Its scientific importance is hard to overstate: in the 1880s Lapworth, Peach and Horne showed here that rocks could move tens of kilometres horizontally, settling the bitter 'Highlands Controversy'; Geikie coined 'thrust' and Lapworth 'mylonite'. The IUGS listed it among the world's 100 geological heritage sites in 2022. The Assynt Window and Glen Achall give rare views down through the thrust sheets. Coordinates set at Knockan Crag, the purpose-built access point. Movement was Scandian, c. 435–425 Ma.",
+      "formations": [
+        {
+          "name": "Major thrust planes",
+          "description": "The Sole, Glencoul, Ben More and Moine thrusts, carrying older rocks WNW over younger with up to ~200 km of horizontal displacement."
+        },
+        {
+          "name": "Mylonites",
+          "description": "Intensely milled rocks produced along the thrusts; Lapworth coined the term here. Protoliths (Moine psammite vs foreland Lewisian) are still debated."
+        },
+        {
+          "name": "Tectonic windows",
+          "description": "The Assynt Window and Glen Achall, where erosion has cut through the thrust sheets to expose the foreland beneath."
+        }
+      ],
+      "resources": [
+        {
+          "category": "websites",
+          "title": "BGS — The North-west Highlands (Moine Thrust explainer)",
+          "url": "https://www.bgs.ac.uk/discovering-geology/maps-and-resources/office-geology/the-north-west-highlands/",
+          "note": "Diagrams and photos, school-friendly."
+        },
+        {
+          "category": "societies",
+          "title": "NW Highlands UNESCO Geopark — Knockan Crag & Rock Stop",
+          "url": "https://www.nwhgeopark.com/",
+          "note": "Visit info and interpretation."
+        },
+        {
+          "category": "websites",
+          "title": "BGS Earthwise — Moine Thrust Zone (cross-sections)",
+          "url": "https://earthwise.bgs.ac.uk/index.php/Moine_Thrust_Zone,_Northern_Highlands_of_Scotland",
+          "note": "Technical, with balanced cross-sections."
+        },
+        {
+          "category": "websites",
+          "title": "BGS / GCR Vol. 34 Ch. 5 — Moine Thrust Belt",
+          "url": "https://webapps.bgs.ac.uk/Memoirs/docs/GCR34_Chapter5MoineThrustBelt.html",
+          "note": "Geological Conservation Review chapter (Butler)."
+        }
+      ]
+    },
+    {
+      "name": "Scotland's Terrane-Bounding Faults",
+      "lat": 57.2800,
+      "lon": -4.4500,
+      "fetch_geology": true,
+      "notes": "Scotland's structural skeleton. The country is a collage of crustal slices — terranes — each with its own history, juxtaposed along great SW–NE faults that became active during or after the Caledonian collision. From NW to SE: the Moine Thrust; the Great Glen Fault; the Highland Boundary Fault; the Southern Uplands Fault; and the buried Iapetus Suture marking the edge of Avalonia. The Great Glen Fault is a major sinistral strike-slip fault slicing across the Highlands from Inverness to Fort William, its trace occupied by Loch Ness, Loch Oich and Loch Lochy, separating the Northern Highland from the Grampian terrane. The Highland Boundary Fault is the most dramatic landscape line, running Arran/Helensburgh to Stonehaven, marking the abrupt change from rugged metamorphic Highlands to the rolling Midland Valley, which dropped as a rift by up to ~4 km. The Southern Uplands Fault bounds the accretionary complex of ocean-floor sediments scraped off the down-going Iapetus plate. Coordinates set on the Great Glen at Loch Ness.",
+      "formations": [
+        {
+          "name": "Great Glen Fault",
+          "description": "Major sinistral strike-slip fault from Inverness to Fort William; trace occupied by Loch Ness, Loch Oich and Loch Lochy. Total displacement poorly constrained."
+        },
+        {
+          "name": "Highland Boundary Fault",
+          "description": "Arran to Stonehaven; the abrupt edge of the Highlands, letting the Midland Valley drop as a rift by as much as 4 km."
+        },
+        {
+          "name": "Southern Uplands Fault",
+          "description": "Bounds the Central Lowlands; separates the Midland Valley terrane from the Southern Uplands accretionary complex."
+        },
+        {
+          "name": "Five terranes",
+          "description": "Hebridean, Northern Highland, Grampian, Midland Valley and Southern Uplands, each a distinct crustal block."
+        }
+      ],
+      "resources": [
+        {
+          "category": "websites",
+          "title": "Undiscovered Scotland — Geology of Scotland",
+          "url": "https://www.undiscoveredscotland.co.uk/usscotfax/geography/geology.html",
+          "note": "Good overview terrane map."
+        },
+        {
+          "category": "videos",
+          "title": "Geology Bites — Rob Strachan: terrane map",
+          "url": "https://www.geologybites.com/rob-strachan",
+          "note": "Labels all the faults."
+        },
+        {
+          "category": "websites",
+          "title": "Wikipedia — Highland Boundary Fault",
+          "url": "https://en.wikipedia.org/wiki/Highland_Boundary_Fault",
+          "note": "The most visible of the terrane faults."
+        },
+        {
+          "category": "websites",
+          "title": "ScienceDirect topic — Great Glen Fault",
+          "url": "https://www.sciencedirect.com/topics/earth-and-planetary-sciences/great-glen-fault",
+          "note": "Technical synthesis."
+        }
+      ]
+    },
+    {
+      "name": "The Old Red Sandstone & Hutton's Unconformity",
+      "lat": 55.9320,
+      "lon": -2.3020,
+      "fetch_geology": true,
+      "notes": "Once the Caledonian mountains stood high they began to erode. Through the Devonian (c. 419–359 Ma) Scotland sat in arid subtropical latitudes ~25 degrees south, and the mountain debris accumulated as the Old Red Sandstone — thick red continental deposits of seasonal rivers, alluvial fans and lakes, locally up to 11 km thick: the rock of the Moray Firth coast, Orkney, Caithness and the Midland Valley margin. Within it lay Lake Orcadie, a vast freshwater lake from Shetland to the Moray Firth whose finely laminated sediments preserve one of the world's great fossil-fish faunas, studied by the Cromarty stonemason Hugh Miller. Above all, the Old Red Sandstone gave the world deep time: at Siccar Point gently dipping Devonian sandstone rests on eroded near-vertical Silurian greywackes, the two separated by perhaps 65–80 million years. When Hutton, Playfair and Hall sailed there in 1788, Hutton saw proof of his cyclical, uniformitarian theory — Playfair's 'the mind seemed to grow giddy by looking so far into the abyss of time.' Coordinates set at Siccar Point.",
+      "formations": [
+        {
+          "name": "Old Red Sandstone",
+          "description": "Thick Devonian red continental sandstones, conglomerates and lake beds laid down by rivers, fans and lakes on the 'Old Red Sandstone Continent'."
+        },
+        {
+          "name": "Lake Orcadie fish beds",
+          "description": "Finely laminated freshwater lake sediments preserving armoured placoderms and lobe-finned fish; the Caithness flagstones and Orkney cliffs."
+        },
+        {
+          "name": "Hutton's Unconformity (Siccar Point)",
+          "description": "Devonian ORS on eroded near-vertical Silurian greywackes — the angular unconformity that revealed deep time in 1788."
+        }
+      ],
+      "resources": [
+        {
+          "category": "societies",
+          "title": "Edinburgh Geological Society — Hutton's Unconformity, Siccar Point",
+          "url": "https://edinburghgeolsoc.org/edinburghs-geology/huttons-unconformity/",
+          "note": "Accessible account with the Playfair quote."
+        },
+        {
+          "category": "websites",
+          "title": "Scottish Geology Trust GeoGuide — Siccar Point leaflet",
+          "url": "https://geoguide.scottishgeologytrust.org/p/egs_leaflet_siccar/egs_leaflet_siccar",
+          "note": "Field leaflet with diagrams."
+        },
+        {
+          "category": "websites",
+          "title": "IUGS Geoheritage — Siccar Point / Hutton's Unconformity",
+          "url": "https://iugs-geoheritage.org/geoheritage_sites/siccar-point/",
+          "note": "IUGS geological heritage site listing."
+        },
+        {
+          "category": "websites",
+          "title": "Highly Allochthonous — making of an angular unconformity",
+          "url": "https://all-geo.org/highlyallochthonous/2011/01/the-making-of-an-angular-unconformity-huttons-unconformity-at-siccar-point/",
+          "note": "Annotated outcrop photos and explanation."
+        }
+      ]
+    },
+    {
+      "name": "The Carboniferous Midland Valley",
+      "lat": 55.9440,
+      "lon": -3.1610,
+      "fetch_geology": true,
+      "notes": "Coal, limestone and volcanoes. By the Carboniferous (c. 359–299 Ma) Scotland had drifted to near the equator, and the down-faulted Midland Valley rift (between the Highland Boundary and Southern Uplands faults) became a subsiding basin of tropical deltas, coal swamps, shallow carbonate seas and bursts of volcanism. The result is the most economically consequential geology in Scotland: the Coal Measures and ironstones that powered the Industrial Revolution, the Carboniferous Limestone, and the West Lothian oil shales that supported the world's first commercial oil industry under James 'Paraffin' Young from the 1850s. Intra-plate volcanism built familiar landmarks — the Campsie Fells, Edinburgh Castle Rock, Arthur's Seat, and the Salisbury Crags sill, itself a Hutton locality where he showed the igneous rock was intruded molten, not deposited by water. The legacy is double-edged and worth teaching: the same Carboniferous carbon that built modern Scotland is central to the climate story. Coordinates set in Edinburgh (Arthur's Seat / Salisbury Crags).",
+      "formations": [
+        {
+          "name": "Coal Measures & ironstones",
+          "description": "Cyclic deltaic coal swamps and ironstones that fuelled the industrialisation of Glasgow, Lanarkshire, Fife and the Lothians."
+        },
+        {
+          "name": "Carboniferous Limestone & oil shales",
+          "description": "Shallow-marine limestones, and the West Lothian oil shales of the world's first commercial oil industry."
+        },
+        {
+          "name": "Rift volcanism",
+          "description": "Intra-plate lavas and intrusions — Campsie Fells, Castle Rock plug, Arthur's Seat, and the Salisbury Crags teschenite sill."
+        }
+      ],
+      "resources": [
+        {
+          "category": "websites",
+          "title": "NatureScot — Scotland's rocks & minerals (portal)",
+          "url": "https://www.nature.scot/landforms-and-geology/scotlands-rocks-landforms-and-soils/rocks-and-minerals",
+          "note": "Overview portal including the Carboniferous Central Lowlands."
+        },
+        {
+          "category": "societies",
+          "title": "Edinburgh Geological Society — Arthur's Seat & city geology",
+          "url": "https://edinburghgeolsoc.org/edinburghs-geology/",
+          "note": "Ideal for fieldwork in the Carboniferous volcanics."
+        },
+        {
+          "category": "websites",
+          "title": "BGS Earthwise — Carboniferous of the Midland Valley",
+          "url": "https://earthwise.bgs.ac.uk/index.php/Carboniferous",
+          "note": "Technical regional account."
+        },
+        {
+          "category": "websites",
+          "title": "Scottish Geology Trust — geological timescale",
+          "url": "https://www.scottishgeologytrust.org/geology/scotlands-geology/geological-timescale/",
+          "note": "Timescale hub including the Carboniferous."
+        }
+      ]
+    },
+    {
+      "name": "The Palaeogene Volcanics",
+      "lat": 56.7100,
+      "lon": -6.1500,
+      "fetch_geology": true,
+      "notes": "Fire, the opening Atlantic and the Inner Hebrides. The last great igneous event in Scotland came as the North Atlantic began to open about 60 Ma. Crust along the western seaboard domed and stretched above the rising proto-Iceland mantle plume, and Scotland erupted on a continental scale as part of the North Atlantic Igneous Province. Lava fields hundreds of metres thick poured over Skye and Mull, and deeply dissected central volcanoes grew on Skye, Mull, Rum, Ardnamurchan, Arran and St Kilda. Erosion has sliced these open, making the Hebrides foundational to igneous geology — basalt petrology was effectively born here (Geikie 1871, Harker on Skye and Rum). Ardnamurchan is almost a textbook volcano of concentric ring dykes and cone sheets; Rum exposes a classic layered intrusion; the Skye Cuillin are the gabbroic guts of a central complex; Staffa's Fingal's Cave shows columnar basalt, as does the Giant's Causeway across the water in Antrim. The same doming uplifted much of the Highlands by up to a kilometre. Main lava pulses fell within < 3 million years, c. 61–55 Ma. Coordinates set on Mull.",
+      "formations": [
+        {
+          "name": "Plateau lava fields",
+          "description": "Basalt lava piles hundreds of metres thick over Skye and Mull, weathering to the fertile green soils of the lava terraces."
+        },
+        {
+          "name": "Central volcanoes & ring complexes",
+          "description": "Deeply eroded central volcanoes on Skye, Mull, Rum, Ardnamurchan, Arran and St Kilda; Ardnamurchan's concentric ring dykes and cone sheets are textbook."
+        },
+        {
+          "name": "Layered intrusions",
+          "description": "The Rum layered intrusion and the gabbroic Skye Cuillin — the crystallised magma chambers of the central complexes."
+        }
+      ],
+      "resources": [
+        {
+          "category": "websites",
+          "title": "NatureScot — Palaeogene and Neogene rocks",
+          "url": "https://www.nature.scot/landforms-and-geology/scotlands-rocks-landforms-and-soils/rocks-and-minerals/rocks-formed-foundations-joined/palaeogene-and-neogene-rocks",
+          "note": "Regional account of the volcanic province."
+        },
+        {
+          "category": "websites",
+          "title": "BGS Earthwise — Palaeogene volcanic districts of Scotland",
+          "url": "https://earthwise.bgs.ac.uk/index.php/Palaeogene_volcanic_districts_of_Scotland_%E2%80%93_an_introduction",
+          "note": "BGS Regional Geology introduction with figures."
+        },
+        {
+          "category": "societies",
+          "title": "Geological Society of Glasgow — Ardnamurchan 'textbook volcano'",
+          "url": "https://geologyglasgow.org.uk/event/ardnamurchan/",
+          "note": "The ring complex as a drive-through volcano."
+        },
+        {
+          "category": "websites",
+          "title": "Wikipedia — North Atlantic Igneous Province",
+          "url": "https://en.wikipedia.org/wiki/North_Atlantic_Igneous_Province",
+          "note": "The wider large igneous province."
+        }
+      ]
+    },
+    {
+      "name": "Quaternary Glaciation",
+      "lat": 57.5300,
+      "lon": -5.4900,
+      "fetch_geology": true,
+      "notes": "The ice that carved the modern landscape. Almost every landform you see in Scotland — the glens, lochs, corries and hills of Glasgow — was finished by ice in the last couple of million years. After ~50 million years of cooling, the Quaternary (last ~2.6 Ma) brought repeated glacials; during the coldest stages ice sheets buried all of Scotland bar the highest summits. Glaciers deepened valleys into U-shaped troughs and gouged rock basins now filled by ribbon lochs (Loch Ness, Loch Morar — its floor below sea level); where ice scoured whole landscapes it produced the knock-and-lochan terrain of the Outer Hebrides and Sutherland; where it streamlined soft rock it left crag-and-tail forms (Edinburgh's Castle Rock and Royal Mile) and Glasgow's drumlin swarm. The final flourish was the Loch Lomond Readvance (Younger Dryas, ~12.9–11.5 ka), whose fresh hummocky moraines are superbly displayed in Glen Torridon. When the ice melted the unburdened crust rebounded, lifting former shorelines into raised beaches — directly relevant to modern sea-level change. We are, technically, still in the Quaternary ice age, in an interglacial. Coordinates set in Glen Torridon.",
+      "formations": [
+        {
+          "name": "Glacial erosional forms",
+          "description": "U-shaped troughs and over-deepened ribbon lochs (Loch Ness, Loch Morar), corries, arêtes, roches moutonnées, areal scouring and crag-and-tail."
+        },
+        {
+          "name": "Glacial depositional forms",
+          "description": "Moraines (Glen Torridon), drumlins (Glasgow), eskers and meltwater channels left as the ice retreated."
+        },
+        {
+          "name": "Loch Lomond Readvance",
+          "description": "Younger Dryas ice cap (~12.9–11.5 ka) that regrew over the western Highlands, leaving fresh hummocky moraines."
+        },
+        {
+          "name": "Raised beaches",
+          "description": "Former shorelines lifted by glacio-isostatic rebound after the ice melted; ring much of the west coast and Firth of Clyde."
+        }
+      ],
+      "resources": [
+        {
+          "category": "websites",
+          "title": "NatureScot — The Ice Age & ice-carved landscapes",
+          "url": "https://www.nature.scot/landforms-and-geology/scotlands-rocks-landforms-and-soils/landforms/ice-age-landforms",
+          "note": "The best single starting point."
+        },
+        {
+          "category": "websites",
+          "title": "Scotlandguides — Scotland's Ice Age landforms",
+          "url": "https://www.scotlandguides.org/scotlands-ice-age-landforms.html",
+          "note": "Detailed illustrated account."
+        },
+        {
+          "category": "websites",
+          "title": "Scottish Geology Trust GeoGuide — The Quaternary in Scotland",
+          "url": "https://geoguide.scottishgeologytrust.org/p/gcr06/gcr06_chapter2thequaternaryinscotland",
+          "note": "Technical GCR monograph chapter."
+        },
+        {
+          "category": "websites",
+          "title": "BRITICE — British–Irish Ice Sheet glacial map",
+          "url": "https://www.sheffield.ac.uk/geography-planning/research/geography/projects/britice",
+          "note": "Interactive maps and GIS of ice-sheet limits (replaces the document's retired britice.group.shef.ac.uk URL)."
+        }
+      ]
+    }
+  ]
+}

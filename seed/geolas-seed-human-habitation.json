@@ -1,0 +1,409 @@
+{
+  "category": "Human Habitation",
+  "source": "Geological Society of London — 100 Great Geosites (Human Habitation category)",
+  "note": "10 sites. Céide Fields (ROI) set fetch_geology=false (no BGS coverage); all others GB true. Many are built monuments/building-stone sites — notes and formations describe the stones used; fetch_geology=true returns bedrock beneath where BGS has coverage. Hadrian's Wall & Whin Sill kept distinct from the Outcrops 'Coast around Craster' entry (same sill, different locality). No photos — added in-app by user.",
+  "sites": [
+    {
+      "name": "Callanish Stones — Lewisian gneiss",
+      "lat": 58.1975,
+      "lon": -6.7456,
+      "fetch_geology": true,
+      "notes": "A cross-shaped setting of Neolithic standing stones near Callanish on the west coast of Lewis in the Outer Hebrides, erected around 5,000 years ago. Every stone is cut from the local Lewisian gneiss — among the oldest rock in Europe, with some Lewisian dated to around 3 billion years. The gneiss is a coarsely banded metamorphic rock, its pale and dark layers (felsic and mafic bands) folded and contorted during repeated episodes of deep-crustal metamorphism in the Precambrian. The builders chose tall, naturally splitting slabs that weather to silvery, lichen-streaked monoliths. A striking demonstration of people building directly from the bedrock under their feet, and of how ancient that bedrock is.",
+      "formations": [
+        {
+          "name": "Lewisian gneiss",
+          "description": "Coarsely banded Precambrian metamorphic rock, among the oldest in Europe (up to ~3 billion years); the stone from which the circle was built."
+        }
+      ],
+      "resources": [
+        {
+          "category": "websites",
+          "title": "GeolSoc — Callanish Stones",
+          "url": "https://www.geolsoc.org.uk/GeositesCallanish",
+          "note": "100 Great Geosites entry."
+        },
+        {
+          "category": "websites",
+          "title": "Historic Environment Scotland — Calanais",
+          "url": "https://www.historicenvironment.scot/visit-a-place/places/calanais-standing-stones/",
+          "note": "Visitor and heritage information for the stones."
+        },
+        {
+          "category": "societies",
+          "title": "Scottish Geology Trust",
+          "url": "https://www.scottishgeologytrust.org/",
+          "note": "Lewisian gneiss and Outer Hebrides geology background."
+        },
+        {
+          "category": "videos",
+          "title": "Callanish Lewisian gneiss standing stones (YouTube search)",
+          "url": "https://www.youtube.com/results?search_query=callanish+lewisian+gneiss+standing+stones",
+          "note": "Field footage of the stone circle and rock."
+        }
+      ]
+    },
+    {
+      "name": "Hadrian's Wall & the Great Whin Sill",
+      "lat": 55.025,
+      "lon": -2.387,
+      "fetch_geology": true,
+      "notes": "Along its central section in Northumberland, Hadrian's Wall — the Roman frontier built under the emperor Hadrian from AD 122 — runs dramatically along the crest of the Great Whin Sill. The sill is a hard sheet of quartz-dolerite intruded into Carboniferous limestones and sandstones during the Permian, and where later erosion stripped away the softer surrounding rock it left a line of steep, north-facing crags. The Roman engineers exploited this natural rampart, placing the wall on the cliff edge for a commanding defensive position at sites like Crag Lough, Steel Rigg and Housesteads. The same dolerite was quarried locally for building. A classic illustration of geology shaping human history — often called the original and most important sill in British geology.",
+      "formations": [
+        {
+          "name": "Great Whin Sill (quartz-dolerite)",
+          "description": "Hard Permian dolerite sheet intruded into Carboniferous strata; its eroded crags form the natural rampart the wall follows."
+        },
+        {
+          "name": "Carboniferous limestones & sandstones",
+          "description": "Softer host rocks into which the sill was intruded; their easier erosion left the sill standing as cliffs."
+        }
+      ],
+      "resources": [
+        {
+          "category": "websites",
+          "title": "GeolSoc — Hadrian's Wall & the Whin Sill",
+          "url": "https://www.geolsoc.org.uk/GeositesHadrian",
+          "note": "100 Great Geosites entry."
+        },
+        {
+          "category": "websites",
+          "title": "Northumberland National Park — Hadrian's Wall",
+          "url": "https://www.northumberlandnationalpark.org.uk/",
+          "note": "Access and the Whin Sill crag sections of the wall."
+        },
+        {
+          "category": "societies",
+          "title": "Natural History Society of Northumbria",
+          "url": "https://www.nhsn.org.uk/",
+          "note": "Regional geology and geodiversity information."
+        },
+        {
+          "category": "videos",
+          "title": "Hadrian's Wall Whin Sill geology (YouTube search)",
+          "url": "https://www.youtube.com/results?search_query=hadrians+wall+whin+sill+geology",
+          "note": "Field footage of the wall along the sill crags."
+        }
+      ]
+    },
+    {
+      "name": "Stonehenge — sarsens & bluestones",
+      "lat": 51.1789,
+      "lon": -1.8262,
+      "fetch_geology": true,
+      "notes": "The most famous prehistoric monument in Britain, on Salisbury Plain in Wiltshire, built and modified over many centuries from around 3000 BC. Its stones come from two very different sources. The huge outer sarsens are blocks of silcrete — an extremely hard, silica-cemented sandstone that formed as a near-surface duricrust in the Palaeogene and lay scattered across the chalk downs; most are thought to come from the Marlborough Downs about 25 km north. The smaller inner 'bluestones' are a mixture of igneous and volcanic rocks — Ordovician dolerite, rhyolite and tuffs — sourced from the Preseli Hills of west Wales, around 200 km away, and somehow transported to the site. The contrast between local sarsen and far-travelled Welsh bluestone makes Stonehenge a remarkable geological as well as archaeological puzzle. The People's Choice for this category.",
+      "formations": [
+        {
+          "name": "Sarsen (silcrete)",
+          "description": "Very hard silica-cemented sandstone formed as a Palaeogene duricrust; the large outer uprights and lintels, sourced locally on the downs."
+        },
+        {
+          "name": "Preseli bluestones (dolerite, rhyolite, tuff)",
+          "description": "Ordovician igneous and volcanic rocks from the Preseli Hills of west Wales, transported ~200 km to the site."
+        },
+        {
+          "name": "Chalk bedrock (Salisbury Plain)",
+          "description": "Late Cretaceous chalk underlying the monument, into which the earthworks and stone holes were cut."
+        }
+      ],
+      "resources": [
+        {
+          "category": "websites",
+          "title": "GeolSoc — Stonehenge",
+          "url": "https://www.geolsoc.org.uk/GeositesStonehenge",
+          "note": "100 Great Geosites entry; The People's Choice."
+        },
+        {
+          "category": "websites",
+          "title": "English Heritage — Stonehenge",
+          "url": "https://www.english-heritage.org.uk/visit/places/stonehenge/",
+          "note": "Visitor information and the monument's history."
+        },
+        {
+          "category": "videos",
+          "title": "Stonehenge sarsen bluestone geology Preseli (YouTube search)",
+          "url": "https://www.youtube.com/results?search_query=stonehenge+sarsen+bluestone+geology+preseli",
+          "note": "Background on the stone sources."
+        }
+      ]
+    },
+    {
+      "name": "Durham Cathedral — building stone & Frosterley Marble",
+      "lat": 54.7733,
+      "lon": -1.5764,
+      "fetch_geology": true,
+      "notes": "A Norman cathedral begun in 1093, set high above the River Wear and built largely from local Carboniferous sandstone of the Coal Measures — the warm, durable stone that gives the building its colour. Inside, the most celebrated geological feature is the 'Frosterley Marble' used in the polished columns of the Chapel of the Nine Altars: a black Carboniferous limestone packed with the cross-sectioned fossil coral Dibunophyllum, which takes a high polish and shows the corals as pale rings against the dark stone. (It is not a true marble in the metamorphic sense, but a fossiliferous limestone.) The cathedral is a superb example of reading geology through architecture — the local bedrock as both structural stone and decorative fossil display. A UNESCO World Heritage Site.",
+      "formations": [
+        {
+          "name": "Carboniferous sandstone (Coal Measures)",
+          "description": "Local deltaic sandstone used as the main building stone of the cathedral."
+        },
+        {
+          "name": "Frosterley Marble (fossil limestone)",
+          "description": "Black Carboniferous limestone full of the coral Dibunophyllum; polished for decorative columns — a fossil limestone, not a true marble."
+        }
+      ],
+      "resources": [
+        {
+          "category": "websites",
+          "title": "GeolSoc — Durham Cathedral",
+          "url": "https://www.geolsoc.org.uk/GeositesDurhamCathedral",
+          "note": "100 Great Geosites entry; building stones and Frosterley Marble."
+        },
+        {
+          "category": "websites",
+          "title": "Durham Cathedral (official)",
+          "url": "https://www.durhamcathedral.co.uk/",
+          "note": "Visitor information and the building's history."
+        },
+        {
+          "category": "videos",
+          "title": "Frosterley marble Durham Cathedral geology (YouTube search)",
+          "url": "https://www.youtube.com/results?search_query=frosterley+marble+durham+cathedral+geology",
+          "note": "Background on the fossil limestone columns."
+        }
+      ]
+    },
+    {
+      "name": "Eddystone Lighthouse — Eddystone reef",
+      "lat": 50.1797,
+      "lon": -4.2583,
+      "fetch_geology": true,
+      "notes": "A lighthouse on the treacherous Eddystone Rocks, a reef about 9 miles south of Rame Head off the south Devon/Cornwall coast. The reef is formed of hard Devonian gneissic rock that rises just to the sea surface, lying directly in the approach to Plymouth Sound and wrecking many ships before the first light was built in 1698. The current tower, Douglass's lighthouse of 1882, is a landmark of engineering — built from interlocking dovetailed granite blocks designed to shed the force of Atlantic storms, a technique pioneered by John Smeaton's earlier 18th-century tower. The site shows how an isolated outcrop of resistant rock at sea level became both a deadly hazard and the foundation for a feat of construction. Offshore; viewable from boats and the Plymouth coast.",
+      "formations": [
+        {
+          "name": "Eddystone reef (Devonian gneiss)",
+          "description": "Hard metamorphic rock forming the submerged reef on which the lighthouse stands; resistant enough to survive at the wave-swept surface."
+        },
+        {
+          "name": "Granite (lighthouse building stone)",
+          "description": "Interlocking dovetailed granite blocks used to build the storm-resistant tower."
+        }
+      ],
+      "resources": [
+        {
+          "category": "websites",
+          "title": "GeolSoc — Eddystone Lighthouse",
+          "url": "https://www.geolsoc.org.uk/GeositesEddystone",
+          "note": "100 Great Geosites entry."
+        },
+        {
+          "category": "societies",
+          "title": "Ussher Society (SW England geology)",
+          "url": "https://www.ussher.org.uk/",
+          "note": "South-west England earth-science society."
+        },
+        {
+          "category": "videos",
+          "title": "Eddystone lighthouse reef engineering (YouTube search)",
+          "url": "https://www.youtube.com/results?search_query=eddystone+lighthouse+reef+granite+engineering",
+          "note": "Background on the reef and the tower's construction."
+        }
+      ]
+    },
+    {
+      "name": "Thames Barrier — flood defence on London geology",
+      "lat": 51.4975,
+      "lon": 0.0364,
+      "fetch_geology": true,
+      "notes": "A movable flood barrier across the Thames at Woolwich in east London, operational since 1982, built to protect the low-lying floodplain of central London from North Sea storm surges and exceptionally high tides. Its geological significance lies in why London needs it: the city sits in the London Basin, a broad downfold whose floor is the impermeable London Clay, and much of the floodplain is built on soft, compressible Holocene alluvium. London is also slowly sinking — partly because south-east England is still tilting down as the land readjusts after the last Ice Age (post-glacial isostatic adjustment), which steadily raises relative sea level. The barrier's piers are founded on the firmer Chalk beneath the clay. A vivid example of major engineering responding directly to the region's geology and sea-level change.",
+      "formations": [
+        {
+          "name": "London Clay (Eocene)",
+          "description": "Thick marine clay underlying the London Basin; impermeable and the classic London foundation material."
+        },
+        {
+          "name": "Holocene alluvium",
+          "description": "Soft, compressible river sediments of the Thames floodplain that the barrier protects."
+        },
+        {
+          "name": "Chalk (Cretaceous)",
+          "description": "Firm bedrock beneath the clay on which the barrier's piers are founded."
+        }
+      ],
+      "resources": [
+        {
+          "category": "websites",
+          "title": "GeolSoc — Thames Barrier",
+          "url": "https://www.geolsoc.org.uk/GeositesThamesBarrier",
+          "note": "100 Great Geosites entry."
+        },
+        {
+          "category": "websites",
+          "title": "London Pavement Geology",
+          "url": "https://www.londonpavementgeology.co.uk/",
+          "note": "Interactive database of London building stones and urban geology."
+        },
+        {
+          "category": "videos",
+          "title": "Thames Barrier London geology sea level (YouTube search)",
+          "url": "https://www.youtube.com/results?search_query=thames+barrier+london+geology+sea+level",
+          "note": "Background on London's flood geology."
+        }
+      ]
+    },
+    {
+      "name": "Céide Fields Bog — County Mayo",
+      "lat": 54.3036,
+      "lon": -9.45,
+      "fetch_geology": false,
+      "notes": "On the north Mayo coast, the Céide Fields are the most extensive Neolithic site in the world — a system of stone-walled field boundaries, dwellings and tombs nearly 6,000 years old, preserved beneath a deep blanket bog. The geological story is the bog itself: after the Neolithic farmers cleared the woodland and worked the land, a wet, cool climate and the leaching of nutrients allowed peat to accumulate, slowly burying and sealing the entire field system. The peat preserved the walls exactly as they were left, and probing through the bog let archaeologists map them. The dramatic sea cliffs nearby expose Carboniferous sandstones and shales. A unique combination of human prehistory and the geology of peatland formation. NI/ROI: no BGS coverage, so geology is carried in notes and formations.",
+      "formations": [
+        {
+          "name": "Blanket bog (Holocene peat)",
+          "description": "Deep peat that accumulated after Neolithic clearance, burying and preserving the field walls beneath it."
+        },
+        {
+          "name": "Carboniferous sandstones & shales",
+          "description": "Bedrock exposed in the nearby sea cliffs, beneath the blanket bog."
+        }
+      ],
+      "resources": [
+        {
+          "category": "websites",
+          "title": "GeolSoc — Céide Fields Bog",
+          "url": "https://www.geolsoc.org.uk/GeositesCeideFields",
+          "note": "100 Great Geosites entry."
+        },
+        {
+          "category": "websites",
+          "title": "Céide Fields Visitor Centre (Heritage Ireland)",
+          "url": "https://heritageireland.ie/places-to-visit/ceide-fields/",
+          "note": "Visitor information and the Neolithic field system."
+        },
+        {
+          "category": "societies",
+          "title": "Irish Geological Association",
+          "url": "https://irishgeology.ie/",
+          "note": "Field guides and outreach for Irish geology."
+        },
+        {
+          "category": "videos",
+          "title": "Ceide Fields blanket bog Neolithic Mayo (YouTube search)",
+          "url": "https://www.youtube.com/results?search_query=ceide+fields+blanket+bog+neolithic+mayo",
+          "note": "Background on the bog-preserved field system."
+        }
+      ]
+    },
+    {
+      "name": "Highgate Cemetery — urban geology of headstones",
+      "lat": 51.567,
+      "lon": -0.1467,
+      "fetch_geology": true,
+      "notes": "A Victorian cemetery in north London, famous for its monuments and as a wooded nature reserve — and a celebrated spot for 'urban geology'. Because headstones and monuments were cut from stone quarried all over Britain and abroad, a walk through the cemetery is a tour of rock types you would otherwise have to travel widely to see: pale Carrara marble, dark Cornish and Scandinavian granites, larvikite with its blue shimmer, Portland and other limestones full of fossils, and polished gabbros and serpentinites. The weathering of different stones in the damp London air also shows how rock durability varies — marble sugars and dissolves while granite stays crisp. The cemetery sits on the London Clay and Bagshot Sands of Highgate Hill. A reminder that cities are full of accessible geology if you know how to look.",
+      "formations": [
+        {
+          "name": "Monumental stones (granite, marble, larvikite, limestone)",
+          "description": "A wide range of building and decorative stones used for headstones; an open-air collection of rock types and their weathering."
+        },
+        {
+          "name": "London Clay & Bagshot Sands",
+          "description": "Eocene clay and overlying sands forming Highgate Hill, the ground on which the cemetery sits."
+        }
+      ],
+      "resources": [
+        {
+          "category": "websites",
+          "title": "GeolSoc — Highgate Cemetery",
+          "url": "https://www.geolsoc.org.uk/GeositesHighgateCemetery",
+          "note": "100 Great Geosites entry; urban geology."
+        },
+        {
+          "category": "websites",
+          "title": "London Pavement Geology",
+          "url": "https://www.londonpavementgeology.co.uk/",
+          "note": "Interactive database of London building stones; useful for identifying monumental rock types."
+        },
+        {
+          "category": "videos",
+          "title": "Highgate cemetery urban geology building stones (YouTube search)",
+          "url": "https://www.youtube.com/results?search_query=highgate+cemetery+urban+geology+building+stones",
+          "note": "Background on identifying monumental stones."
+        }
+      ]
+    },
+    {
+      "name": "Skara Brae — Orkney sandstone village",
+      "lat": 59.0489,
+      "lon": -3.3417,
+      "fetch_geology": true,
+      "notes": "A remarkably preserved Neolithic village on the Bay of Skaill, Mainland Orkney, occupied around 3200–2500 BC and one of four sites making up the 'Heart of Neolithic Orkney' World Heritage Site. Its survival is owed directly to local geology: Orkney's bedrock is the Devonian Old Red Sandstone, which splits naturally along flat bedding planes into thin, regular flagstones. The villagers built with these slabs not only for walls but for the furniture inside — beds, dressers and shelves are all made of the same stone, which is why a complete domestic interior survives where timber would have rotted away. The houses were then sealed and protected by wind-blown sand until exposed by a storm in 1850. A perfect example of people building entirely from the stone the land provided.",
+      "formations": [
+        {
+          "name": "Old Red Sandstone flagstones (Devonian)",
+          "description": "Devonian sandstone that splits into thin, flat flagstones; used for the walls and the stone furniture of the houses."
+        },
+        {
+          "name": "Wind-blown sand (Holocene)",
+          "description": "Coastal dune sand that buried and sealed the village, protecting it until storms re-exposed it."
+        }
+      ],
+      "resources": [
+        {
+          "category": "websites",
+          "title": "GeolSoc — Skara Brae",
+          "url": "https://www.geolsoc.org.uk/GeositesSkaraBrae",
+          "note": "100 Great Geosites entry."
+        },
+        {
+          "category": "websites",
+          "title": "Historic Environment Scotland — Skara Brae",
+          "url": "https://www.historicenvironment.scot/visit-a-place/places/skara-brae/",
+          "note": "Visitor and World Heritage information."
+        },
+        {
+          "category": "societies",
+          "title": "Scottish Geology Trust",
+          "url": "https://www.scottishgeologytrust.org/",
+          "note": "Orkney Old Red Sandstone background."
+        },
+        {
+          "category": "videos",
+          "title": "Skara Brae Orkney flagstone Neolithic geology (YouTube search)",
+          "url": "https://www.youtube.com/results?search_query=skara+brae+orkney+flagstone+neolithic+geology",
+          "note": "Background on the flagstone village."
+        }
+      ]
+    },
+    {
+      "name": "Westminster Abbey — decorative building stones",
+      "lat": 51.4994,
+      "lon": -0.1273,
+      "fetch_geology": true,
+      "notes": "The great royal church in London, much of it rebuilt from the 13th century, is a treasury of decorative stone drawn from across Britain and the ancient world. Its fabric and monuments include Reigate stone and Caen limestone in the older work, Portland stone and other limestones, dark Purbeck 'marble' (a polished freshwater limestone full of pond-snail shells) in the slender shafts, and — reused from the Roman and classical world — exotic stones such as imperial porphyry (a deep purple Egyptian igneous rock) and Egyptian gabbro in the Cosmati pavement before the High Altar. The medieval Cosmati pavement is an inlaid masterpiece assembled from these recycled antique stones. The Abbey is a superb place to study how building stones were chosen, traded and reused over two thousand years. A working church and World Heritage Site.",
+      "formations": [
+        {
+          "name": "Purbeck 'marble' (freshwater limestone)",
+          "description": "Polished Jurassic limestone packed with pond-snail shells, used for slender decorative shafts; a limestone, not a true marble."
+        },
+        {
+          "name": "Portland & Caen limestones",
+          "description": "Pale building limestones used in the fabric of the Abbey."
+        },
+        {
+          "name": "Imperial porphyry & Egyptian gabbro",
+          "description": "Exotic igneous stones reused from the classical world in the Cosmati pavement before the High Altar."
+        }
+      ],
+      "resources": [
+        {
+          "category": "websites",
+          "title": "GeolSoc — Westminster Abbey",
+          "url": "https://www.geolsoc.org.uk/GeositesWestminsterAbbey",
+          "note": "100 Great Geosites entry; decorative building stones."
+        },
+        {
+          "category": "websites",
+          "title": "London Pavement Geology",
+          "url": "https://www.londonpavementgeology.co.uk/",
+          "note": "Interactive database of London building stones, including Westminster sites."
+        },
+        {
+          "category": "videos",
+          "title": "Westminster Abbey Cosmati pavement building stones (YouTube search)",
+          "url": "https://www.youtube.com/results?search_query=westminster+abbey+cosmati+pavement+building+stones",
+          "note": "Background on the decorative and reused stones."
+        }
+      ]
+    }
+  ]
+}
