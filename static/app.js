@@ -279,6 +279,77 @@ function renderMarkers(sites) {
   });
 }
 
+// Derive a named geographical area from coordinates. Sites carry only lat/lon,
+// so areas are inferred here rather than stored. Ordered roughly north→south;
+// the first matching test wins. Boundaries are deliberately coarse — enough to
+// cluster the field notebook sensibly, not a substitute for a real gazetteer.
+const REGION_ORDER = [
+  "Northern & Western Isles",
+  "Northern Highlands",
+  "Grampian Highlands",
+  "Central Belt",
+  "Southern Uplands",
+  "Northern England",
+  "Wales",
+  "Central & Southern England",
+  "Northern Ireland",
+  "Republic of Ireland",
+  "Elsewhere",
+];
+
+function regionFor(lat, lon) {
+  // Ireland (whole island): west of ~-5.4, between ~51.3 and ~55.45 lat. The
+  // latitude floor keeps the far southwest of England (Cornwall ~50.1) out.
+  if (lon < -5.4 && lat >= 51.3 && lat < 55.45) {
+    // NI roughly north of 54.0 and east of -8.2; rest is ROI.
+    if (lat >= 54.0 && lon >= -8.2) return "Northern Ireland";
+    return "Republic of Ireland";
+  }
+  // Scottish islands: Hebrides, Orkney, Shetland (west/north, offshore).
+  if (lat >= 58.7) return "Northern & Western Isles";              // Orkney/Shetland
+  if (lon < -6.1 && lat >= 56.4) return "Northern & Western Isles"; // Outer/Inner Hebrides, Skye
+  // Scottish mainland bands.
+  if (lat >= 57.2) return "Northern Highlands";        // Sutherland, Assynt, Wester Ross
+  if (lat >= 56.2) return "Grampian Highlands";        // Cairngorms, Glencoe, Aberdeenshire
+  if (lat >= 55.8) return "Central Belt";              // Glasgow–Edinburgh corridor
+  if (lat >= 54.9) return "Southern Uplands";          // Borders, Galloway
+  // Wales: a bounding box, tested before the England latitude bands so the
+  // two don't collide (they sit side by side, not in stacked latitude bands).
+  if (lat >= 51.3 && lat <= 53.5 && lon >= -5.5 && lon <= -2.65) return "Wales";
+  // England.
+  if (lat >= 53.0) return "Northern England";          // Lakes, Pennines, Yorkshire
+  if (lat < 53.0) return "Central & Southern England";
+  return "Elsewhere";
+}
+
+// Build a single site card (shared by grouped + flat rendering).
+function buildSiteCard(s) {
+  const bed = s.geology?.bedrock?.name;
+  const sup = s.geology?.superficial?.name;
+  const rock = s._pending
+    ? `<em>Geology fills in when you sync</em>`
+    : bed
+      ? `<strong>Bedrock:</strong> ${esc(bed)}` + (sup ? `<br><strong>Surface:</strong> ${esc(sup)}` : "")
+      : `<em>No geology snapshot yet</em>`;
+  const badge = s._pending ? `<span class="pending-badge">Not synced</span>` : "";
+  const card = el(`
+    <button class="site-card${s._pending ? " site-card-pending" : ""}" type="button">
+      <span class="site-card-spine" aria-hidden="true"></span>
+      <span class="site-card-body">
+        <h3>${esc(s.name)}${badge}</h3>
+        <span class="coords">${s.lat.toFixed(4)}, ${s.lon.toFixed(4)}</span>
+        <p class="rock">${rock}</p>
+      </span>
+    </button>`);
+  if (s._pending) {
+    card.addEventListener("click", () =>
+      toast(navigator.onLine ? "Tap “Sync now” to upload this site" : "This site syncs when you’re back online"));
+  } else {
+    card.addEventListener("click", () => showDetail(s.id));
+  }
+  return card;
+}
+
 function renderSiteCards(sites, offline) {
   const synced = sites.filter((s) => !s._pending).length;
   const pending = sites.length - synced;
@@ -295,38 +366,39 @@ function renderSiteCards(sites, offline) {
       </div>`;
     return;
   }
-  const grid = el(`<div class="site-grid"></div>`);
-  if (offline) {
-    grid.appendChild(el(`<div class="banner banner-info" style="grid-column:1/-1">You're offline — showing sites saved on this device. Synced sites will reappear when you're back online.</div>`));
-  }
-  sites.forEach((s) => {
-    const bed = s.geology?.bedrock?.name;
-    const sup = s.geology?.superficial?.name;
-    const rock = s._pending
-      ? `<em>Geology fills in when you sync</em>`
-      : bed
-        ? `<strong>Bedrock:</strong> ${esc(bed)}` + (sup ? `<br><strong>Surface:</strong> ${esc(sup)}` : "")
-        : `<em>No geology snapshot yet</em>`;
-    const badge = s._pending ? `<span class="pending-badge">Not synced</span>` : "";
-    const card = el(`
-      <button class="site-card${s._pending ? " site-card-pending" : ""}" type="button">
-        <span class="site-card-spine" aria-hidden="true"></span>
-        <span class="site-card-body">
-          <h3>${esc(s.name)}${badge}</h3>
-          <span class="coords">${s.lat.toFixed(4)}, ${s.lon.toFixed(4)}</span>
-          <p class="rock">${rock}</p>
-        </span>
-      </button>`);
-    if (s._pending) {
-      card.addEventListener("click", () =>
-        toast(navigator.onLine ? "Tap “Sync now” to upload this site" : "This site syncs when you’re back online"));
-    } else {
-      card.addEventListener("click", () => showDetail(s.id));
-    }
-    grid.appendChild(card);
-  });
   body.innerHTML = "";
-  body.appendChild(grid);
+  if (offline) {
+    body.appendChild(el(`<div class="banner banner-info">You're offline — showing sites saved on this device. Synced sites will reappear when you're back online.</div>`));
+  }
+
+  // Bucket sites by derived area. Pending sites get their own bucket up top.
+  const buckets = new Map();
+  for (const s of sites) {
+    const key = s._pending ? "Not yet synced" : regionFor(s.lat, s.lon);
+    if (!buckets.has(key)) buckets.set(key, []);
+    buckets.get(key).push(s);
+  }
+
+  // Emit groups: pending first, then named regions in N→S order, then any
+  // leftover keys (shouldn't happen, but stays robust if REGION_ORDER drifts).
+  const ordered = [];
+  if (buckets.has("Not yet synced")) ordered.push("Not yet synced");
+  for (const r of REGION_ORDER) if (buckets.has(r)) ordered.push(r);
+  for (const k of buckets.keys()) if (!ordered.includes(k)) ordered.push(k);
+
+  for (const area of ordered) {
+    const group = buckets.get(area);
+    const n = group.length;
+    const head = el(`
+      <div class="area-head">
+        <h3>${esc(area)}</h3>
+        <span class="area-count">${n} site${n === 1 ? "" : "s"}</span>
+      </div>`);
+    body.appendChild(head);
+    const grid = el(`<div class="site-grid"></div>`);
+    group.forEach((s) => grid.appendChild(buildSiteCard(s)));
+    body.appendChild(grid);
+  }
 }
 
 function armAddMode() {
