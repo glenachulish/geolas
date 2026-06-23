@@ -12,7 +12,7 @@
    RELATIVE to the SW's own location, so it works at / or /geolas/ alike.
 */
 
-const CACHE_VERSION = "geolas-v12";
+const CACHE_VERSION = "geolas-v13";
 const SHELL_CACHE = `${CACHE_VERSION}-shell`;
 const API_CACHE = `${CACHE_VERSION}-api`;
 // Tile cache is deliberately NOT version-stamped: a code deploy must not wipe
