@@ -389,15 +389,21 @@ function renderSiteCards(sites, offline) {
   for (const area of ordered) {
     const group = buckets.get(area);
     const n = group.length;
-    const head = el(`
-      <div class="area-head">
-        <h3>${esc(area)}</h3>
-        <span class="area-count">${n} site${n === 1 ? "" : "s"}</span>
-      </div>`);
-    body.appendChild(head);
+    // Each area is a native <details> so it collapses/expands with no JS state
+    // to track. Starts collapsed (no `open` attribute); the summary is the
+    // clickable heading. The grid is built once and lives inside.
+    const details = el(`
+      <details class="area">
+        <summary class="area-head">
+          <svg class="area-chevron" width="11" height="11" viewBox="0 0 11 11" aria-hidden="true"><path d="M2 3.5 L5.5 7 L9 3.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <h3>${esc(area)}</h3>
+          <span class="area-count">${n} site${n === 1 ? "" : "s"}</span>
+        </summary>
+      </details>`);
     const grid = el(`<div class="site-grid"></div>`);
     group.forEach((s) => grid.appendChild(buildSiteCard(s)));
-    body.appendChild(grid);
+    details.appendChild(grid);
+    body.appendChild(details);
   }
 }
 

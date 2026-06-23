@@ -210,14 +210,28 @@ body {
 .site-grid { display: grid; gap: 14px; grid-template-columns: 1fr; }
 @media (min-width: 640px) { .site-grid { grid-template-columns: 1fr 1fr; } }
 
+.area { margin: 0; }
+.area + .area { margin-top: 4px; }
+
 .area-head {
   display: flex; align-items: baseline; gap: 10px;
-  margin: 22px 0 10px;
+  margin: 0; padding: 11px 4px 10px;
+  cursor: pointer; list-style: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color .15s;
 }
-.area-head:first-child { margin-top: 6px; }
+/* remove the native disclosure triangle (incl. Safari/WebKit) */
+.area-head::-webkit-details-marker { display: none; }
+.area-head:hover h3 { color: var(--rust); }
+.area-chevron {
+  flex: none; align-self: center; color: var(--muted);
+  transition: transform .18s ease;
+}
+.area[open] > .area-head .area-chevron { transform: rotate(180deg); }
 .area-head h3 {
   font-family: var(--font-display); font-weight: 600;
   font-size: 16px; margin: 0; color: var(--ink);
+  transition: color .15s;
 }
 .area-head::after {
   content: ""; flex: 1; height: 1px;
@@ -227,6 +241,7 @@ body {
   font-family: var(--font-mono); font-size: 11px; color: var(--muted);
   white-space: nowrap;
 }
+.area[open] > .site-grid { margin: 12px 0 18px; }
 
 .site-card {
   position: relative; text-align: left; cursor: pointer;
