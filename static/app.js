@@ -1001,7 +1001,7 @@ function showLibrary(tab) {
   const tabs = [
     ["area", "By area"], ["process", "Glossary"], ["time", "By time"],
     ["people", "People"], ["guides", "Guides"], ["processes", "Processes"],
-    ["resources", "Media & links"],
+    ["resources", "Media & links"], ["simulations", "Simulations"],
   ];
   view.innerHTML = `
     <div class="lib-head">
@@ -1027,6 +1027,7 @@ function renderLibraryTab(tab) {
   else if (tab === "time") body.innerHTML = libTimeHtml();
   else if (tab === "people") body.innerHTML = libPeopleHtml();
   else if (tab === "guides") body.innerHTML = libGuidesHtml();
+  else if (tab === "simulations") body.innerHTML = libSimulationsHtml();
   else if (tab === "processes") { renderProcessResourcesTab(); return; }
   else if (tab === "resources") { renderResourcesTab(); return; }
   // wire region expanders
@@ -1145,7 +1146,40 @@ function libResRow(e) {
 }
 
 // =========================================================================
-//  PROCESSES  (Stage 2: editable; resources tagged to geological processes)
+//  SIMULATIONS  (read-only: links to the standalone interactive pages that
+//  ship with the app — Deep Time and the Moine Thrust belt. These are full
+//  React simulations hosted at /deep-time.html and /moine-thrust.html, each
+//  with a "‹ Notebook" link back here. Internal links, so same tab.)
+// =========================================================================
+function libSimulationsHtml() {
+  const sims = [
+    {
+      url: "deep-time.html",
+      title: "Deep Time \u2014 Scotland's journey",
+      sub: "Plate motion \u00b7 interactive",
+      desc: "Watch the fragments that became Scotland drift across the globe from the Archaean to today, with the rock record building up as the map moves.",
+    },
+    {
+      url: "moine-thrust.html",
+      title: "The Moine Thrust Belt",
+      sub: "NW Highlands \u00b7 Assynt \u00b7 interactive",
+      desc: "A kinematic simulation of Caledonian thrusting at Knockan Crag \u2014 drag to advance crustal shortening and see old Moine schist carried WNW over younger Durness limestone.",
+    },
+  ];
+  const rows = sims.map((s) => `<li class="res-item">
+      <a href="${esc(s.url)}">
+        <span class="res-t">${esc(s.title)}</span>
+        <span class="res-s">${esc(s.sub)}</span>
+        <span class="res-d">${esc(s.desc)}</span>
+      </a>
+    </li>`).join("");
+  return `
+    <p class="lib-sub res-axis-sub">Interactive simulations that ship with the notebook. Each opens full-screen with a link back here; they work offline once visited.</p>
+    <ul class="res-list">${rows}</ul>
+    <p class="lib-source-foot">Built for Ge\u00f2las. The Moine Thrust simulation follows the mapping of Peach &amp; Horne (Geological Survey memoir, 1907).</p>`;
+}
+
+// =========================================================================
 //  Global (not per-site), category-free. Bundled starter resources from
 //  KB.processLibrary are fixed; the user's own (from /api/process-resources,
 //  or queued offline) merge in under each matching process, marked "yours"
